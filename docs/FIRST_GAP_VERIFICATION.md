@@ -1,3 +1,5 @@
+> These are the local-phase results. A later approved [development 2.8.0 rollout](FIRST_GAP_DEVELOPMENT_2026-11-15.md) passed authenticated lint and native core checks, with two Rovo questions and reload/export checks pending after browser disconnection. Production remains unchanged.
+
 # The first gap — local verification, 15 November 2026
 
 The approved four-screen redesign is implemented locally. The owner-approved local repository is on `feat/first-gap-ui`; there is no remote/push or public source publication. Production, development installs, distribution/sharing, the public website/demo and the submitted entry were not changed. This supersedes the earlier same-day guide/summary UI pass, not its historical evidence.

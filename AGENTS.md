@@ -45,3 +45,10 @@ The user's **The first gap** redesign and `PLAN.md` supersede `LOTZERO_BEST_PROM
 - Use `playwright.first-gap.config.ts` for the current app suite, preserving older screenshot folders. Do not use `build:web` here: it writes the protected public-site source.
 - `--judge-release` must select the updated `config/judge-agent-prompt.md` and exclude the working manifest’s historical MCP declarations. The owner performs any eventual promotion.
 - Reopening Follow-up and refreshing receipts must read the full canonical preview, preserving uncreated proposals alongside receipts. Never resave or replay a Jira write merely to refresh that view.
+
+## Development rollout follow-up — 15 November 2026
+
+- The user subsequently approved deployment and verification in development only. Frozen source commit `82b8763` deployed as LotZero-Judge development 2.8.0. Production, sharing and the public page/demo remain protected.
+- Existing credentials and full Forge lint passed; do not create or request another token merely because the older local-phase note says login expired.
+- Native core checks and one Rovo destination answer passed. Browser connectivity then failed and computer-use tools were removed. Read `docs/FIRST_GAP_DEVELOPMENT_2026-11-15.md` before resuming; do not claim native reload/export or all analyst questions passed.
+- Three development Rovo questions were approved in LZR using existing included access. One was used. Two remain for origin UNKNOWN and the saved WH-NORTH simulation, on saved report `163de088-8f31-473a-9f7e-6889dd5b3e23`. Retain its full revision from the receipt. No further prompts beyond that total, Jira writes, paid activation, new terms, new grants or production rollout are authorised.

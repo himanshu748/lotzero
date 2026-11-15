@@ -6,6 +6,10 @@ LotZero is a Jira app for a food-manufacturing quality manager's mock recall. Tr
 
 The current local design, **The first gap**, opens the Northstar sample directly on **SHIP-002's missing destination**. A FAIL is a failed assertion; UNKNOWN means the records cannot establish an answer. Neither status nor a PASS is a product-safety decision.
 
+## Development verification — 15 November 2026
+
+**Development 2.8.0 is deployed.** [Open LotZero Dev in LZR](https://one-atlas-obka.atlassian.net/jira/software/projects/LZR/apps/f2443992-e1df-4ee4-b6ee-50abce811c9b/d0324e54-93c3-4fc6-8d7f-5febd8e6dfe0). Existing Forge authentication and full lint passed. The native sample/path, UNKNOWN, explicit warehouse simulation, save and guarded queue passed, as did one cited Rovo destination answer. Browser connectivity then failed; native reload/export checks and the remaining two approved Rovo questions are pending. See [the development receipt](docs/FIRST_GAP_DEVELOPMENT_2026-11-15.md). Production and the live page/demo were not changed.
+
 ## Run locally
 
 Use Node 22.23.4 and npm. From this app directory:
@@ -46,7 +50,7 @@ npm run forge -- lint
 
 The first-gap config uses port 4352 and preserves older screenshot folders. It tests the browser transport, not native Forge access or model answers. `npm run build` creates the Forge resource locally; it does not deploy. **Do not use `build:web` for this pass**: that older script writes into the protected sibling public-site source.
 
-See [first-gap verification](docs/FIRST_GAP_VERIFICATION.md) for actual outcomes and remaining gates. Full Forge CLI lint is currently blocked by the expired login. Local manifest SDK validation is a separate result. Dependency advisories, hosted/privacy obligations and native acceptance remain open; UI polish does not resolve them.
+See [first-gap verification](docs/FIRST_GAP_VERIFICATION.md) for actual outcomes and remaining gates. Full Forge CLI lint passed during the development rollout. Local manifest SDK validation is a separate result. Dependency advisories, hosted/privacy obligations and native acceptance remain open; UI polish does not resolve them.
 
 ## Forge architecture and release boundary
 

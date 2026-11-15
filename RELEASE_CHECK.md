@@ -1,6 +1,6 @@
 # LotZero — owner promotion checklist
 
-**The first gap is a local candidate. No deploy, install, tunnel, sharing change or public update was performed.** Full Forge lint is blocked by expired login. See [actual local verification](docs/FIRST_GAP_VERIFICATION.md). The owner performs production promotion and Devpost edits.
+**Development 2.8.0 is deployed; production remains gated.** Existing authentication and full lint passed. No install/tunnel/sharing/public change was performed. See [the development receipt and interrupted native checks](docs/FIRST_GAP_DEVELOPMENT_2026-11-15.md) and [earlier local verification](docs/FIRST_GAP_VERIFICATION.md). The owner performs production promotion and Devpost edits.
 
 ## Review the isolated candidate
 
@@ -19,7 +19,7 @@ Do not run the edition-selection/registration helper or change sharing/distribut
 
 ## Gates before hosting
 
-- [ ] Renew Forge CLI authentication locally; keep tokens out of source/chat. Run full Forge lint successfully. SDK schema validation is a separate check.
+- [x] Existing Forge authentication and full Forge lint passed for development on 15 November. Keep tokens out of source/chat and rerun lint before a later rollout; SDK validation remains a separate check.
 - [ ] Review/remediate the refreshed dependency audit or record an explicit owner risk decision: six moderate production advisories, 43 total including five critical tooling entries. No forced update was performed.
 - [ ] Review hosted privacy reporting/erasure, imported/free-text requests and operational recovery. The separate development privacy worker does not establish hosted compliance.
 - [ ] Read current deployed/install versions and app identity; historical 2.5.0 production / 2.7.0 development records are not current readback. Record a backup and reviewed recovery route preserving receipts and uncertain claims.
@@ -39,9 +39,9 @@ npm run forge -- lint
 
 Use Node 22.23.4. Dependencies are excluded from the export. Local package verification may reuse the ignored matching-lock dependency symlink; it is not a clean installation. Do not copy credentials or use bypass flags. The browser transport disables real Jira writes/Rovo; its success does not complete native checks.
 
-## Development rehearsal — owner approval required, not run
+## Development rehearsal — approved rollout completed
 
-After resolving the hosting gates and explicitly approving the development rollout, from the same candidate directory:
+The owner approved development-only rollout and native verification. The reviewed package was deployed as 2.8.0; the installed development page updated without an install command. Remaining native checks are listed in the development receipt. For a later explicitly approved development rollout, use the reviewed candidate directory:
 
 ```sh
 npm run forge -- whoami

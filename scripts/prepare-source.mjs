@@ -45,7 +45,7 @@ function tree(relative) {
 for (const directory of ['src', 'tests', 'fixtures', 'static/lotzero-ui/src', 'static/lotzero-ui/public']) tree(directory);
 for (const file of ['package.json', 'package-lock.json', 'manifest.yml', 'tsconfig.json', 'vite.config.ts', 'vitest.config.ts', 'playwright.config.ts', 'playwright.design.config.ts', 'playwright.landing.config.ts', 'playwright.rovo.config.ts', 'playwright.trace.config.ts', 'static/lotzero-ui/index.html', 'scripts/edition.mjs', 'scripts/benchmark.ts', 'scripts/prepare-source.mjs', 'config/editions.example.json', 'docs/PRIVACY_REPORTING.md', 'docs/DEPENDENCY_REVIEW_2026-11-06.md']) add(path.join(appRoot, file), 'lotzero/' + file);
 for (const directory of ['evals']) if (fs.existsSync(path.join(appRoot, directory))) tree(directory);
-for (const file of ['playwright.first-gap.config.ts', 'PLAN.md', 'AGENTS.md', 'docs/FIRST_GAP_VERIFICATION.md', 'config/judge-agent-prompt.md', 'CHANGELOG.md', 'RELEASE_CHECK.md', 'IMPACT.md', 'DEVPOST_UPDATE.md', 'VIDEO_SHOTLIST.md', 'SUBMISSION_RECHECK.md', 'docs/JUDGED_RELEASE_DIFF.md', 'docs/JUDGED_RELEASE_API_CONTRACTS.md', 'docs/JUDGED_RELEASE_VERIFICATION.md']) if (fs.existsSync(path.join(appRoot, file))) add(path.join(appRoot, file), 'lotzero/' + file);
+for (const file of ['playwright.first-gap.config.ts', 'PLAN.md', 'AGENTS.md', 'docs/FIRST_GAP_VERIFICATION.md', 'docs/FIRST_GAP_DEVELOPMENT_2026-11-15.md', 'config/judge-agent-prompt.md', 'CHANGELOG.md', 'RELEASE_CHECK.md', 'IMPACT.md', 'DEVPOST_UPDATE.md', 'VIDEO_SHOTLIST.md', 'SUBMISSION_RECHECK.md', 'docs/JUDGED_RELEASE_DIFF.md', 'docs/JUDGED_RELEASE_API_CONTRACTS.md', 'docs/JUDGED_RELEASE_VERIFICATION.md']) if (fs.existsSync(path.join(appRoot, file))) add(path.join(appRoot, file), 'lotzero/' + file);
 for (const file of ['index.html', 'styles.css', 'landing.css', 'app.js', 'favicon.svg', 'support.html', 'rovo-preview.png']) add(path.join(siteRoot, file), 'lotzero-site/' + file);
 const manifest = YAML.parse(files.get('lotzero/manifest.yml').toString());
 if (judged) {
@@ -103,7 +103,7 @@ npx playwright test --config playwright.first-gap.config.ts
 npm run forge -- lint
 \`\`\`
 
-The app suite uses a loopback browser transport and does not establish native Jira/model success. Read [first-gap verification](docs/FIRST_GAP_VERIFICATION.md). Full lint remains blocked until the owner renews authentication. Dependency/privacy/native gates remain open. Do not use build:web against the original protected public-site source.
+The app suite uses a loopback browser transport and does not establish native Jira/model success. Read [first-gap verification](docs/FIRST_GAP_VERIFICATION.md). Run full authenticated Forge lint before a rollout; the verification documents record current outcomes. Dependency/privacy/native gates remain open. Do not use build:web against the original protected public-site source.
 
 ## Release boundary
 
