@@ -38,3 +38,10 @@ The user's **The first gap** redesign and `PLAN.md` supersede `LOTZERO_BEST_PROM
 - No recording during this planning/redesign authorization. Later approved demo editing uses Cardboard; generated narration uses **Deepgram exclusively**. Do not substitute another TTS provider without explicit approval.
 - The user requests local commits after each approved, verified workstream. If no Git repository exists, disclose and include local initialization/ignore boundaries in plan approval first. Use a task branch such as `feat/first-gap-ui`, verify author identity, inspect exact staged files and check secrets. No remote/push or source publication is authorized.
 - Report implemented, locally verified, hosted, published and submitted separately. Full Forge lint blocked by expired login is not a pass; SDK validation is separate. Retain dependency/privacy/native acceptance gates instead of calling UI polish production readiness.
+
+## Approved implementation state
+
+- The four-screen plan was approved for local implementation and local commits. The app now has a local `feat/first-gap-ui` repository; no remote or push is authorised.
+- Use `playwright.first-gap.config.ts` for the current app suite, preserving older screenshot folders. Do not use `build:web` here: it writes the protected public-site source.
+- `--judge-release` must select the updated `config/judge-agent-prompt.md` and exclude the working manifest’s historical MCP declarations. The owner performs any eventual promotion.
+- Reopening Follow-up and refreshing receipts must read the full canonical preview, preserving uncreated proposals alongside receipts. Never resave or replay a Jira write merely to refresh that view.

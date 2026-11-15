@@ -13,7 +13,7 @@ function fixture() {
   const root = join(directory, 'lotzero'); mkdirSync(root);
   const originals = resolve('.');
   for (const name of ['src', 'fixtures', 'static/lotzero-ui/src', 'static/lotzero-ui/public', 'tests']) cpSync(join(originals, name), join(root, name), {recursive: true});
-  for (const name of ['package.json', 'package-lock.json', 'manifest.yml', 'tsconfig.json', 'vite.config.ts', 'vitest.config.ts', 'playwright.config.ts', 'playwright.design.config.ts', 'playwright.landing.config.ts', 'playwright.rovo.config.ts', 'playwright.trace.config.ts', 'static/lotzero-ui/index.html', 'scripts/edition.mjs', 'scripts/benchmark.ts', 'scripts/prepare-source.mjs', 'config/editions.example.json', 'docs/PRIVACY_REPORTING.md', 'docs/DEPENDENCY_REVIEW_2026-11-06.md']) {
+  for (const name of ['package.json', 'package-lock.json', 'manifest.yml', 'tsconfig.json', 'vite.config.ts', 'vitest.config.ts', 'playwright.config.ts', 'playwright.first-gap.config.ts', 'playwright.design.config.ts', 'playwright.landing.config.ts', 'playwright.rovo.config.ts', 'playwright.trace.config.ts', 'static/lotzero-ui/index.html', 'scripts/edition.mjs', 'scripts/benchmark.ts', 'scripts/prepare-source.mjs', 'config/editions.example.json', 'docs/PRIVACY_REPORTING.md', 'docs/DEPENDENCY_REVIEW_2026-11-06.md']) {
     const dest = join(root, name); mkdirSync(resolve(dest, '..'), {recursive: true}); copyFileSync(join(originals, name), dest);
   }
   copyFileSync(join(originals, 'config/judge-agent-prompt.md'), join(root, 'config/judge-agent-prompt.md'));
@@ -42,7 +42,8 @@ describe('curated source export boundary', () => {
     const receipt = JSON.parse(readFileSync(join(dest, 'source-export.json'), 'utf8'));
     expect(receipt.gitCreated).toBe(false); expect(receipt.pushed).toBe(false);
     const names = receipt.files.map((row: {path: string}) => row.path);
-    expect(names).toContain('lotzero/src/privacy.ts'); expect(names).toContain('lotzero-site/index.html');
+    expect(names).toContain('lotzero/src/privacy.ts'); expect(names).toContain('lotzero/playwright.first-gap.config.ts');
+    expect(readFileSync(join(dest,'lotzero/README.md'),'utf8')).toContain('Run Northstar sample (synthetic)'); expect(names).toContain('lotzero-site/index.html');
     expect(names.some((name: string) => /(?:^|\/)(?:\.env|evidence|node_modules|\.git)(?:\.|\/|$)|\.local\.json$/.test(name))).toBe(false);
     for (const row of receipt.files) expect(createHash('sha256').update(readFileSync(join(dest, row.path))).digest('hex')).toBe(row.sha256);
     expect(existsSync(join(dest, '.git'))).toBe(false);

@@ -1,6 +1,18 @@
 # Changelog
 
-## Unreleased — local judged candidate, 15 November 2026
+## Unreleased — The first gap, 15 November 2026
+
+- Four operational screens replace the marketing hero, duplicate summary/count regions, seven-item sidebar and overlapping journeys. The shell is split into screens, hooks and components.
+- One sample activation selects destination FAIL / SHIP-002, its real supporting path and evidence inspector. Other findings, full map and record table remain available.
+- ADS buttons, lozenges, tokens, system typography fallbacks, host/preview themes, keyboard focus, narrow layouts and reduced motion replace the campaign treatment.
+- Rehearse suggests a supported warehouse control without applying it. Historical impact remains intact.
+- Follow-up groups proposals by assertion, puts FAIL first and retains canonical IDs/descriptions, approvals and receipts. Saved reopening/refresh reads the full proposal-and-receipt preview without resaving.
+- The existing analyst has focused saved-revision questions, a labelled deterministic fallback and a direct citation-first judge prompt. Twenty-four retrieval/contract evaluations include the actual three UI handoffs; no model trial was run.
+- File-only submission/video drafts and owner release commands describe the new first gap. The public site, installed app, demo and submission were not changed.
+
+See [first-gap verification](docs/FIRST_GAP_VERIFICATION.md). Local commits do not assign a Forge release version or establish native acceptance.
+
+## Earlier local judged pass — superseded UI, 15 November 2026
 
 - An explicit `--judge-release` source export registers only the existing Jira project page and read-only Recall rehearsal analyst. MCP and Marketplace privacy modules remain separate development work.
 - Repeat Northstar sample loading preserves matching records, saved rehearsals and audit history; a modified/imported dataset is never overwritten.

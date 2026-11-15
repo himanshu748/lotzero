@@ -45,7 +45,7 @@ function tree(relative) {
 for (const directory of ['src', 'tests', 'fixtures', 'static/lotzero-ui/src', 'static/lotzero-ui/public']) tree(directory);
 for (const file of ['package.json', 'package-lock.json', 'manifest.yml', 'tsconfig.json', 'vite.config.ts', 'vitest.config.ts', 'playwright.config.ts', 'playwright.design.config.ts', 'playwright.landing.config.ts', 'playwright.rovo.config.ts', 'playwright.trace.config.ts', 'static/lotzero-ui/index.html', 'scripts/edition.mjs', 'scripts/benchmark.ts', 'scripts/prepare-source.mjs', 'config/editions.example.json', 'docs/PRIVACY_REPORTING.md', 'docs/DEPENDENCY_REVIEW_2026-11-06.md']) add(path.join(appRoot, file), 'lotzero/' + file);
 for (const directory of ['evals']) if (fs.existsSync(path.join(appRoot, directory))) tree(directory);
-for (const file of ['config/judge-agent-prompt.md', 'CHANGELOG.md', 'RELEASE_CHECK.md', 'IMPACT.md', 'DEVPOST_UPDATE.md', 'VIDEO_SHOTLIST.md', 'SUBMISSION_RECHECK.md', 'docs/JUDGED_RELEASE_DIFF.md', 'docs/JUDGED_RELEASE_API_CONTRACTS.md', 'docs/JUDGED_RELEASE_VERIFICATION.md']) if (fs.existsSync(path.join(appRoot, file))) add(path.join(appRoot, file), 'lotzero/' + file);
+for (const file of ['playwright.first-gap.config.ts', 'PLAN.md', 'AGENTS.md', 'docs/FIRST_GAP_VERIFICATION.md', 'config/judge-agent-prompt.md', 'CHANGELOG.md', 'RELEASE_CHECK.md', 'IMPACT.md', 'DEVPOST_UPDATE.md', 'VIDEO_SHOTLIST.md', 'SUBMISSION_RECHECK.md', 'docs/JUDGED_RELEASE_DIFF.md', 'docs/JUDGED_RELEASE_API_CONTRACTS.md', 'docs/JUDGED_RELEASE_VERIFICATION.md']) if (fs.existsSync(path.join(appRoot, file))) add(path.join(appRoot, file), 'lotzero/' + file);
 for (const file of ['index.html', 'styles.css', 'landing.css', 'app.js', 'favicon.svg', 'support.html', 'rovo-preview.png']) add(path.join(siteRoot, file), 'lotzero-site/' + file);
 const manifest = YAML.parse(files.get('lotzero/manifest.yml').toString());
 if (judged) {
@@ -74,10 +74,45 @@ if (privacy) {
   manifest.permissions.scopes = [...new Set([...manifest.permissions.scopes, 'report:personal-data'])];
   files.set('lotzero/manifest.yml', Buffer.from(YAML.stringify(manifest)));
 }
-const introduction = `# LotZero\n\nRehearse the recall. Find the gaps before they matter.\n\nA Forge/Jira recall-rehearsal app for food-manufacturing quality teams. Follow ingredient-to-shipment records, inspect PASS/FAIL/UNKNOWN findings, rehearse hypothetical controls, and save evidence before reviewing Jira follow-up. This is synthetic rehearsal software, not a product-safety or operational-recall service.\n\n## Local quickstart\n\nUse Node 22.23.4 and npm. From this directory:\n\n\`\`\`sh\nnpm ci\nnpm run dev\n\`\`\`\n\nOpen http://127.0.0.1:4173 and choose **Run sample rehearsal**. The fixed ING-A19 scenario gives three product lots, four shipments, nine gaps and twelve unresolved records. SHIP-002 has no destination. Browser data stays in localStorage; real Jira creation is disabled.\n\n## Checks and builds\n\n\`\`\`sh\nnpm run typecheck\nnpm test\nnpm run build\nnpm run build:web\n\`\`\`\n\nThe sibling lotzero-site directory contains landing source; build:web writes its app subdirectory. npm run test:e2e exercises the local browser journey and requires the repository's Playwright Chromium installation. These local checks do not establish a live Jira install.\n\n## Forge and credentials\n\nThe manifest retains the owner's existing ${privacy ? 'Marketplace identity and adds a development privacy trigger' : judged ? 'judge identity, with only the project page and original read-only Rovo analyst registered' : 'judge identity'}. Do not register a replacement, deploy, install, commit or push without the applicable owner approval. No credentials or local edition configuration are exported. The Forge CLI script uses the project-local Node binary. Read docs/PRIVACY_REPORTING.md before selecting the privacy candidate. Its worker is off by default, development-only and not production verified.\n\n## Limits and source rights\n\nImports use the typed JSON or record_type,json CSV fixture schema. See fixtures/README.md. Missing evidence stays unknown and simulations change no shipment. Rovo needs an enabled Jira tenant. Account-linked metadata has a development privacy candidate; imported free text still needs a reviewed request process. See docs/DEPENDENCY_REVIEW_2026-11-06.md for unresolved dependency advisories. No clean security audit, Marketplace approval, operational customer validation or compliance certification is claimed. No source license has been selected or granted by this export. Deployment evidence, video masters and portal/account records remain in the owner's original workspace.\n`;
+const introduction = `# LotZero
+
+Rehearse the recall. Find the gaps before they matter.
+
+A Jira/Forge mock-recall desk for food-manufacturing quality managers. This local candidate uses four screens: Home, Rehearsal, Rehearse and Follow-up. It is not deployed by this export.
+
+## Local quickstart
+
+Use Node 22.23.4 and npm. From this directory:
+
+\`\`\`sh
+npm ci
+npm run dev
+\`\`\`
+
+Open http://127.0.0.1:4173 and choose **Run Northstar sample (synthetic)** once. Rehearsal opens on shipment-destination FAIL / SHIP-002 and its selected path, ING-A19 → BATCH-101 → FG-101 → SHIP-002. Browser data stays in localStorage; Jira writes and Rovo execution are disabled. Synthetic data only.
+
+Rehearse a WH-NORTH warehouse control explicitly; historical shipments remain in impact. Save and follow up to inspect prioritised proposals, the saved-evidence analyst fallback, comparison and exports. In Forge, Jira creation still requires permissions and exact-content approval. The original read-only Rovo agent explains only an identified saved revision.
+
+## Checks
+
+\`\`\`sh
+npm run typecheck
+npm test
+npm run build
+npx playwright test --config playwright.first-gap.config.ts
+npm run forge -- lint
+\`\`\`
+
+The app suite uses a loopback browser transport and does not establish native Jira/model success. Read [first-gap verification](docs/FIRST_GAP_VERIFICATION.md). Full lint remains blocked until the owner renews authentication. Dependency/privacy/native gates remain open. Do not use build:web against the original protected public-site source.
+
+## Release boundary
+
+This export selects the owner's existing ${privacy ? 'Marketplace development identity with a separate privacy trigger' : judged ? 'judge identity with only the Jira page and original read-only Rovo analyst/GET action' : 'working identity and declarations'}. Review the manifest and [RELEASE_CHECK.md](RELEASE_CHECK.md) before hosting. No registration, deploy, install, tunnel, sharing change, public edit or recording is performed. No credentials, local edition configuration, private evidence, media masters or dependencies are exported. The original source now has owner-approved local Git commits; this export contains no Git history and performs no push.
+
+Imports use JSON or record_type,json CSV with existing limits; see fixtures/README.md. Missing evidence remains UNKNOWN. Neither a PASS nor a path establishes product safety; controls are hypothetical and timing is not measured. No customer validation, certification or extra bonus is claimed. Source licensing remains an owner decision. See docs/PRIVACY_REPORTING.md and docs/DEPENDENCY_REVIEW_2026-11-06.md for unresolved release concerns.
+`;
 files.set('lotzero/README.md', Buffer.from(introduction));
-if (judged) files.set('lotzero/README.md', Buffer.concat([files.get('lotzero/README.md'), Buffer.from('\n## Judge release review\n\nThis is an unreleased local candidate. Read [RELEASE_CHECK.md](RELEASE_CHECK.md), [CHANGELOG.md](CHANGELOG.md) and [the verification handoff](docs/JUDGED_RELEASE_VERIFICATION.md) before any deployment. MCP and Marketplace-only modules are not registered. No hosting, sharing or submission change is performed by this export.\n')]));
-files.set('README.md', Buffer.from('# LotZero source candidate\n\nLocal preparation for an owner-controlled private repository. No Git repository, commit, push or publication was performed.\n\n- [App quickstart](lotzero/README.md)\n- [Privacy development candidate](lotzero/docs/PRIVACY_REPORTING.md)\n- Landing source: lotzero-site/\n\nThe source-export.json file lists exact copied/generated files and hashes. It is a content receipt, not a Git commit. Use the app quickstart and keep credentials outside source.\n'));
+files.set('README.md', Buffer.from('# LotZero source candidate\n\nLocal export of the owner-controlled source. This directory contains no Git history; no push, hosting or public edit was performed by the exporter.\n\n- [App quickstart](lotzero/README.md)\n- [Owner release checks](lotzero/RELEASE_CHECK.md)\n- [Source verification](lotzero/docs/FIRST_GAP_VERIFICATION.md)\n\nsource-export.json lists exact files and hashes. Keep credentials outside source. The sibling landing source is a copy for reference; the original live-site source was not changed.\n'));
 files.set('.gitignore', Buffer.from('**/node_modules/\n**/.env*\n!**/.env.example\n**/.forge/\n**/config/*.local.json\n**/evidence/\n**/demo/\n**/test-results/\n**/playwright-report/\n**/static/lotzero-ui/dist/\nlotzero-site/app/\nui-evidence/\n*.log\n'));
 const patterns = [
   ['Atlassian API token', /ATATT[0-9A-Za-z_+=/\-]{20,}/],

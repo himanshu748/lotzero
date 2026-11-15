@@ -1,3 +1,5 @@
+> Historical earlier pass. Its poster/guide/summary UI was superseded locally by [The first gap](FIRST_GAP_VERIFICATION.md). Counts and no-Git statements below describe that earlier pass, not the current working tree.
+
 # Local judge candidate — 15 November 2026
 
 Implemented locally under the user's approval. Production, development deployments, the public website/demo, sharing settings and submitted entry were not changed. This is an unreleased source candidate, with native acceptance and release risks explicitly pending.

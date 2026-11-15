@@ -1,35 +1,35 @@
-# LotZero — proposed submission update
+# LotZero — product-story draft
 
-**Local draft. Do not paste the candidate capabilities into the live entry until the owner has promoted and verified the matching Forge build. No form or public content was changed.**
-
-## Judge access — primary entry
-
-**The Forge installation link and testing instructions in the submission form are the real entry. The Vercel link is a no-account browser preview, with local browser storage and no real Jira writes or Rovo execution.** Keep the existing approved Forge sharing URL exactly as provided in the submission; do not regenerate or change distribution settings for this draft.
+File only. Use after the owner promotes and verifies the matching Forge build. The submitted entry, public demo, sharing link and Vercel preview have not been edited. Keep the existing approved installation URL; do not regenerate sharing.
 
 ## Rehearse the recall. Find the gaps before they matter.
 
-A quality lead receives an ingredient lot number. Before the team can explain its recorded shipments, it needs to know where the evidence stops.
+An ingredient lot number is a starting point. The harder question is whether your records explain every shipment it reached—and where that explanation stops.
 
-LotZero lets that lead rehearse the question inside Jira. Load the fictional Northstar records, follow ING-A19 through its recorded product and shipment associations, and inspect the missing destination on SHIP-002. Assertions separate a failed check from an answer the records cannot establish. Each finding retains its record IDs and evidence references.
+LotZero gives a food-manufacturing quality manager a mock-recall desk inside Jira. With one sample action, the fictional Northstar lot ING-A19 opens on the first gap: **SHIP-002 has no recorded destination**. Its path is already selected, from ingredient to batch to finished lot to shipment. The inspector keeps the supporting record and evidence IDs beside the finding.
 
-Try a hypothetical warehouse quarantine and compare what it could potentially prevent with shipments that are already historical. Save the rehearsal with its inputs and findings. Review proposed Jira Tasks, inspect their exact content and approve only the follow-up work you choose. Uncertain write outcomes remain visible for reconciliation; retries do not silently create replacement issues.
+The assertions distinguish two different problems. Missing destination data fails a check. Incomplete origin evidence stays UNKNOWN. A path shows a recorded association; it does not establish contamination or safety. The manager can inspect another finding, open the full flow map or use the record table without losing the case.
 
-The optional Recall rehearsal analyst uses Forge's Rovo agent and a read-only action to explain the exact saved revision. It returns assertion populations, evidence IDs, counterexamples, saved controls and bounded pages. The proposed judge candidate also exposes timing limits and evidence references for draft follow-up. The analyst cannot create Tasks or operate a recall; its explanation must be checked against the report.
+Next, rehearse a WH-NORTH warehouse quarantine. Add it explicitly and compare what it could potentially prevent with what remains historical. SHIP-002 can be potentially preventable in this simulation; SHIP-001 remains in the impact. No shipment is changed and no history is rewritten.
 
-Forge hosts the Jira project page, resolvers and installation-scoped storage. Jira permissions authorize each project read and approved Task write. The deterministic engine owns the findings; Rovo explains those results. This is the Specialized Industries entry, with **Best Agents** as its sole proposed bonus selection. No MCP, Teamwork Graph or Marketplace bonus is claimed.
+Save the rehearsal and review a short, prioritised follow-up queue. The destination proposal comes first. Other assertion groups expand when needed. Nothing is preselected: exact issue content, a permitted Jira project/type and explicit approval precede creation. Saved receipts and uncertain outcomes stay attached to the original action, so investigation does not silently become another Task.
 
-## Fresh-site testing instructions
+The **Recall rehearsal analyst** explains the saved case through Rovo. Ask why the destination assertion failed, which lots remain UNKNOWN, or what the saved warehouse control changed. The existing read-only GET action binds the explanation to the exact saved revision and returns the same record and evidence IDs as the report. The analyst cannot create Tasks, fill missing records or operate a recall. If Rovo is unavailable, the findings, selected path, counterexamples and exports remain usable in LotZero.
 
-1. A Jira Cloud site administrator installs through the submission's existing sharing link and reviews the displayed scopes. Use a private test project and synthetic records. The installed candidate must match the owner-verified release; installation time is separate from the first-finding target.
-2. Open **Project → Apps → LotZero**. As a project administrator, choose **Load Northstar sample recall (synthetic)**. Repeat loading is safe for the unchanged sample; other records are preserved.
-3. Inspect the run summary and SHIP-002's FAIL counterexample, then open Evidence gaps and an UNKNOWN assertion. A path shows recorded association, not contamination or safety.
-4. Rehearse a WH-NORTH quarantine with EV-DRILL. Verify that historical SHIP-001 remains historical. Save and reopen the report.
-5. On a tenant where Rovo is already enabled, use **Ask Recall rehearsal analyst** with the saved handoff. Verify its revision and evidence IDs. If Rovo is unavailable, the trace, assertions, simulator and saved report still work; no subscription change is required to inspect them.
-6. If you choose to test a real Jira write, review the proposed Task's exact description, choose the test project/type and explicitly approve it. The site's permissions, notifications and automation still apply. Retry the same action and verify one receipt/issue, using the release checklist's reconciliation instructions for uncertain outcomes.
-7. Verify an ordinary member's allowed read path and a user's denied-project path. Do not give broad project access merely to make the test pass.
+Forge hosts the Jira project page, resolvers and saved evidence. Jira permissions authorise the project context and approved work. The deterministic TypeScript engine owns the results; Rovo helps a manager understand them. This entry remains **Apps for Specialized Industries**, with **Best Agents** as its only bonus.
 
-## Built, learned and next
+## Testing instructions for the matching promoted build
 
-The challenge was preserving uncertainty and distinguishing a record association from a justified conclusion. The implementation keeps a deterministic result, a specific saved revision for the explanation, and a distinct approval path for consequential writes. Local regression and browser checks are recorded in the release evidence; live tests and model-answer evaluations have their own boundaries.
+1. Install through the existing Forge link in the submission, reviewing its scopes as a Jira Cloud site administrator. Use a private test project and synthetic records.
+2. Open **Project → Apps → LotZero**. As project administrator, activate **Run Northstar sample (synthetic)**. Installation time is separate from this first-run journey.
+3. On **Rehearsal**, inspect destination FAIL / SHIP-002 and its four-record Selected path. Choose the origin UNKNOWN finding to inspect its counterexamples. Unknown never means safe.
+4. Choose **Rehearse a hold**. Verify the WH-NORTH suggestion has not been applied; explicitly add it with EV-DRILL. SHIP-001 remains historical. Save and follow up.
+5. Inspect the destination Task proposal. A real Jira write requires your site's permissions and explicit approval; do not approve unless you intend to create it. Receipt/retry and uncertain-outcome checks follow the owner release checklist.
+6. Where Rovo is already enabled, select the destination question and open it in Recall rehearsal analyst. Check its exact saved revision and cited IDs. If Rovo cannot open, inspect the labelled saved-record fallback. No plan change is required to use that evidence.
+7. Reopen the saved rehearsal. Comparison and exports remain below Follow-up. Check allowed ordinary-member reads and denied-project access using permitted accounts.
 
-The next step is fresh-site acceptance and feedback from consenting quality teams. LotZero uses synthetic demonstration data, claims no certification, performs no operational recall and offers no measured time-saving or customer-impact claim. The new video should show the same owner-promoted production build before this draft is used.
+## What we learned and what's next
+
+A useful rehearsal must expose the point where an answer stops, rather than turn missing evidence into reassurance. LotZero keeps deterministic findings, a specific saved revision for explanation and a separate approval boundary for work.
+
+The next step is fresh-site acceptance and feedback from consenting quality teams. Demonstration records are synthetic; no pilots, certification, customer results or measured time saving are claimed. Timing is not measured. The video and installed build should match before this draft replaces public copy.

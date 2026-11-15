@@ -1,6 +1,6 @@
 # LotZero — The first gap
 
-**15 November 2026 · Proposed redesign · Awaiting approval. No implementation in this turn.**
+**15 November 2026 · Approved for local implementation and local commits. Development deployment/tunnel remains unapproved.**
 
 This plan supersedes `LOTZERO_BEST_PROMPT.md`, `WIN_PLAN.md` and the product shape of the earlier 15 November judged-release pass. Those files and their evidence remain history. The direction is already chosen: **a weekly mock-recall desk for a food-manufacturing quality manager**, inside Jira. No new concept selection is needed.
 
@@ -121,4 +121,4 @@ Full Forge lint must pass after CLI login renewal; SDK schema validation is not 
 
 Production deploy/install, distribution/sharing, the live Vercel site, Devpost, Marketplace and YouTube remain untouched. The owner performs any production promotion and form edits. No recording now; later demo editing remains Cardboard and generated narration remains Deepgram exclusively, using approved existing credits and secret-safe configuration. No purchase or provider substitution.
 
-**Decision requested:** approve this four-screen redesign for local implementation and local Git initialization/commits after each verified workstream, or amend the scope. Development deployment/tunnel requires an explicit addition. **Stop here: only this plan and the requested local `AGENTS.md` are written in this turn.**
+**Approval received:** the user’s “go on” approved the local redesign, Git initialization and workstream commits after the planning turn stopped. No development deploy/tunnel was included. Implementation and verification are recorded in `docs/FIRST_GAP_VERIFICATION.md`. The original proposed boundaries above remain the approved scope.
