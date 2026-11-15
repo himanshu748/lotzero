@@ -106,7 +106,7 @@ export default function App() {
                 title={
                   !active.snapshot ? "Save and follow up first" : undefined
                 }
-                onClick={() => desk.go("follow-up")}
+                onClick={desk.followUp}
               >
                 Follow-up
               </button>

@@ -63,3 +63,12 @@ test("storage failure offers a read refresh that does not reset or repeat writes
     await page.evaluate(() => localStorage.getItem("lotzero.local.v1")),
   ).toBeNull();
 });
+
+test('reopened saved rehearsal restores the full prioritised queue without saving again',async({page})=>{
+  await page.goto('/');await page.getByRole('button',{name:'Run Northstar sample (synthetic)',exact:true}).click();await page.getByRole('button',{name:'Save and follow up',exact:true}).click();
+  await page.reload();await page.getByRole('button',{name:'Open',exact:true}).click();
+  await page.getByRole('navigation',{name:'Rehearsal navigation'}).getByRole('button',{name:'Follow-up',exact:true}).click();
+  await expect(page.locator('.action-group').first()).toContainText('SHIP-002');
+  await expect(page.getByRole('checkbox',{checked:true})).toHaveCount(0);
+  const state=await page.evaluate(()=>JSON.parse(localStorage.getItem('lotzero.local.v1')!));expect(state.snapshots).toHaveLength(1);expect(state.audit).toHaveLength(2);
+});

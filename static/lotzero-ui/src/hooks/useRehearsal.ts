@@ -199,7 +199,7 @@ export function useRehearsal() {
     return saved;
   }
   function followUp() {
-    void perform("Saving rehearsal", async () => {
+    void perform(active?.snapshot ? "Loading saved follow-up" : "Saving rehearsal", async () => {
       const saved = await save();
       const actions = await client.previewActions(saved.id);
       setActive((previous) =>
@@ -218,9 +218,10 @@ export function useRehearsal() {
       const saved = next.snapshots.find(
         (item) => item.id === active.snapshot!.id,
       );
-      if (saved)
-        setActive({ ...active, snapshot: saved, actions: saved.actions });
-      else {
+      if (saved) {
+        const actions = await client.previewActions(saved.id);
+        setActive({ ...active, snapshot: {...saved, actions}, actions });
+      } else {
         setActive(null);
         go("home");
       }
