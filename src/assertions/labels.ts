@@ -1,2 +1,8 @@
-import type {AssertionId} from '../contracts';
-export const ASSERTION_TITLES:Record<AssertionId,string>={'ingredient-origin':'Every finished lot has an evidenced ingredient origin','shipment-destination':'Every affected shipment has a recorded destination','warehouse-owner':'Every affected warehouse has a response owner','quarantine-evidence':'Every simulated quarantine has supporting evidence','shipment-lot':'Every affected shipment has a usable lot identifier'};
+import type { AssertionId } from "../contracts";
+export const ASSERTION_TITLES: Record<AssertionId, string> = {
+  "ingredient-origin": "Every finished lot has an evidenced ingredient origin",
+  "shipment-destination": "Every affected shipment has a recorded destination",
+  "warehouse-owner": "Every affected warehouse has a response owner",
+  "quarantine-evidence": "Every simulated quarantine has supporting evidence",
+  "shipment-lot": "Every affected shipment has a usable lot identifier",
+};

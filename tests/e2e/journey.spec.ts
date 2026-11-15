@@ -1,34 +1,24 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
-import { mkdir, readFile } from "node:fs/promises";
-const evidence = process.env.LOTZERO_EVIDENCE_DIR ?? "../ui-evidence";
-async function seed(page: import("@playwright/test").Page) {
+import { readFile, mkdir } from "node:fs/promises";
+const evidence =
+  process.env.LOTZERO_EVIDENCE_DIR ?? "evidence/first-gap-2026-11-15/browser";
+async function sample(page: Page) {
   await page.goto("/");
-  await expect(
-    page.getByRole("heading", { name: "Recall readiness", exact: true }),
-  ).toBeVisible();
   await page
-    .getByRole("button", { name: "Load synthetic dataset", exact: true })
-    .last()
+    .getByRole("button", {
+      name: "Run Northstar sample (synthetic)",
+      exact: true,
+    })
     .click();
-  await expect(
-    page.getByText(
-      "Synthetic records loaded. No real customer or supplier data is used.",
-    ),
-  ).toBeVisible();
 }
-async function drill(page: import("@playwright/test").Page) {
-  await seed(page);
-  await page
-    .getByRole("button", { name: "New drill", exact: true })
-    .last()
-    .click();
-  await page.getByRole("button", { name: "Run recall rehearsal" }).click();
-  await expect(
-    page.getByRole("heading", { name: "Impact explorer", exact: true }),
-  ).toBeVisible();
+async function home(page: Page) {
+  await page.getByRole("button", { name: "LotZero Home", exact: true }).click();
 }
-test("complete local rehearsal, evidence, intervention, preview, export and reload", async ({
+async function exports(page: Page) {
+  await page.getByText("Exports and saved inputs", { exact: true }).click();
+}
+test("complete rehearsal, explicit warehouse control, prioritised follow-up and exports", async ({
   page,
 }) => {
   const errors: string[] = [];
@@ -37,107 +27,122 @@ test("complete local rehearsal, evidence, intervention, preview, export and relo
     if (m.type() === "error") errors.push(m.text());
   });
   await mkdir(evidence, { recursive: true });
-  await seed(page);
-  await expect(page).toHaveTitle("LotZero — Recall rehearsal");
-  await page.evaluate(() => window.scrollTo(0, 0));
-  await page.screenshot({
-    path: `${evidence}/readiness-desktop.png`,
-    fullPage: true,
-  });
+  await sample(page);
   await page
-    .getByRole("button", { name: "New drill", exact: true })
-    .last()
-    .click();
-  await page.getByRole("button", { name: "Run recall rehearsal" }).click();
-  await expect(
-    page.getByRole("heading", { name: "Impact explorer", exact: true }),
-  ).toBeVisible();
-  await page.getByRole("button", { name: "Record table" }).click();
-  await page.locator("table").getByRole("button").first().click();
-  await expect(
-    page.getByRole("complementary", { name: "Selected record evidence" }),
-  ).toContainText("Supporting path");
-  await page.getByRole("button", { name: "Flow map" }).click();
-  await page.evaluate(() => window.scrollTo(0, 0));
-  await page.screenshot({
-    path: `${evidence}/impact-desktop.png`,
-    fullPage: true,
-  });
-  await page.getByRole("button", { name: "Inspect evidence gaps" }).click();
-  await expect(
-    page.getByRole("heading", { name: "Evidence gaps", exact: true }),
-  ).toBeVisible();
-  await expect(page.locator(".badge.fail").first()).toBeVisible();
-  await expect(page.locator(".badge.unknown").first()).toBeVisible();
-  await page.getByRole("button", { name: "Rehearse a response" }).click();
-  await page
-    .getByRole("combobox", { name: /^Supporting evidence/ })
-    .selectOption({ index: 1 });
-  await page
-    .getByRole("button", { name: "Add simulated intervention" })
+    .getByRole("button", { name: "Rehearse a hold", exact: true })
     .click();
   await expect(
-    page.getByRole("heading", { name: "1 proposed intervention" }),
+    page.getByRole("combobox", { name: "Target record", exact: true }),
+  ).toHaveValue("WH-NORTH");
+  await expect(
+    page.getByRole("heading", {
+      name: "0 proposed interventions",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await page
+    .getByRole("button", { name: "Add simulated intervention", exact: false })
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "1 proposed intervention", exact: true }),
   ).toBeVisible();
   await expect(page.locator(".simulated-column")).toContainText("SHIP-002");
-  await expect(page.locator(".history-preserved")).toContainText("SHIP-001");
   await expect(page.locator(".simulated-column")).not.toContainText("SHIP-001");
-  await expect(
-    page.getByText(/historical shipment remains in the impact report/),
-  ).toBeVisible();
-  await page.evaluate(() => window.scrollTo(0, 0));
+  await expect(page.locator(".history-preserved")).toContainText("SHIP-001");
   await page.screenshot({
-    path: `${evidence}/simulator-desktop.png`,
+    path: `${evidence}/rehearse-desktop.png`,
     fullPage: true,
   });
   await page
-    .getByRole("button", { name: "Save & review Jira actions" })
+    .getByRole("button", { name: "Save and follow up", exact: true })
     .click();
   await expect(
-    page.getByRole("heading", { name: "Jira action review", exact: true }),
+    page.getByRole("heading", { name: "Follow-up", exact: true }),
   ).toBeVisible();
+  const groups = page.locator(".action-group");
+  await expect(groups.first()).toContainText("SHIP-002");
+  await expect(groups.first()).toContainText("FAIL");
+  await expect(page.getByRole("checkbox", { checked: true })).toHaveCount(0);
+  await groups.first().getByRole("checkbox").check();
   await expect(
-    page.getByRole("button", { name: /Create \d+ Jira issues/ }),
+    page.getByRole("button", { name: "Create 1 Jira issues", exact: false }),
   ).toBeDisabled();
   await expect(
-    page.getByText("Preview available; Jira writes disabled."),
-  ).toBeVisible();
-  await page.getByRole("button", { name: "Open drill report" }).click();
+    page.getByRole("combobox", { name: "Jira project", exact: true }),
+  ).toBeDisabled();
   await expect(
-    page.getByRole("heading", { name: "Drill report", exact: true }),
+    page.getByRole("heading", { name: "Ask the analyst", exact: true }),
   ).toBeVisible();
-  await expect(page.getByRole("heading", {name: "Ask about this rehearsal"})).toBeVisible();
-  await expect(page.getByText(/Rovo is unavailable in browser rehearsal/)).toBeVisible();
-  await expect(page.getByRole("button", {name: "Ask Recall rehearsal analyst", exact: true})).toHaveCount(0);
-  const downloading = page.waitForEvent("download");
-  await page.getByRole("button", { name: "JSON", exact: true }).click();
-  const download = await downloading;
-  expect(download.suggestedFilename()).toMatch(/^lotzero-LOCAL-.*\.json$/);
-  await page.evaluate(() => window.scrollTo(0, 0));
+  await expect(page.getByLabel("Saved evidence fallback")).toContainText(
+    "SHIP-002",
+  );
+  await page
+    .getByRole("button", {
+      name: "Which lots are UNKNOWN and why?",
+      exact: true,
+    })
+    .click();
+  await expect(page.getByLabel("Saved evidence fallback")).toContainText(
+    "FG-102",
+  );
+  await expect(page.getByLabel("Saved evidence fallback")).toContainText(
+    "UNKNOWN",
+  );
+  await page
+    .getByRole("button", {
+      name: "What did the WH-NORTH hold change?",
+      exact: true,
+    })
+    .click();
+  await expect(page.getByLabel("Saved evidence fallback")).toContainText(
+    "SHIP-001",
+  );
+  await expect(page.getByLabel("Saved evidence fallback")).toContainText(
+    "EV-DRILL",
+  );
+  await expect(
+    page.getByText("Rovo is unavailable in browser preview.", { exact: false }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Open question in Rovo" }),
+  ).toHaveCount(0);
   await page.screenshot({
-    path: `${evidence}/report-desktop.png`,
+    path: `${evidence}/follow-up-desktop.png`,
     fullPage: true,
   });
-  for (const format of ["Markdown", "CSV"]) {
+  await exports(page);
+  for (const format of ["JSON", "Markdown", "CSV"]) {
     const pending = page.waitForEvent("download");
     await page.getByRole("button", { name: format, exact: true }).click();
-    expect((await pending).suggestedFilename()).toContain("lotzero-LOCAL-");
+    const file = await pending;
+    expect(file.suggestedFilename()).toMatch(/^lotzero-LOCAL-/);
+    if (format === "JSON") {
+      const report = JSON.parse(await readFile((await file.path())!, "utf8"));
+      expect(report.result.simulation.preventableShipmentIds).toEqual([
+        "SHIP-002",
+      ]);
+      expect(report.result.affectedShipmentIds).toContain("SHIP-001");
+    }
   }
   await page.getByText("View or copy export", { exact: true }).click();
-  const reportText = page.getByRole("textbox", { name: "Report export contents" });
-  const exported = JSON.parse(await reportText.inputValue());
-  expect(exported.result.affectedShipmentIds).toContain("SHIP-001");
-  expect(exported.result.simulation.preventableShipmentIds).toEqual(["SHIP-002"]);
-  await page.getByRole("combobox", { name: "Export format" }).selectOption("md");
-  await expect(reportText).toHaveValue(/ING-A19/);
-  await page.getByRole("combobox", { name: "Export format" }).selectOption("csv");
-  await expect(reportText).toHaveValue(/SHIP-002/);
+  await page
+    .getByRole("combobox", { name: "Export format", exact: true })
+    .selectOption("csv");
+  const contents = page.getByRole("textbox", {
+    name: "Report export contents",
+  });
+  await expect(contents).toHaveValue(/SHIP-002/);
   await page.context().grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.getByRole("button", { name: "Copy export", exact: true }).click();
-  await expect(page.getByText("Report copied to clipboard.", { exact: true })).toBeVisible();
-  // Native clipboard CSV retains CRLF; HTML textareas normalize line endings to LF.
-  const clipboardText = await page.evaluate(() => navigator.clipboard.readText());
-  expect(clipboardText.replace(/\r\n/g, "\n")).toEqual(await reportText.inputValue());
+  await expect(
+    page.getByText("Report copied to clipboard.", { exact: true }),
+  ).toBeVisible();
+  expect(
+    (await page.evaluate(() => navigator.clipboard.readText())).replace(
+      /\r\n/g,
+      "\n",
+    ),
+  ).toBe(await contents.inputValue());
   const a11y = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
     .analyze();
@@ -148,38 +153,11 @@ test("complete local rehearsal, evidence, intervention, preview, export and relo
   ).toHaveCount(1);
   expect(errors).toEqual([]);
 });
-test("mobile keyboard flow and reduced motion remain usable", async ({
+test("malformed import preserves records; destructive dialog traps focus and supports Escape", async ({
   page,
 }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await drill(page);
-  await page.getByRole("button", { name: "Record table" }).focus();
-  await page.keyboard.press("Enter");
-  await expect(page.locator("table").first()).toBeVisible();
-  await page.evaluate(() => window.scrollTo(0, 0));
-  await page.screenshot({
-    path: `${evidence}/impact-mobile.png`,
-    fullPage: true,
-  });
-  const width = await page.evaluate(() => ({
-    scroll: document.documentElement.scrollWidth,
-    client: document.documentElement.clientWidth,
-  }));
-  expect(width.scroll).toBeLessThanOrEqual(width.client);
-  const a11y = await new AxeBuilder({ page })
-    .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
-    .analyze();
-  expect(a11y.violations).toEqual([]);
-  const transition = await page
-    .getByRole("button", { name: "Record table" })
-    .evaluate((el) => getComputedStyle(el).transitionDuration);
-  expect(transition).toBe("0s");
-});
-test("malformed import rejects without overwriting the dataset; reset is confirmed", async ({
-  page,
-}) => {
-  await seed(page);
+  await sample(page);
+  await home(page);
   await page
     .getByLabel("Import traceability dataset")
     .setInputFiles({
@@ -188,147 +166,170 @@ test("malformed import rejects without overwriting the dataset; reset is confirm
       buffer: Buffer.from('{"version":"bad"}'),
     });
   await expect(page.getByRole("alert")).toBeVisible();
-  await page.getByText("Activity & data controls").click();
+  expect(
+    await page.evaluate(
+      () =>
+        JSON.parse(localStorage.getItem("lotzero.local.v1")!).dataset.version,
+    ),
+  ).toBe("synthetic-v1");
   await page
-    .getByRole("button", { name: "Delete LotZero workspace data" })
+    .getByText("Records and workspace controls", { exact: true })
     .click();
+  const trigger = page.getByRole("button", {
+    name: "Delete LotZero workspace data",
+  });
+  await trigger.click();
   await expect(page.getByRole("dialog")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(trigger).toBeFocused();
+  await trigger.click();
   await expect(
     page.getByRole("button", { name: "Delete data", exact: true }),
   ).toBeDisabled();
+  await page.getByRole("button", { name: "Cancel", exact: true }).focus();
+  await page.keyboard.press("Shift+Tab");
+  await expect(page.getByLabel("Type DELETE to confirm")).toBeFocused();
   await page.getByLabel("Type DELETE to confirm").fill("DELETE");
   await page.getByRole("button", { name: "Delete data", exact: true }).click();
   await expect(
-    page.getByRole("heading", { name: "No dataset loaded", exact: true }),
+    page.getByRole("button", {
+      name: "Run Northstar sample (synthetic)",
+      exact: true,
+    }),
   ).toBeVisible();
+  expect(
+    await page.evaluate(() => localStorage.getItem("lotzero.local.v1")),
+  ).toBeNull();
 });
-
-test("corrected dataset rerun compares compatible saved scenarios", async ({
+test("corrected records preserve baseline and export an exact compatible comparison", async ({
   page,
 }) => {
-  await drill(page);
-  await page.getByRole("button", { name: "Drill report", exact: true }).click();
+  await sample(page);
   await page
-    .getByRole("button", { name: "Save snapshot", exact: true })
+    .getByRole("button", { name: "Save and follow up", exact: true })
+    .click();
+  await home(page);
+  await page
+    .getByText("Records and workspace controls", { exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Load corrected sample", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Replace current work", exact: true })
     .click();
   await expect(
-    page.getByText("Snapshot saved with full source dataset"),
-  ).toBeVisible();
+    page.getByRole("button", {
+      name: "Run Northstar sample (synthetic)",
+      exact: true,
+    }),
+  ).toHaveCount(0);
   await page
-    .getByRole("button", { name: "Recall readiness", exact: true })
+    .getByRole("button", { name: "Start a new drill", exact: true })
     .click();
   await page
-    .getByRole("button", { name: "Load corrected fixture", exact: true })
+    .getByRole("button", { name: "Run rehearsal", exact: true })
     .click();
-  await expect(
-    page.getByText(
-      "Corrected synthetic dataset loaded. Rerun ING-A19 and compare your saved reports.",
-    ),
-  ).toBeVisible();
   await page
-    .getByRole("button", { name: "New drill", exact: true })
-    .last()
+    .getByRole("button", { name: "Save and follow up", exact: true })
     .click();
-  await page.getByRole("button", { name: "Run recall rehearsal" }).click();
-  await page.getByRole("button", { name: "Drill report", exact: true }).click();
   await page
-    .getByRole("button", { name: "Save snapshot", exact: true })
+    .getByText("Compare with a previous rehearsal", { exact: true })
     .click();
   await page.getByLabel("Baseline snapshot").selectOption({ index: 1 });
-  await expect(page.locator(".comparison-summary")).toContainText(
+  for (const id of [
     "ingredient-origin",
-  );
-  await expect(page.locator(".comparison-summary")).toContainText(
     "shipment-destination",
-  );
-  await expect(page.locator(".comparison-summary")).toContainText(
     "warehouse-owner",
-  );
-  await expect(page.locator(".comparison-summary")).toContainText(
     "shipment-lot",
-  );
-  await expect(page.locator(".report-assertions .badge.pass")).toHaveCount(4);
-  const pendingComparison = page.waitForEvent("download");
+  ])
+    await expect(page.locator(".comparison-summary")).toContainText(id);
+  await exports(page);
+  const pending = page.waitForEvent("download");
   await page.getByRole("button", { name: "JSON", exact: true }).click();
-  const comparisonFile = await pendingComparison;
-  const exported = JSON.parse(await readFile((await comparisonFile.path())!, "utf8"));
-  expect(exported.comparison.baselineSnapshot.dataset.version).toBe("synthetic-v1");
-  expect(exported.comparison.result.improved).toHaveLength(4);
-  const pendingMarkdown = page.waitForEvent("download");
+  const file = await pending;
+  const report = JSON.parse(await readFile((await file.path())!, "utf8"));
+  expect(report.comparison.baselineSnapshot.dataset.version).toBe(
+    "synthetic-v1",
+  );
+  expect(report.comparison.result.improved).toHaveLength(4);
+  const md = page.waitForEvent("download");
   await page.getByRole("button", { name: "Markdown", exact: true }).click();
-  const markdownFile = await pendingMarkdown;
-  expect(await readFile((await markdownFile.path())!, "utf8")).toContain("## Before and after");
-  await page.evaluate(() => window.scrollTo(0, 0));
-  await page.screenshot({
-    path: `${evidence}/comparison-desktop.png`,
-    fullPage: true,
-  });
+  expect(await readFile((await (await md).path())!, "utf8")).toContain(
+    "## Before and after",
+  );
 });
-test("concurrent browser dataset changes reject stale snapshot saves", async ({
+test("concurrent browser dataset edit rejects stale save and offers no report download", async ({
   page,
 }) => {
-  await drill(page);
+  await sample(page);
   await page.evaluate(() => {
     const key = "lotzero.local.v1";
     const state = JSON.parse(localStorage.getItem(key)!);
-    state.dataset.name = "Concurrent edited dataset";
+    state.dataset.name = "Concurrent edit";
     localStorage.setItem(key, JSON.stringify(state));
   });
-  await page.getByRole("button", { name: "Drill report", exact: true }).click();
   await page
-    .getByRole("button", { name: "Save snapshot", exact: true })
+    .getByRole("button", { name: "Save and follow up", exact: true })
     .click();
   await expect(page.getByRole("alert")).toContainText("dataset changed");
   await expect(
+    page.getByRole("heading", { name: "Follow-up", exact: true }),
+  ).toHaveCount(0);
+  await expect(
     page.getByRole("button", { name: "JSON", exact: true }),
-  ).toBeDisabled();
+  ).toHaveCount(0);
 });
-
-test("all seven screens pass automated accessibility checks", async ({
+test("all four screens and launched form pass axe and narrow viewport checks", async ({
   page,
 }) => {
   test.setTimeout(120000);
   async function check(name: string) {
-    const width = await page.evaluate(() => ({scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth}));
-    expect.soft(width.scroll, `${name} page width`).toBeLessThanOrEqual(width.client);
-    const results = await new AxeBuilder({ page })
-      .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
-      .analyze();
-    expect
-      .soft(
-        results.violations.map((v) => ({
-          id: v.id,
-          nodes: v.nodes.map((n) => ({
-            target: n.target,
-            summary: n.failureSummary,
-          })),
-        })),
-        name,
-      )
-      .toEqual([]);
-    await page.evaluate(() => window.scrollTo(0, 0));
-    await page.screenshot({
-      path: `${evidence}/${name}-viewport.png`,
-      fullPage: false,
-    });
+    for (const width of [1440, 390]) {
+      await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 });
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+        `${name} width ${width}`,
+      ).toBe(true);
+      await expect
+        .poll(() =>
+          page.evaluate(
+            () =>
+              document.getAnimations().filter((a) => a.playState === "running")
+                .length,
+          ),
+        )
+        .toBe(0);
+      const result = await new AxeBuilder({ page })
+        .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+        .analyze();
+      expect(result.violations, `${name} axe ${width}`).toEqual([]);
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await page.screenshot({ path: `${evidence}/${name}-${width}.png` });
+    }
   }
-  await seed(page);
-  await check("readiness");
+  await page.goto("/");
+  await check("home");
   await page
-    .getByRole("button", { name: "New drill", exact: true })
-    .last()
+    .getByRole("button", {
+      name: "Run Northstar sample (synthetic)",
+      exact: true,
+    })
+    .click();
+  await check("rehearsal");
+  await page
+    .getByRole("button", { name: "Rehearse a hold", exact: true })
+    .click();
+  await check("rehearse");
+  await page
+    .getByRole("button", { name: "Save and follow up", exact: true })
+    .click();
+  await check("follow-up");
+  await home(page);
+  await page
+    .getByRole("button", { name: "Start a new drill", exact: true })
     .click();
   await check("new-drill");
-  await page.getByRole("button", { name: "Run recall rehearsal" }).click();
-  await check("impact");
-  await page.getByRole("button", { name: "Inspect evidence gaps" }).click();
-  await check("evidence-gaps");
-  await page.getByRole("button", { name: "Rehearse a response" }).click();
-  await check("simulator");
-  await page
-    .getByRole("button", { name: "Save & review Jira actions" })
-    .click();
-  await check("jira-preview");
-  await page.getByRole("button", { name: "Open drill report" }).click();
-  await check("report");
 });

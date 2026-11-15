@@ -15,7 +15,12 @@ const groups = [
   ["warehouse", "shipment"],
   ["destination"],
 ];
-export interface EvidenceViewState {selected:string;pathTarget:string;mode:"graph"|"table"|"path";direction:"forward"|"backward"}
+export interface EvidenceViewState {
+  selected: string;
+  pathTarget: string;
+  mode: "graph" | "table" | "path";
+  direction: "forward" | "backward";
+}
 export default function Impact({
   dataset,
   result,
@@ -26,17 +31,35 @@ export default function Impact({
   dataset: Dataset;
   result: DrillResult;
   initialView?: EvidenceViewState;
-  selectionRequest?: {recordId:string|null;key:number};
-  onViewChange?: (state:EvidenceViewState)=>void;
+  selectionRequest?: { recordId: string | null; key: number };
+  onViewChange?: (state: EvidenceViewState) => void;
 }) {
-  const [selected, setSelected] = useState(initialView?.selected ?? result.scenario.sourceLotId);
-  const [mode, setMode] = useState<"graph" | "table" | "path">(initialView?.mode ?? "graph");
-  const [direction, setDirection] = useState<"forward" | "backward">(initialView?.direction ?? "forward");
+  const [selected, setSelected] = useState(
+    initialView?.selected ?? result.scenario.sourceLotId,
+  );
+  const [mode, setMode] = useState<"graph" | "table" | "path">(
+    initialView?.mode ?? "graph",
+  );
+  const [direction, setDirection] = useState<"forward" | "backward">(
+    initialView?.direction ?? "forward",
+  );
   const [query, setQuery] = useState("");
-  const [pathTarget, setPathTarget] = useState(initialView?.pathTarget ?? selected);
+  const [pathTarget, setPathTarget] = useState(
+    initialView?.pathTarget ?? selected,
+  );
   const lastRequest = useRef(selectionRequest?.key);
-  useEffect(()=>{if(!selectionRequest||lastRequest.current===selectionRequest.key)return;lastRequest.current=selectionRequest.key;setSelected(selectionRequest.recordId??'');setPathTarget(selectionRequest.recordId??'');setMode('path');setDirection('forward');},[selectionRequest]);
-  useEffect(()=>{onViewChange?.({selected,pathTarget,mode,direction});},[selected,pathTarget,mode,direction,onViewChange]);
+  useEffect(() => {
+    if (!selectionRequest || lastRequest.current === selectionRequest.key)
+      return;
+    lastRequest.current = selectionRequest.key;
+    setSelected(selectionRequest.recordId ?? "");
+    setPathTarget(selectionRequest.recordId ?? "");
+    setMode("path");
+    setDirection("forward");
+  }, [selectionRequest]);
+  useEffect(() => {
+    onViewChange?.({ selected, pathTarget, mode, direction });
+  }, [selected, pathTarget, mode, direction, onViewChange]);
   const [fit, setFit] = useState(false);
   const [graphWidth, setGraphWidth] = useState(1120);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -163,7 +186,13 @@ export default function Impact({
             <>
               <p role="status">
                 {matches.length
-                  ? `${matches.length} matching ${matches.length === 1 ? "record" : "records"}${matches.length > 6 ? ". Showing the first 6; refine your search." : "."}`
+                  ? `${matches.length} matching ${
+                      matches.length === 1 ? "record" : "records"
+                    }${
+                      matches.length > 6
+                        ? ". Showing the first 6; refine your search."
+                        : "."
+                    }`
                   : `No reachable records match “${query}”.`}
               </p>
               {matches.length > 0 && (
@@ -319,7 +348,10 @@ export default function Impact({
                         refY="3"
                         orient="auto"
                       >
-                        <path d="M0,0 L6,3 L0,6" fill="#81988b" />
+                        <path
+                          d="M0,0 L6,3 L0,6"
+                          fill="var(--ds-border-bold, #8590a2)"
+                        />
                       </marker>
                     </defs>
                     {dataset.edges
@@ -332,15 +364,17 @@ export default function Impact({
                         return (
                           <path
                             key={`${e.id}-${i}`}
-                            d={`M${a.x + 182},${a.y + 35} C${a.x + 210},${a.y + 35} ${b.x - 28},${b.y + 35} ${b.x},${b.y + 35}`}
+                            d={`M${a.x + 182},${a.y + 35} C${a.x + 210},${
+                              a.y + 35
+                            } ${b.x - 28},${b.y + 35} ${b.x},${b.y + 35}`}
                             fill="none"
                             stroke={
                               e.certainty === "confirmed"
                                 ? direction === "forward" &&
                                   pathEdges.has(JSON.stringify([e.from, e.to]))
-                                  ? "#416b3a"
-                                  : "#9caf9f"
-                                : "#a96a24"
+                                  ? "var(--ds-border-selected, #0c66e4)"
+                                  : "var(--ds-border-bold, #8590a2)"
+                                : "var(--ds-border-warning, #b38600)"
                             }
                             strokeWidth={
                               direction === "forward" &&
@@ -359,7 +393,13 @@ export default function Impact({
                   {nodes.map((node) => (
                     <button
                       key={node.id}
-                      className={`flow-node ${selected === node.id ? "selected" : ""} ${direction === "forward" && pathIds.has(node.id) ? "on-supporting-path" : ""} ${entries.get(node.id)?.certainty}`}
+                      className={`flow-node ${
+                        selected === node.id ? "selected" : ""
+                      } ${
+                        direction === "forward" && pathIds.has(node.id)
+                          ? "on-supporting-path"
+                          : ""
+                      } ${entries.get(node.id)?.certainty}`}
                       style={{
                         left: positions.get(node.id)?.x,
                         top: positions.get(node.id)?.y,
@@ -372,7 +412,9 @@ export default function Impact({
                       <strong>{node.id}</strong>
                       <span className="node-label">{node.label}</span>
                       <span className="node-certainty">
-                        {entries.get(node.id)?.certainty}
+                        <Badge
+                          value={entries.get(node.id)?.certainty ?? "unknown"}
+                        />
                       </span>
                     </button>
                   ))}
@@ -558,8 +600,18 @@ function Inspector({
       <p>{node.label}</p>
       <Badge value={entry?.certainty ?? "unknown"} />
       <dl className="detail-list">
-        {node.kind === "shipment" && <div><dt>Recorded destination</dt><dd>{node.destinationId || "Not recorded"}</dd></div>}
-        {node.warehouseId && <div><dt>Warehouse</dt><dd>{node.warehouseId}</dd></div>}
+        {node.kind === "shipment" && (
+          <div>
+            <dt>Recorded destination</dt>
+            <dd>{node.destinationId || "Not recorded"}</dd>
+          </div>
+        )}
+        {node.warehouseId && (
+          <div>
+            <dt>Warehouse</dt>
+            <dd>{node.warehouseId}</dd>
+          </div>
+        )}
         <div>
           <dt>Record type</dt>
           <dd>{node.kind}</dd>

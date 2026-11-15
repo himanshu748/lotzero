@@ -1,7 +1,11 @@
-import {useState, type FormEvent} from 'react';
-import type {Dataset, DrillResult, Intervention} from '../../../../src/contracts';
-import {runDrill} from '../../../../src/graph/engine';
-import {Badge, Icon, SectionHead} from '../components/Primitives';
+import { useState, type FormEvent } from "react";
+import type {
+  Dataset,
+  DrillResult,
+  Intervention,
+} from "../../../../src/contracts";
+import { runDrill } from "../../../../src/graph/engine";
+import { Badge, Icon, SectionHead } from "../components/Primitives";
 export default function Rehearse({
   dataset,
   result,
@@ -20,7 +24,11 @@ export default function Rehearse({
   const [type, setType] = useState<Intervention["type"]>("quarantine");
   const [target, setTarget] = useState(suggestedTarget ?? "");
   const [at, setAt] = useState(result.scenario.at.slice(0, 16));
-  const [evidence, setEvidence] = useState(suggestedTarget && dataset.evidence.some(e => e.id === "EV-DRILL") ? "EV-DRILL" : "");
+  const [evidence, setEvidence] = useState(
+    suggestedTarget && dataset.evidence.some((e) => e.id === "EV-DRILL")
+      ? "EV-DRILL"
+      : "",
+  );
   const [owner, setOwner] = useState("");
   const targets = [
     ...new Map(
@@ -40,7 +48,7 @@ export default function Rehearse({
   ];
   const effectiveTarget = targets.some((n) => n.id === target)
     ? target
-    : (targets[0]?.id ?? "");
+    : targets[0]?.id ?? "";
   function submit(e: FormEvent) {
     e.preventDefault();
     onUpdate([
@@ -194,17 +202,22 @@ export default function Rehearse({
               </p>
             </div>
           </div>
-          <ul className="simulation-notes">
-            {result.simulation.notes.map((n, i) => (
-              <li key={i}>{n}</li>
-            ))}
-          </ul>
+          <details className="panel-padding">
+            <summary>Simulation notes</summary>
+            <ul className="simulation-notes">
+              {result.simulation.notes.map((n, i) => (
+                <li key={i}>{n}</li>
+              ))}
+            </ul>
+          </details>
         </section>
       </div>
       <section className="panel">
         <SectionHead
           eyebrow="SIMULATED DECISION LOG"
-          title={`${result.interventions.length} proposed intervention${result.interventions.length === 1 ? "" : "s"}`}
+          title={`${result.interventions.length} proposed intervention${
+            result.interventions.length === 1 ? "" : "s"
+          }`}
         />
         {result.interventions.length ? (
           <div className="table-wrap">

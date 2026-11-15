@@ -1,8 +1,8 @@
-import {useState, type FormEvent} from 'react';
-import type {Dataset, Scenario, AssertionId} from '../../../../src/contracts';
-import {DEFAULT_ASSERTIONS} from '../../../../src/contracts';
-import {ASSERTION_TITLES as assertionLabels} from '../../../../src/assertions/labels';
-import {Icon, SectionHead} from '../components/Primitives';
+import { useState, type FormEvent } from "react";
+import type { Dataset, Scenario, AssertionId } from "../../../../src/contracts";
+import { DEFAULT_ASSERTIONS } from "../../../../src/contracts";
+import { ASSERTION_TITLES as assertionLabels } from "../../../../src/assertions/labels";
+import { Icon, SectionHead } from "../components/Primitives";
 export default function NewDrillForm({
   dataset,
   onRun,
@@ -22,7 +22,7 @@ export default function NewDrillForm({
   const [source, setSource] = useState(
     ingredients.some((n) => n.id === "ING-A19")
       ? "ING-A19"
-      : (ingredients[0]?.id ?? ""),
+      : ingredients[0]?.id ?? "",
   );
   const [hazard, setHazard] = useState<Scenario["hazard"]>("contamination");
   const [at, setAt] = useState("2026-10-28T09:00");
@@ -119,7 +119,14 @@ export default function NewDrillForm({
           </button>
         </div>
       </form>
-      <aside className="form-note"><h2>Records under test</h2><p>{dataset.name}</p><code>{dataset.version}</code><p>A path is a recorded association. Missing evidence remains unknown.</p></aside>
+      <aside className="form-note">
+        <h2>Records under test</h2>
+        <p>{dataset.name}</p>
+        <code>{dataset.version}</code>
+        <p>
+          A path is a recorded association. Missing evidence remains unknown.
+        </p>
+      </aside>
     </div>
   );
 }

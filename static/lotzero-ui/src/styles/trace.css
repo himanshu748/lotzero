@@ -1,32 +1,374 @@
 /* Evidence views share the rehearsal desk's ADS tokens. */
-.trace-search-area {position: relative; display: flex; align-items: center; gap: 8px; padding: 12px; border-bottom: 1px solid var(--line)}
-.trace-search {position: relative; flex: 1; min-width: 0} .trace-search svg {position: absolute; left: 8px; top: 10px; color: var(--muted)} .trace-search input {padding-left: 32px !important; padding-right: 32px !important}
-.trace-search-area > span {display: none} .trace-clear {position: absolute; right: 16px; border: 0; background: transparent; padding: 4px}
-.trace-results:empty {display: none} .trace-results {padding: 12px; border-bottom: 1px solid var(--line)} .trace-results > p {font-size: 12px; color: var(--muted)}
-.trace-results ul {list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 4px}
-.trace-results button {display: flex; justify-content: space-between; width: 100%; text-align: left; padding: 8px; border: 1px solid var(--line); background: var(--ds-surface, #fff); border-radius: 3px; gap: 8px}
-.trace-results button > span:first-child {display: grid; min-width: 0} .trace-results small {overflow-wrap: anywhere} .trace-result-kind {display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted)}
-.graph-toolbar {padding: 8px 12px; display: grid; gap: 8px; border-bottom: 1px solid var(--line)}
-.segmented {display: flex; gap: 4px; flex-wrap: wrap} .segmented button {display: flex; align-items: center; gap: 4px; padding: 6px 8px; font-size: 12px; background: transparent}
-.segmented button[aria-pressed=true], .map-controls button[aria-pressed=true] {background: var(--selected); border-color: var(--accent); color: var(--ds-text-selected, #0c66e4)}
-.inline-label {display: flex; align-items: center; gap: 8px; font-size: 12px} .inline-label select {width: auto; max-width: 100%; min-width: 0; flex: 1}
-.selected-evidence-jump {display: none} .path-focus {padding: 16px} .path-focus-header h2 {font-size: 16px; line-height: 24px; overflow-wrap: anywhere} .path-focus-header h2 span {font-family: var(--ds-font-family-code, ui-monospace, monospace)}
-.path-focus-header p:last-child {font-size: 12px; color: var(--muted); margin-top: 4px} .path-focus-header .eyebrow {display: none}
-.path-steps {list-style: none; padding: 0; margin: 16px 0; display: grid; gap: 8px; grid-template-columns: repeat(2,minmax(0,1fr))}
-.path-steps li {min-width: 0} .path-step-number {display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 12px; margin: 0 4px 4px} .path-steps li:last-child .path-step-number svg {visibility: hidden}
-.path-steps button {display: grid; gap: 4px; width: 100%; text-align: left; padding: 12px; border: 1px solid var(--line); border-radius: 4px; background: var(--ds-surface, #fff); min-height: 136px}
-.path-steps button.selected {background: var(--selected); border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent)} .path-steps strong {font-family: var(--ds-font-family-code, ui-monospace, monospace); font-size: 14px; overflow-wrap: anywhere}
-.node-kind {font-size: 11px; color: var(--muted); text-transform: capitalize} .path-step-label {font-size: 12px; color: var(--muted); overflow-wrap: anywhere}
-.path-context-note {display: flex; gap: 8px; color: var(--muted); font-size: 12px; padding-top: 12px; border-top: 1px solid var(--line)} .path-context-note svg {flex-shrink: 0} .path-empty {padding: 16px 0; color: var(--muted)}
-.graph-footer {display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; font-size: 11px; color: var(--muted); padding: 10px 12px; border-top: 1px solid var(--line)} .graph-footer span {display: flex; gap: 6px; align-items: center}
-.legend-line, .path-swatch {width: 16px; height: 2px; background: var(--accent); display: inline-block} .legend-line.dashed {background: none; border-top: 2px dashed var(--ds-border-warning, #b38600)}
-.map-controls {display: flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: space-between; padding: 12px; font-size: 12px} .map-controls p, .map-controls [role=group] {display: flex; gap: 6px; align-items: center} .map-controls button {font-size: 12px; padding: 4px 8px} .map-controls output {margin-left: 4px}
-.graph-scroll {overflow: auto; max-width: 100%; border-top: 1px solid var(--line); background: var(--surface-subtle)} .scaled-map, .flow-canvas {position: relative} .lane-heads {display: flex; position: absolute; top: 12px; left: 18px} .lane-heads span {width: 220px; font-size: 11px; color: var(--muted); font-weight: 600}
-.flow-lines {position: absolute; inset: 0} .flow-node {position: absolute; width: 182px; min-height: 85px; padding: 8px; border: 1px solid var(--line); border-radius: 4px; background: var(--ds-surface, #fff); text-align: left; display: grid; gap: 2px}
-.flow-node strong {font: 600 14px var(--ds-font-family-code, ui-monospace, monospace)} .flow-node .node-label {font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis} .flow-node .node-certainty {font-size: 11px; color: var(--muted)} .flow-node.on-supporting-path {border-color: var(--accent)} .flow-node.selected {background: var(--selected); border-width: 2px} .selected-row {background: var(--selected)}
-@media (min-width: 1600px) {.path-steps {grid-template-columns: repeat(4,minmax(0,1fr))}}
-@media (max-width: 1250px) {.selected-evidence-jump {display: flex; align-items: center; justify-content: space-between; width: calc(100% - 24px); margin: 8px 12px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 3px; background: var(--surface-subtle); font-size: 12px}}
+.trace-search-area {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.trace-search {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+.trace-search svg {
+  position: absolute;
+  left: 8px;
+  top: 10px;
+  color: var(--muted);
+}
+.trace-search input {
+  padding-left: 32px !important;
+  padding-right: 32px !important;
+}
+.trace-search-area > span {
+  display: none;
+}
+.trace-clear {
+  position: absolute;
+  right: 16px;
+  border: 0;
+  background: transparent;
+  padding: 4px;
+}
+.trace-results:empty {
+  display: none;
+}
+.trace-results {
+  padding: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.trace-results > p {
+  font-size: 12px;
+  color: var(--muted);
+}
+.trace-results ul {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+  display: grid;
+  gap: 4px;
+}
+.trace-results button {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  text-align: left;
+  padding: 8px;
+  border: 1px solid var(--line);
+  background: var(--ds-surface, #fff);
+  border-radius: 3px;
+  gap: 8px;
+}
+.trace-results button > span:first-child {
+  display: grid;
+  min-width: 0;
+}
+.trace-results small {
+  overflow-wrap: anywhere;
+}
+.trace-result-kind {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.graph-toolbar {
+  padding: 8px 12px;
+  display: grid;
+  gap: 8px;
+  border-bottom: 1px solid var(--line);
+}
+.segmented {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.segmented button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px;
+  font-size: 12px;
+  background: transparent;
+}
+.segmented button[aria-pressed="true"],
+.map-controls button[aria-pressed="true"] {
+  background: var(--selected);
+  border-color: var(--accent);
+  color: var(--ds-text-selected, #0c66e4);
+}
+.inline-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+.inline-label select {
+  width: auto;
+  max-width: 100%;
+  min-width: 0;
+  flex: 1;
+}
+.selected-evidence-jump {
+  display: none;
+}
+.path-focus {
+  padding: 16px;
+}
+.path-focus-header h2 {
+  font-size: 16px;
+  line-height: 24px;
+  overflow-wrap: anywhere;
+}
+.path-focus-header h2 span {
+  font-family: var(--ds-font-family-code, ui-monospace, monospace);
+}
+.path-focus-header p:last-child {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.path-focus-header .eyebrow {
+  display: none;
+}
+.path-steps {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.path-steps li {
+  min-width: 0;
+}
+.path-step-number {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--muted);
+  font-size: 12px;
+  margin: 0 4px 4px;
+}
+.path-steps li:last-child .path-step-number svg {
+  visibility: hidden;
+}
+.path-steps button {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  text-align: left;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--ds-surface, #fff);
+  min-height: 136px;
+}
+.path-steps button.selected {
+  background: var(--selected);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.path-steps strong {
+  font-family: var(--ds-font-family-code, ui-monospace, monospace);
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.node-kind {
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: capitalize;
+}
+.path-step-label {
+  font-size: 12px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.path-context-note {
+  display: flex;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.path-context-note svg {
+  flex-shrink: 0;
+}
+.path-empty {
+  padding: 16px 0;
+  color: var(--muted);
+}
+.graph-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  font-size: 11px;
+  color: var(--muted);
+  padding: 10px 12px;
+  border-top: 1px solid var(--line);
+}
+.graph-footer span {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.legend-line,
+.path-swatch {
+  width: 16px;
+  height: 2px;
+  background: var(--accent);
+  display: inline-block;
+}
+.legend-line.dashed {
+  background: none;
+  border-top: 2px dashed var(--ds-border-warning, #b38600);
+}
+.map-controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  font-size: 12px;
+}
+.map-controls p,
+.map-controls [role="group"] {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.map-controls button {
+  font-size: 12px;
+  padding: 4px 8px;
+}
+.map-controls output {
+  margin-left: 4px;
+}
+.graph-scroll {
+  overflow: auto;
+  max-width: 100%;
+  border-top: 1px solid var(--line);
+  background: var(--surface-subtle);
+}
+.scaled-map,
+.flow-canvas {
+  position: relative;
+}
+.lane-heads {
+  display: flex;
+  position: absolute;
+  top: 12px;
+  left: 18px;
+}
+.lane-heads span {
+  width: 220px;
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 600;
+}
+.flow-lines {
+  position: absolute;
+  inset: 0;
+}
+.flow-node {
+  position: absolute;
+  width: 182px;
+  min-height: 85px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--ds-surface, #fff);
+  text-align: left;
+  display: grid;
+  gap: 2px;
+}
+.flow-node strong {
+  font: 600 14px var(--ds-font-family-code, ui-monospace, monospace);
+}
+.flow-node .node-label {
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.flow-node .node-certainty {
+  font-size: 11px;
+  color: var(--muted);
+}
+.flow-node.on-supporting-path {
+  border-color: var(--accent);
+}
+.flow-node.selected {
+  background: var(--selected);
+  border-width: 2px;
+}
+.selected-row {
+  background: var(--selected);
+}
+@media (min-width: 1600px) {
+  .path-steps {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (max-width: 1250px) {
+  .selected-evidence-jump {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: calc(100% - 24px);
+    margin: 8px 12px;
+    padding: 6px 8px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: var(--surface-subtle);
+    font-size: 12px;
+  }
+}
 @media (max-width: 760px) {
-  .path-focus {padding: 12px} .path-focus-header p:last-child {display: none} .path-steps {margin: 12px 0; gap: 8px} .path-steps button {padding: 8px; min-height: 104px; gap: 2px} .path-step-label {display: none}
-  .path-context-note {font-size: 12px} .graph-footer {display: none} .graph-toolbar {padding: 8px} .segmented {gap: 4px; justify-content: space-between} .segmented button {padding: 6px; min-height: 36px; font-size: 12px} .segmented button svg, .selected-evidence-jump {display: none}
+  .path-focus {
+    padding: 12px;
+  }
+  .path-focus-header p:last-child {
+    display: none;
+  }
+  .path-steps {
+    margin: 12px 0;
+    gap: 8px;
+  }
+  .path-steps button {
+    padding: 8px;
+    min-height: 104px;
+    gap: 2px;
+  }
+  .path-step-label {
+    display: none;
+  }
+  .path-context-note {
+    font-size: 12px;
+  }
+  .graph-footer {
+    display: none;
+  }
+  .graph-toolbar {
+    padding: 8px;
+  }
+  .segmented {
+    gap: 4px;
+    justify-content: space-between;
+  }
+  .segmented button {
+    padding: 6px;
+    min-height: 36px;
+    font-size: 12px;
+  }
+  .segmented button svg,
+  .selected-evidence-jump {
+    display: none;
+  }
 }
