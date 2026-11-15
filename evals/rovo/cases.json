@@ -410,5 +410,84 @@
     },
     "answerContract": "Cite returned assertion, record and evidence IDs; disclose missing evidence and pagination. Never claim safety, real control, approval or issue creation.",
     "maxToolCalls": 2
+  },
+  {
+    "id": "desk-destination-question",
+    "question": "Why does SHIP-002 fail?",
+    "variant": "base",
+    "request": {
+      "view": "assertions",
+      "assertionId": "shipment-destination"
+    },
+    "expected": {
+      "ok": true,
+      "equals": [
+        [
+          "data.evidence.0.status",
+          "FAIL"
+        ],
+        [
+          "data.evidence.0.checked",
+          4
+        ],
+        [
+          "data.evidence.0.counterexamples.items.0.recordIds.items.0",
+          "SHIP-002"
+        ]
+      ]
+    },
+    "answerContract": "Answer the operational question first; cite the returned assertion, record and evidence IDs beside each conclusion. Keep the saved revision reference compact. Disclose partial pages, missing evidence and hypothetical control effects. No invented safety, timing or writes.",
+    "maxToolCalls": 2,
+    "uiQuestion": "destination"
+  },
+  {
+    "id": "desk-origins-question",
+    "question": "Which lots are UNKNOWN and why?",
+    "variant": "base",
+    "request": {
+      "view": "assertions",
+      "assertionId": "ingredient-origin"
+    },
+    "expected": {
+      "ok": true,
+      "equals": [
+        [
+          "data.evidence.0.status",
+          "UNKNOWN"
+        ],
+        [
+          "data.evidence.0.counterexamples.total",
+          3
+        ]
+      ]
+    },
+    "answerContract": "Answer the operational question first; cite the returned assertion, record and evidence IDs beside each conclusion. Keep the saved revision reference compact. Disclose partial pages, missing evidence and hypothetical control effects. No invented safety, timing or writes.",
+    "maxToolCalls": 2,
+    "uiQuestion": "origins"
+  },
+  {
+    "id": "desk-saved-hold-question",
+    "question": "What does the saved WH-NORTH quarantine change?",
+    "variant": "base",
+    "request": {
+      "view": "simulation",
+      "entityId": "WH-NORTH"
+    },
+    "expected": {
+      "ok": true,
+      "equals": [
+        [
+          "data.evidence.controls.items.0.targetId",
+          "WH-NORTH"
+        ],
+        [
+          "data.evidence.potentiallyPreventableShipmentCount",
+          1
+        ]
+      ]
+    },
+    "answerContract": "Answer the operational question first; cite the returned assertion, record and evidence IDs beside each conclusion. Keep the saved revision reference compact. Disclose partial pages, missing evidence and hypothetical control effects. No invented safety, timing or writes.",
+    "maxToolCalls": 2,
+    "uiQuestion": "hold"
   }
 ]
