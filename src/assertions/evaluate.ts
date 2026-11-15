@@ -1,6 +1,7 @@
 import type { AssertionId, AssertionResult, Intervention, RecordNode, TraceEntry } from '../contracts';
 import { gap, traverse, type Graph } from '../graph/core';
-const titles:Record<AssertionId,string>={'ingredient-origin':'Every finished lot has an evidenced ingredient origin','shipment-destination':'Every affected shipment has a recorded destination','warehouse-owner':'Every affected warehouse has a response owner','quarantine-evidence':'Every simulated quarantine has supporting evidence','shipment-lot':'Every affected shipment has a usable lot identifier'};
+import {ASSERTION_TITLES as titles} from './labels';
+
 export function originState(graph:Graph,product:RecordNode):'PASS'|'UNKNOWN'{
   const ancestors=traverse(graph,product.id,'backward');
   const ingredients=ancestors.filter(x=>graph.nodes.get(x.nodeId)?.kind==='ingredient');

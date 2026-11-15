@@ -1,3 +1,4 @@
+import Lozenge from '@atlaskit/lozenge';
 import { useState, type ReactNode } from "react";
 export function Icon({ name, size = 20 }: { name: string; size?: number }) {
   const paths: Record<string, string> = {
@@ -33,13 +34,9 @@ export function Icon({ name, size = 20 }: { name: string; size?: number }) {
     </svg>
   );
 }
-export function Badge({ value }: { value: string }) {
-  return (
-    <span className={`badge ${value.toLowerCase().replaceAll(" ", "-")}`}>
-      <span className="status-dot" />
-      {value}
-    </span>
-  );
+export function Badge({value}:{value:string}) {
+  const appearance = value === 'PASS' || value === 'created' ? 'success' : value === 'FAIL' || value === 'failed' ? 'danger' : ['UNKNOWN','unknown','Potential','potential','uncertain'].includes(value) ? 'warning' : ['Confirmed','confirmed','Saved'].includes(value) ? 'information' : 'neutral';
+  return <span className={`badge ${value.toLowerCase()}`}><Lozenge appearance={appearance}>{value}</Lozenge></span>;
 }
 export function Empty({
   title,

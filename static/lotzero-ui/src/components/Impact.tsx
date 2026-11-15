@@ -15,18 +15,28 @@ const groups = [
   ["warehouse", "shipment"],
   ["destination"],
 ];
+export interface EvidenceViewState {selected:string;pathTarget:string;mode:"graph"|"table"|"path";direction:"forward"|"backward"}
 export default function Impact({
   dataset,
   result,
+  initialView,
+  selectionRequest,
+  onViewChange,
 }: {
   dataset: Dataset;
   result: DrillResult;
+  initialView?: EvidenceViewState;
+  selectionRequest?: {recordId:string|null;key:number};
+  onViewChange?: (state:EvidenceViewState)=>void;
 }) {
-  const [selected, setSelected] = useState(result.scenario.sourceLotId);
-  const [mode, setMode] = useState<"graph" | "table" | "path">("graph");
-  const [direction, setDirection] = useState<"forward" | "backward">("forward");
+  const [selected, setSelected] = useState(initialView?.selected ?? result.scenario.sourceLotId);
+  const [mode, setMode] = useState<"graph" | "table" | "path">(initialView?.mode ?? "graph");
+  const [direction, setDirection] = useState<"forward" | "backward">(initialView?.direction ?? "forward");
   const [query, setQuery] = useState("");
-  const [pathTarget, setPathTarget] = useState(selected);
+  const [pathTarget, setPathTarget] = useState(initialView?.pathTarget ?? selected);
+  const lastRequest = useRef(selectionRequest?.key);
+  useEffect(()=>{if(!selectionRequest||lastRequest.current===selectionRequest.key)return;lastRequest.current=selectionRequest.key;setSelected(selectionRequest.recordId??'');setPathTarget(selectionRequest.recordId??'');setMode('path');setDirection('forward');},[selectionRequest]);
+  useEffect(()=>{onViewChange?.({selected,pathTarget,mode,direction});},[selected,pathTarget,mode,direction,onViewChange]);
   const [fit, setFit] = useState(false);
   const [graphWidth, setGraphWidth] = useState(1120);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -548,6 +558,8 @@ function Inspector({
       <p>{node.label}</p>
       <Badge value={entry?.certainty ?? "unknown"} />
       <dl className="detail-list">
+        {node.kind === "shipment" && <div><dt>Recorded destination</dt><dd>{node.destinationId || "Not recorded"}</dd></div>}
+        {node.warehouseId && <div><dt>Warehouse</dt><dd>{node.warehouseId}</dd></div>}
         <div>
           <dt>Record type</dt>
           <dd>{node.kind}</dd>

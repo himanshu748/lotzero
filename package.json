@@ -14,6 +14,10 @@
     "forge": "node_modules/node/bin/node node_modules/@forge/cli/out/bin/cli.js"
   },
   "dependencies": {
+    "@atlaskit/button": "25.8.1",
+    "@atlaskit/flag": "19.0.5",
+    "@atlaskit/lozenge": "17.0.8",
+    "@atlaskit/tokens": "20.12.0",
     "@forge/api": "latest",
     "@forge/bridge": "7.2.1",
     "@forge/kvs": "latest",

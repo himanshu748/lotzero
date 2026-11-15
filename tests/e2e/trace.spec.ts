@@ -3,14 +3,14 @@ import AxeBuilder from "@axe-core/playwright";
 import { mkdir } from "node:fs/promises";
 import path from "node:path";
 
-const evidence = path.resolve("../ui-evidence/trace-2026-11-04");
+const evidence = path.resolve(process.env.LOTZERO_EVIDENCE_DIR ?? "evidence/first-gap-2026-11-15/browser");
 
 test("search jumps to a reachable record and a focused path stays anchored while inspecting steps", async ({
   page,
 }) => {
   await page.goto("/");
   await page
-    .getByRole("button", { name: "Run sample rehearsal", exact: true })
+    .getByRole("button", { name: "Run Northstar sample (synthetic)", exact: true })
     .click();
   const search = page.getByRole("searchbox", {
     name: "Find a reachable record",
@@ -81,8 +81,9 @@ test("fit map responds to viewport changes and mobile path inspection respects r
   page.on("pageerror", (error) => appErrors.push(error.message));
   await page.goto("/");
   await page
-    .getByRole("button", { name: "Run sample rehearsal", exact: true })
+    .getByRole("button", { name: "Run Northstar sample (synthetic)", exact: true })
     .click();
+  await page.getByRole("button", { name: "Flow map", exact: true }).click();
   await page.getByRole("button", { name: "Fit map", exact: true }).click();
   const fits = () =>
     page.locator(".graph-scroll").evaluate((el) => {
@@ -117,8 +118,9 @@ test("fit map responds to viewport changes and mobile path inspection respects r
       .getByRole("heading", { name: "SHIP-002", exact: true }),
   ).toBeVisible();
   await page
-    .getByRole("button", { name: "View SHIP-002 evidence", exact: true })
-    .click();
+    .getByRole("complementary", { name: "Selected record evidence" })
+    .getByRole("heading", { name: "SHIP-002", exact: true })
+    .focus();
   await expect(
     page
       .getByRole("complementary", { name: "Selected record evidence" })
