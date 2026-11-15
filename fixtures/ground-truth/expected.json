@@ -1,0 +1,15 @@
+{
+  "provenance": "Manually enumerated from fixture relationships before test execution. Synthetic facts only; not external food-industry validation.",
+  "source": "ING-A19",
+  "scenarioAt": "2026-10-28T09:00:00Z",
+  "affectedProducts": ["FG-101", "FG-102", "FG-201"],
+  "affectedShipments": ["SHIP-001", "SHIP-002", "SHIP-003", "SHIP-004"],
+  "notReachableViaSharedWarehouse": ["FG-900", "SHIP-900"],
+  "unresolvedGenealogy": ["FG-404", "SHIP-404"],
+  "confirmedProductAssociations": ["FG-101", "FG-201"],
+  "potentialProductAssociations": ["FG-102"],
+  "recordedShipmentQuantities": [{"unit":"kg","value":250},{"unit":"units","value":20}],
+  "assertionsV1": {"ingredient-origin":"UNKNOWN","shipment-destination":"FAIL","warehouse-owner":"FAIL","quarantine-evidence":"UNKNOWN","shipment-lot":"FAIL"},
+  "assertionsV2": {"ingredient-origin":"PASS","shipment-destination":"PASS","warehouse-owner":"PASS","quarantine-evidence":"UNKNOWN","shipment-lot":"PASS"},
+  "northQuarantine": {"historicalShipmentIds":["SHIP-001"],"preventableShipmentIds":["SHIP-002"],"remainingShipmentIds":["SHIP-003","SHIP-004"]}
+}

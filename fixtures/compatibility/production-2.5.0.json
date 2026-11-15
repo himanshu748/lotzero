@@ -1,0 +1,1540 @@
+{
+  "actions": [
+    {
+      "description": "Synthetic compatibility fixture; not an actual Jira issue.",
+      "evidence": [
+        "EV-MASTER"
+      ],
+      "id": "action-4",
+      "issueKey": "COMPAT-1",
+      "issueUrl": "https://example.invalid/browse/COMPAT-1",
+      "recordIds": [
+        "SHIP-002"
+      ],
+      "status": "created",
+      "summary": "[SIMULATED DRILL] Synthetic compatibility receipt"
+    }
+  ],
+  "createdAt": "2026-10-29T12:07:08.705Z",
+  "dataset": {
+    "edges": [
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "from": "SUP-01",
+        "id": "SUPPLY-ING-A19",
+        "relation": "supplies",
+        "to": "ING-A19"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "from": "SUP-02",
+        "id": "SUPPLY-ING-A20",
+        "relation": "supplies",
+        "to": "ING-A20"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "from": "SUP-03",
+        "id": "SUPPLY-ING-B01",
+        "relation": "supplies",
+        "to": "ING-B01"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "from": "SUP-01",
+        "id": "SUPPLY-ING-B02",
+        "relation": "supplies",
+        "to": "ING-B02"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "from": "SUP-02",
+        "id": "SUPPLY-ING-C01",
+        "relation": "supplies",
+        "to": "ING-C01"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "from": "SUP-03",
+        "id": "SUPPLY-ING-C02",
+        "relation": "supplies",
+        "to": "ING-C02"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "from": "SUP-01",
+        "id": "SUPPLY-ING-D01",
+        "relation": "supplies",
+        "to": "ING-D01"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "from": "SUP-02",
+        "id": "SUPPLY-ING-D02",
+        "relation": "supplies",
+        "to": "ING-D02"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "from": "SUP-03",
+        "id": "SUPPLY-ING-E01",
+        "relation": "supplies",
+        "to": "ING-E01"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "from": "SUP-01",
+        "id": "SUPPLY-ING-E02",
+        "relation": "supplies",
+        "to": "ING-E02"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "from": "SUP-02",
+        "id": "SUPPLY-ING-F01",
+        "relation": "supplies",
+        "to": "ING-F01"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "from": "SUP-03",
+        "id": "SUPPLY-ING-F02",
+        "relation": "supplies",
+        "to": "ING-F02"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "ING-A19",
+        "id": "USE-A19-101",
+        "quantity": {
+          "unit": "kg",
+          "value": 30
+        },
+        "relation": "consumes",
+        "to": "BATCH-101"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "ING-B01",
+        "id": "USE-B01-101",
+        "quantity": {
+          "unit": "kg",
+          "value": 100
+        },
+        "relation": "consumes",
+        "to": "BATCH-101"
+      },
+      {
+        "certainty": "potential",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "ING-A19",
+        "id": "USE-A19-102",
+        "relation": "consumes",
+        "to": "BATCH-102"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "ING-E01",
+        "id": "USE-E01-102",
+        "relation": "consumes",
+        "to": "BATCH-102"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "ING-C01",
+        "id": "USE-C01-900",
+        "relation": "consumes",
+        "to": "BATCH-900"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "ING-B02",
+        "id": "USE-B02-900",
+        "relation": "consumes",
+        "to": "BATCH-900"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "ING-Z99",
+        "id": "USE-MISSING-404",
+        "relation": "consumes",
+        "to": "BATCH-404"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "BATCH-101",
+        "id": "MAKE-101",
+        "relation": "produces",
+        "to": "FG-101"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "BATCH-102",
+        "id": "MAKE-102",
+        "relation": "produces",
+        "to": "FG-102"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "BATCH-900",
+        "id": "MAKE-900",
+        "relation": "produces",
+        "to": "FG-900"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "BATCH-404",
+        "id": "MAKE-404",
+        "relation": "produces",
+        "to": "FG-404"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "FG-101",
+        "id": "PACK-101",
+        "relation": "repackages",
+        "to": "PACK-201"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "FG-102",
+        "id": "PACK-102",
+        "relation": "repackages",
+        "to": "PACK-201"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "PACK-201",
+        "id": "MAKE-201",
+        "relation": "produces",
+        "to": "FG-201"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "FG-101",
+        "id": "STOCK-101",
+        "quantity": {
+          "unit": "kg",
+          "value": 120
+        },
+        "relation": "stores",
+        "to": "WH-NORTH"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "FG-102",
+        "id": "STOCK-102",
+        "quantity": {
+          "unit": "kg",
+          "value": 120
+        },
+        "relation": "stores",
+        "to": "WH-SOUTH"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "FG-201",
+        "id": "STOCK-201",
+        "quantity": {
+          "unit": "kg",
+          "value": 80
+        },
+        "relation": "stores",
+        "to": "WH-SOUTH"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "FG-900",
+        "id": "STOCK-900",
+        "quantity": {
+          "unit": "kg",
+          "value": 90
+        },
+        "relation": "stores",
+        "to": "WH-NORTH"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "FG-404",
+        "id": "STOCK-404",
+        "quantity": {
+          "unit": "kg",
+          "value": 40
+        },
+        "relation": "stores",
+        "to": "WH-WEST"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "FG-101",
+        "id": "DISPATCH-001",
+        "relation": "ships",
+        "to": "SHIP-001"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "FG-101",
+        "id": "DISPATCH-002",
+        "relation": "ships",
+        "to": "SHIP-002"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "FG-201",
+        "id": "DISPATCH-003",
+        "relation": "ships",
+        "to": "SHIP-003"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "FG-102",
+        "id": "DISPATCH-004",
+        "relation": "ships",
+        "to": "SHIP-004"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "FG-900",
+        "id": "DISPATCH-900",
+        "relation": "ships",
+        "to": "SHIP-900"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "FG-404",
+        "id": "DISPATCH-404",
+        "relation": "ships",
+        "to": "SHIP-404"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "SHIP-001",
+        "id": "DELIVER-001",
+        "relation": "delivers",
+        "to": "DEST-01"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "SHIP-003",
+        "id": "DELIVER-003",
+        "relation": "delivers",
+        "to": "DEST-02"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "SHIP-004",
+        "id": "DELIVER-004",
+        "relation": "delivers",
+        "to": "DEST-02"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "SHIP-900",
+        "id": "DELIVER-900",
+        "relation": "delivers",
+        "to": "DEST-03"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "from": "SHIP-404",
+        "id": "DELIVER-404",
+        "relation": "delivers",
+        "to": "DEST-03"
+      },
+      {
+        "certainty": "confirmed",
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "from": "SUP-03",
+        "id": "SUPPLY-ING-F02",
+        "relation": "supplies",
+        "to": "ING-F02"
+      }
+    ],
+    "evidence": [
+      {
+        "id": "EV-MASTER",
+        "recordedAt": "2026-10-27T08:00:00Z",
+        "source": "LotZero synthetic fixture; not a real business record",
+        "title": "Synthetic production and dispatch register"
+      },
+      {
+        "id": "EV-RECEIPT",
+        "recordedAt": "2026-10-27T08:00:00Z",
+        "source": "Receiving register R-104",
+        "title": "Synthetic ingredient intake record"
+      },
+      {
+        "id": "EV-DRILL",
+        "recordedAt": "2026-10-28T09:00:00Z",
+        "source": "Training-only mock recall procedure D-07",
+        "title": "Synthetic rehearsal control authorization"
+      },
+      {
+        "id": "EV-REPAIR",
+        "recordedAt": "2026-10-28T09:00:00Z",
+        "source": "Fixture version 2 repair evidence",
+        "title": "Synthetic corrected genealogy and destination register"
+      }
+    ],
+    "name": "Northstar Foods · autumn production",
+    "nodes": [
+      {
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "SUP-01",
+        "kind": "supplier",
+        "label": "Aster Grain Cooperative"
+      },
+      {
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "SUP-02",
+        "kind": "supplier",
+        "label": "Cedar Seed Works"
+      },
+      {
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "SUP-03",
+        "kind": "supplier",
+        "label": "Meadow Ingredients"
+      },
+      {
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "id": "ING-A19",
+        "kind": "ingredient",
+        "label": "Toasted sesame · A19",
+        "quantity": {
+          "unit": "kg",
+          "value": 100
+        }
+      },
+      {
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "id": "ING-A20",
+        "kind": "ingredient",
+        "label": "Toasted sesame · A20",
+        "quantity": {
+          "unit": "kg",
+          "value": 100
+        }
+      },
+      {
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "id": "ING-B01",
+        "kind": "ingredient",
+        "label": "Rolled oats · B01",
+        "quantity": {
+          "unit": "kg",
+          "value": 100
+        }
+      },
+      {
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "id": "ING-B02",
+        "kind": "ingredient",
+        "label": "Rolled oats · B02",
+        "quantity": {
+          "unit": "kg",
+          "value": 100
+        }
+      },
+      {
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "id": "ING-C01",
+        "kind": "ingredient",
+        "label": "Cocoa · C01",
+        "quantity": {
+          "unit": "kg",
+          "value": 100
+        }
+      },
+      {
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "id": "ING-C02",
+        "kind": "ingredient",
+        "label": "Cocoa · C02",
+        "quantity": {
+          "unit": "kg",
+          "value": 100
+        }
+      },
+      {
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "id": "ING-D01",
+        "kind": "ingredient",
+        "label": "Sunflower oil · D01",
+        "quantity": {
+          "unit": "kg",
+          "value": 100
+        }
+      },
+      {
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "id": "ING-D02",
+        "kind": "ingredient",
+        "label": "Sunflower oil · D02",
+        "quantity": {
+          "unit": "kg",
+          "value": 100
+        }
+      },
+      {
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "id": "ING-E01",
+        "kind": "ingredient",
+        "label": "Rice flour · E01",
+        "quantity": {
+          "unit": "kg",
+          "value": 100
+        }
+      },
+      {
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "id": "ING-E02",
+        "kind": "ingredient",
+        "label": "Rice flour · E02",
+        "quantity": {
+          "unit": "kg",
+          "value": 100
+        }
+      },
+      {
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "id": "ING-F01",
+        "kind": "ingredient",
+        "label": "Cane sugar · F01",
+        "quantity": {
+          "unit": "kg",
+          "value": 100
+        }
+      },
+      {
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "id": "ING-F02",
+        "kind": "ingredient",
+        "label": "Cane sugar · F02",
+        "quantity": {
+          "unit": "kg",
+          "value": 100
+        }
+      },
+      {
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "BATCH-101",
+        "kind": "batch",
+        "label": "Sesame oat bar blend"
+      },
+      {
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "BATCH-102",
+        "kind": "batch",
+        "label": "Sesame cracker blend"
+      },
+      {
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "BATCH-900",
+        "kind": "batch",
+        "label": "Cocoa oat bar blend"
+      },
+      {
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "BATCH-404",
+        "kind": "batch",
+        "label": "Unresolved production batch"
+      },
+      {
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "FG-101",
+        "kind": "product",
+        "label": "Sesame oat bars · lot 101",
+        "quantity": {
+          "unit": "kg",
+          "value": 240
+        },
+        "sku": "BAR-SES",
+        "state": "stock"
+      },
+      {
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "FG-102",
+        "kind": "product",
+        "label": "Sesame crackers · lot 102",
+        "quantity": {
+          "unit": "kg",
+          "value": 120
+        },
+        "sku": "CRK-SES",
+        "state": "stock"
+      },
+      {
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "FG-900",
+        "kind": "product",
+        "label": "Cocoa oat bars · lot 900",
+        "quantity": {
+          "unit": "kg",
+          "value": 90
+        },
+        "sku": "BAR-COC",
+        "state": "stock"
+      },
+      {
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "FG-404",
+        "kind": "product",
+        "label": "Unresolved snack lot 404",
+        "quantity": {
+          "unit": "kg",
+          "value": 40
+        },
+        "sku": "MIX-UNK",
+        "state": "stock"
+      },
+      {
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "PACK-201",
+        "kind": "transformation",
+        "label": "Mixed snack repack · line 2"
+      },
+      {
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "FG-201",
+        "kind": "product",
+        "label": "Mixed snack cases · lot 201",
+        "quantity": {
+          "unit": "kg",
+          "value": 80
+        },
+        "sku": "CASE-MIX",
+        "state": "stock"
+      },
+      {
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "WH-NORTH",
+        "kind": "warehouse",
+        "label": "North distribution centre",
+        "owner": "Quality lead — North",
+        "region": "North"
+      },
+      {
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "WH-SOUTH",
+        "kind": "warehouse",
+        "label": "South distribution centre",
+        "region": "South"
+      },
+      {
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "WH-WEST",
+        "kind": "warehouse",
+        "label": "West reserve warehouse",
+        "owner": "Quality lead — West",
+        "region": "West"
+      },
+      {
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "DEST-01",
+        "kind": "destination",
+        "label": "Synthetic retailer · North"
+      },
+      {
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "DEST-02",
+        "kind": "destination",
+        "label": "Synthetic retailer · South"
+      },
+      {
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "DEST-03",
+        "kind": "destination",
+        "label": "Synthetic retailer · West"
+      },
+      {
+        "destinationId": "DEST-01",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "SHIP-001",
+        "kind": "shipment",
+        "label": "Dispatched · North retailer",
+        "lotId": "FG-101",
+        "occurredAt": "2026-10-27T12:00:00Z",
+        "quantity": {
+          "unit": "kg",
+          "value": 120
+        },
+        "state": "shipped",
+        "warehouseId": "WH-NORTH"
+      },
+      {
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "SHIP-002",
+        "kind": "shipment",
+        "label": "Scheduled · destination missing",
+        "lotId": "FG-101",
+        "occurredAt": "2026-10-29T12:00:00Z",
+        "quantity": {
+          "unit": "g",
+          "value": 80000
+        },
+        "state": "planned",
+        "warehouseId": "WH-NORTH"
+      },
+      {
+        "destinationId": "DEST-02",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "SHIP-003",
+        "kind": "shipment",
+        "label": "Scheduled · mixed case dispatch",
+        "occurredAt": "2026-10-30T12:00:00Z",
+        "quantity": {
+          "unit": "kg",
+          "value": 50
+        },
+        "state": "planned",
+        "warehouseId": "WH-SOUTH"
+      },
+      {
+        "destinationId": "DEST-02",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "SHIP-004",
+        "kind": "shipment",
+        "label": "Scheduled · ambiguous cracker lot",
+        "lotId": "FG-102",
+        "occurredAt": "2026-10-31T12:00:00Z",
+        "quantity": {
+          "unit": "units",
+          "value": 20
+        },
+        "state": "planned",
+        "warehouseId": "WH-SOUTH"
+      },
+      {
+        "destinationId": "DEST-03",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "SHIP-900",
+        "kind": "shipment",
+        "label": "Cocoa bars · separate genealogy",
+        "lotId": "FG-900",
+        "occurredAt": "2026-10-29T12:00:00Z",
+        "quantity": {
+          "unit": "kg",
+          "value": 90
+        },
+        "state": "planned",
+        "warehouseId": "WH-NORTH"
+      },
+      {
+        "destinationId": "DEST-03",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "SHIP-404",
+        "kind": "shipment",
+        "label": "Unresolved genealogy dispatch",
+        "lotId": "FG-404",
+        "occurredAt": "2026-10-29T12:00:00Z",
+        "quantity": {
+          "unit": "kg",
+          "value": 40
+        },
+        "state": "planned",
+        "warehouseId": "WH-WEST"
+      }
+    ],
+    "synthetic": true,
+    "version": "synthetic-v1"
+  },
+  "id": "legacy-synthetic-report",
+  "initiator": "synthetic-compatibility-user",
+  "result": {
+    "affectedProductIds": [
+      "FG-101",
+      "FG-102",
+      "FG-201"
+    ],
+    "affectedShipmentIds": [
+      "SHIP-001",
+      "SHIP-002",
+      "SHIP-003",
+      "SHIP-004"
+    ],
+    "assertions": [
+      {
+        "checked": 5,
+        "counterexamples": [
+          {
+            "code": "ingredient-origin",
+            "evidence": [
+              "EV-MASTER"
+            ],
+            "id": "ingredient-origin:FG-102",
+            "message": "Ingredient origin cannot be established for every recorded branch.",
+            "recordIds": [
+              "FG-102"
+            ]
+          },
+          {
+            "code": "ingredient-origin",
+            "evidence": [
+              "EV-MASTER"
+            ],
+            "id": "ingredient-origin:FG-201",
+            "message": "Ingredient origin cannot be established for every recorded branch.",
+            "recordIds": [
+              "FG-201"
+            ]
+          },
+          {
+            "code": "ingredient-origin",
+            "evidence": [
+              "EV-MASTER"
+            ],
+            "id": "ingredient-origin:FG-404",
+            "message": "Ingredient origin cannot be established for every recorded branch.",
+            "recordIds": [
+              "FG-404"
+            ]
+          }
+        ],
+        "id": "ingredient-origin",
+        "passed": 2,
+        "status": "UNKNOWN",
+        "title": "Every finished lot has an evidenced ingredient origin"
+      },
+      {
+        "checked": 4,
+        "counterexamples": [
+          {
+            "code": "shipment-destination",
+            "evidence": [
+              "EV-MASTER"
+            ],
+            "id": "shipment-destination:SHIP-002",
+            "message": "Affected shipment has no recorded destination.",
+            "recordIds": [
+              "SHIP-002"
+            ]
+          }
+        ],
+        "id": "shipment-destination",
+        "passed": 3,
+        "status": "FAIL",
+        "title": "Every affected shipment has a recorded destination"
+      },
+      {
+        "checked": 2,
+        "counterexamples": [
+          {
+            "code": "warehouse-owner",
+            "evidence": [
+              "EV-MASTER"
+            ],
+            "id": "warehouse-owner:WH-SOUTH",
+            "message": "No response owner is recorded for this affected warehouse.",
+            "recordIds": [
+              "WH-SOUTH"
+            ]
+          }
+        ],
+        "id": "warehouse-owner",
+        "passed": 1,
+        "status": "FAIL",
+        "title": "Every affected warehouse has a response owner"
+      },
+      {
+        "checked": 1,
+        "counterexamples": [],
+        "id": "quarantine-evidence",
+        "passed": 1,
+        "status": "PASS",
+        "title": "Every simulated quarantine has supporting evidence"
+      },
+      {
+        "checked": 4,
+        "counterexamples": [
+          {
+            "code": "shipment-lot",
+            "evidence": [
+              "EV-MASTER"
+            ],
+            "id": "shipment-lot:SHIP-003",
+            "message": "Shipment lot identifier is missing.",
+            "recordIds": [
+              "SHIP-003"
+            ]
+          }
+        ],
+        "id": "shipment-lot",
+        "passed": 3,
+        "status": "FAIL",
+        "title": "Every affected shipment has a usable lot identifier"
+      }
+    ],
+    "datasetVersion": "synthetic-v1",
+    "fingerprint": "34cafdaf",
+    "gaps": [
+      {
+        "code": "ambiguous-link",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "ambiguous-link:BATCH-102:ING-A19:USE-A19-102",
+        "message": "Relationship is recorded as potential.",
+        "recordIds": [
+          "BATCH-102",
+          "ING-A19",
+          "USE-A19-102"
+        ]
+      },
+      {
+        "code": "broken-link",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "broken-link:BATCH-404:ING-Z99:USE-MISSING-404",
+        "message": "Relationship references a missing record. Downstream safety cannot be inferred.",
+        "recordIds": [
+          "BATCH-404",
+          "ING-Z99",
+          "USE-MISSING-404"
+        ]
+      },
+      {
+        "code": "duplicate-edge",
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "id": "duplicate-edge:ING-F02:SUP-03:SUPPLY-ING-F02",
+        "message": "Duplicate relationship identifier; identical records counted once.",
+        "recordIds": [
+          "ING-F02",
+          "SUP-03",
+          "SUPPLY-ING-F02"
+        ]
+      },
+      {
+        "code": "ingredient-origin",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "ingredient-origin:FG-102",
+        "message": "Ingredient origin cannot be established for every recorded branch.",
+        "recordIds": [
+          "FG-102"
+        ]
+      },
+      {
+        "code": "ingredient-origin",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "ingredient-origin:FG-201",
+        "message": "Ingredient origin cannot be established for every recorded branch.",
+        "recordIds": [
+          "FG-201"
+        ]
+      },
+      {
+        "code": "ingredient-origin",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "ingredient-origin:FG-404",
+        "message": "Ingredient origin cannot be established for every recorded branch.",
+        "recordIds": [
+          "FG-404"
+        ]
+      },
+      {
+        "code": "shipment-destination",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "shipment-destination:SHIP-002",
+        "message": "Affected shipment has no recorded destination.",
+        "recordIds": [
+          "SHIP-002"
+        ]
+      },
+      {
+        "code": "shipment-lot",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "shipment-lot:SHIP-003",
+        "message": "Shipment lot identifier is missing.",
+        "recordIds": [
+          "SHIP-003"
+        ]
+      },
+      {
+        "code": "warehouse-owner",
+        "evidence": [
+          "EV-MASTER"
+        ],
+        "id": "warehouse-owner:WH-SOUTH",
+        "message": "No response owner is recorded for this affected warehouse.",
+        "recordIds": [
+          "WH-SOUTH"
+        ]
+      }
+    ],
+    "id": "DRILL-940943E0",
+    "interventions": [
+      {
+        "at": "2026-10-28T09:00:00.000Z",
+        "evidence": [
+          "EV-DRILL"
+        ],
+        "id": "SIM-1-1793275626317",
+        "targetId": "WH-NORTH",
+        "type": "quarantine"
+      }
+    ],
+    "quantities": [
+      {
+        "recordIds": [
+          "SHIP-001",
+          "SHIP-002",
+          "SHIP-003"
+        ],
+        "unit": "kg",
+        "value": 250
+      },
+      {
+        "recordIds": [
+          "SHIP-004"
+        ],
+        "unit": "units",
+        "value": 20
+      }
+    ],
+    "scenario": {
+      "assertions": [
+        "ingredient-origin",
+        "shipment-destination",
+        "warehouse-owner",
+        "quarantine-evidence",
+        "shipment-lot"
+      ],
+      "at": "2026-10-28T09:00:00.000Z",
+      "hazard": "contamination",
+      "sourceLotId": "ING-A19"
+    },
+    "simulation": {
+      "historicalShipmentIds": [
+        "SHIP-001"
+      ],
+      "notes": [
+        "Quarantine assumes each stores relationship quantity is remaining stock as of scenario time; no yield or inventory conservation is inferred. Whole shipments only, allocated by scheduled timestamp then identifier.",
+        "Simulated controls only. Already shipped and elapsed movements remain historical exposure. No shipment is actually held."
+      ],
+      "preventableShipmentIds": [
+        "SHIP-002"
+      ],
+      "remainingShipmentIds": [
+        "SHIP-003",
+        "SHIP-004"
+      ]
+    },
+    "trace": [
+      {
+        "certainty": "confirmed",
+        "edgeIds": [
+          "USE-A19-101"
+        ],
+        "evidence": [
+          "EV-MASTER",
+          "EV-RECEIPT"
+        ],
+        "nodeId": "BATCH-101",
+        "path": [
+          "ING-A19",
+          "BATCH-101"
+        ]
+      },
+      {
+        "certainty": "potential",
+        "edgeIds": [
+          "USE-A19-102"
+        ],
+        "evidence": [
+          "EV-MASTER",
+          "EV-RECEIPT"
+        ],
+        "nodeId": "BATCH-102",
+        "path": [
+          "ING-A19",
+          "BATCH-102"
+        ]
+      },
+      {
+        "certainty": "confirmed",
+        "edgeIds": [
+          "USE-A19-101",
+          "MAKE-101",
+          "DISPATCH-001",
+          "DELIVER-001"
+        ],
+        "evidence": [
+          "EV-MASTER",
+          "EV-RECEIPT"
+        ],
+        "nodeId": "DEST-01",
+        "path": [
+          "ING-A19",
+          "BATCH-101",
+          "FG-101",
+          "SHIP-001",
+          "DEST-01"
+        ]
+      },
+      {
+        "certainty": "confirmed",
+        "edgeIds": [
+          "USE-A19-101",
+          "MAKE-101",
+          "PACK-101",
+          "MAKE-201",
+          "DISPATCH-003",
+          "DELIVER-003"
+        ],
+        "evidence": [
+          "EV-MASTER",
+          "EV-RECEIPT"
+        ],
+        "nodeId": "DEST-02",
+        "path": [
+          "ING-A19",
+          "BATCH-101",
+          "FG-101",
+          "PACK-201",
+          "FG-201",
+          "SHIP-003",
+          "DEST-02"
+        ]
+      },
+      {
+        "certainty": "confirmed",
+        "edgeIds": [
+          "USE-A19-101",
+          "MAKE-101"
+        ],
+        "evidence": [
+          "EV-MASTER",
+          "EV-RECEIPT"
+        ],
+        "nodeId": "FG-101",
+        "path": [
+          "ING-A19",
+          "BATCH-101",
+          "FG-101"
+        ]
+      },
+      {
+        "certainty": "potential",
+        "edgeIds": [
+          "USE-A19-102",
+          "MAKE-102"
+        ],
+        "evidence": [
+          "EV-MASTER",
+          "EV-RECEIPT"
+        ],
+        "nodeId": "FG-102",
+        "path": [
+          "ING-A19",
+          "BATCH-102",
+          "FG-102"
+        ]
+      },
+      {
+        "certainty": "confirmed",
+        "edgeIds": [
+          "USE-A19-101",
+          "MAKE-101",
+          "PACK-101",
+          "MAKE-201"
+        ],
+        "evidence": [
+          "EV-MASTER",
+          "EV-RECEIPT"
+        ],
+        "nodeId": "FG-201",
+        "path": [
+          "ING-A19",
+          "BATCH-101",
+          "FG-101",
+          "PACK-201",
+          "FG-201"
+        ]
+      },
+      {
+        "certainty": "confirmed",
+        "edgeIds": [],
+        "evidence": [
+          "EV-RECEIPT"
+        ],
+        "nodeId": "ING-A19",
+        "path": [
+          "ING-A19"
+        ]
+      },
+      {
+        "certainty": "confirmed",
+        "edgeIds": [
+          "USE-A19-101",
+          "MAKE-101",
+          "PACK-101"
+        ],
+        "evidence": [
+          "EV-MASTER",
+          "EV-RECEIPT"
+        ],
+        "nodeId": "PACK-201",
+        "path": [
+          "ING-A19",
+          "BATCH-101",
+          "FG-101",
+          "PACK-201"
+        ]
+      },
+      {
+        "certainty": "confirmed",
+        "edgeIds": [
+          "USE-A19-101",
+          "MAKE-101",
+          "DISPATCH-001"
+        ],
+        "evidence": [
+          "EV-MASTER",
+          "EV-RECEIPT"
+        ],
+        "nodeId": "SHIP-001",
+        "path": [
+          "ING-A19",
+          "BATCH-101",
+          "FG-101",
+          "SHIP-001"
+        ]
+      },
+      {
+        "certainty": "confirmed",
+        "edgeIds": [
+          "USE-A19-101",
+          "MAKE-101",
+          "DISPATCH-002"
+        ],
+        "evidence": [
+          "EV-MASTER",
+          "EV-RECEIPT"
+        ],
+        "nodeId": "SHIP-002",
+        "path": [
+          "ING-A19",
+          "BATCH-101",
+          "FG-101",
+          "SHIP-002"
+        ]
+      },
+      {
+        "certainty": "confirmed",
+        "edgeIds": [
+          "USE-A19-101",
+          "MAKE-101",
+          "PACK-101",
+          "MAKE-201",
+          "DISPATCH-003"
+        ],
+        "evidence": [
+          "EV-MASTER",
+          "EV-RECEIPT"
+        ],
+        "nodeId": "SHIP-003",
+        "path": [
+          "ING-A19",
+          "BATCH-101",
+          "FG-101",
+          "PACK-201",
+          "FG-201",
+          "SHIP-003"
+        ]
+      },
+      {
+        "certainty": "potential",
+        "edgeIds": [
+          "USE-A19-102",
+          "MAKE-102",
+          "DISPATCH-004"
+        ],
+        "evidence": [
+          "EV-MASTER",
+          "EV-RECEIPT"
+        ],
+        "nodeId": "SHIP-004",
+        "path": [
+          "ING-A19",
+          "BATCH-102",
+          "FG-102",
+          "SHIP-004"
+        ]
+      },
+      {
+        "certainty": "confirmed",
+        "edgeIds": [
+          "USE-A19-101",
+          "MAKE-101",
+          "STOCK-101"
+        ],
+        "evidence": [
+          "EV-MASTER",
+          "EV-RECEIPT"
+        ],
+        "nodeId": "WH-NORTH",
+        "path": [
+          "ING-A19",
+          "BATCH-101",
+          "FG-101",
+          "WH-NORTH"
+        ]
+      },
+      {
+        "certainty": "confirmed",
+        "edgeIds": [
+          "USE-A19-101",
+          "MAKE-101",
+          "PACK-101",
+          "MAKE-201",
+          "STOCK-201"
+        ],
+        "evidence": [
+          "EV-MASTER",
+          "EV-RECEIPT"
+        ],
+        "nodeId": "WH-SOUTH",
+        "path": [
+          "ING-A19",
+          "BATCH-101",
+          "FG-101",
+          "PACK-201",
+          "FG-201",
+          "WH-SOUTH"
+        ]
+      }
+    ],
+    "unknownRecordIds": [
+      "BATCH-404",
+      "DEST-02",
+      "DEST-03",
+      "FG-102",
+      "FG-201",
+      "FG-404",
+      "PACK-201",
+      "SHIP-003",
+      "SHIP-004",
+      "SHIP-404",
+      "WH-SOUTH",
+      "WH-WEST"
+    ],
+    "warehouseIds": [
+      "WH-NORTH",
+      "WH-SOUTH"
+    ]
+  }
+}

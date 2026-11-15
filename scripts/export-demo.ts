@@ -1,0 +1,12 @@
+import {writeFileSync} from 'node:fs';
+import {syntheticDataset,repairedDataset} from '../fixtures/synthetic/dataset';
+import {runDrill,compareDrills,reportMarkdown,reportCsv} from '../src/graph/engine';
+import {DEFAULT_ASSERTIONS,type Snapshot,type Scenario} from '../src/contracts';
+const scenario:Scenario={sourceLotId:'ING-A19',hazard:'contamination',at:'2026-10-28T09:00:00Z',assertions:DEFAULT_ASSERTIONS};
+const baseline:Snapshot={id:'SYNTHETIC-BASELINE',createdAt:scenario.at,initiator:'Automated synthetic example; no Jira user or live actions',dataset:syntheticDataset,result:runDrill(syntheticDataset,scenario),actions:[]};
+const result=runDrill(repairedDataset,scenario,[{id:'SIMULATED-QUARANTINE',type:'quarantine',targetId:'WH-NORTH',at:'2026-10-28T10:00:00Z',evidence:['EV-DRILL']}]);
+const snapshot:Snapshot={...baseline,id:'SYNTHETIC-CORRECTED',dataset:repairedDataset,result};
+writeFileSync('evidence/sample-drill.json',JSON.stringify({...snapshot,comparison:{baselineSnapshot:baseline,result:compareDrills(baseline.result,result)}},null,2)+'\n');
+writeFileSync('evidence/sample-drill.md',reportMarkdown(snapshot,baseline));
+writeFileSync('evidence/sample-findings.csv',reportCsv(snapshot,baseline));
+console.log('Exported synthetic sample reports. No Forge/Jira execution is represented.');

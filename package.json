@@ -1,0 +1,43 @@
+{
+  "name": "lotzero",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Deterministic recall rehearsals for Jira",
+  "scripts": {
+    "dev": "vite --mode rehearsal --config vite.config.ts --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build --config vite.config.ts",
+    "build:web": "tsc --noEmit && vite build --config vite.config.ts --mode rehearsal --base /app/ --outDir ../../../lotzero-site/app --emptyOutDir",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "benchmark": "node --import tsx scripts/benchmark.ts",
+    "forge": "node_modules/node/bin/node node_modules/@forge/cli/out/bin/cli.js"
+  },
+  "dependencies": {
+    "@forge/api": "latest",
+    "@forge/bridge": "7.2.1",
+    "@forge/kvs": "latest",
+    "@forge/resolver": "latest",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "latest",
+    "@forge/cli": "latest",
+    "@playwright/test": "latest",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "node": "^22.23.4",
+    "tsx": "latest",
+    "typescript": "^5.7.0",
+    "vite": "^6.0.0",
+    "vitest": "^3.0.0",
+    "yaml": "^2.6.0"
+  },
+  "overrides": {
+    "prosemirror-view": "1.42.8"
+  }
+}

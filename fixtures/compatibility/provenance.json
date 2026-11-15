@@ -1,0 +1,14 @@
+{
+  "sourceCapture": "evidence/native-clipboard-export.json",
+  "sourceSha256": "1efae268778338b3afcd7bdd77aa4a5caff61dc6de9a7499c70ff739e6abec54",
+  "note": "Historical native synthetic export; the 2.5.0 production engine is unchanged from the core capture. Actor, snapshot selector, issue references and issue text are replaced. This fixture is not an exact hosted-record backup.",
+  "resultRecomputedExactly": true,
+  "sanitizedFields": [
+    "initiator",
+    "id",
+    "actions.summary",
+    "actions.description",
+    "actions.issueKey",
+    "actions.issueUrl"
+  ]
+}

@@ -1,0 +1,16 @@
+# API and boundary review — local judged candidate
+
+Reviewed 15 November 2026. This maps the changed paths and adjacent release contracts to primary documentation. It is not a claim to have re-audited every legacy API or verified a hosted invocation.
+
+| Path | Contract used | Review / implementation decision |
+|---|---|---|
+| Sample load in `src/services/application.ts` | [Forge KVS get/set and key policy](https://developer.atlassian.com/platform/forge/storage-reference/kvs-api/) | Keep the existing fail-if-exists storage adapter and project mutation barrier. Check full canonical sample equality only after project-admin authorization. Repeat matching sample load reads existing state; it does not reset data or add an audit. No API/scopes added. |
+| Guide, summary and recovery | [Custom UI Jira project page](https://developer.atlassian.com/platform/forge/manifest-reference/modules/jira-project-page/) | Retain the resource/resolver architecture. `layout: native` does not convert React DOM to UI Kit. Summary is a pure projection; recovery calls bootstrap, never a Task POST or automatic reset. |
+| Candidate analyst prompt and original action | [Rovo agent](https://developer.atlassian.com/platform/forge/manifest-reference/modules/rovo-agent/) and [action module](https://developer.atlassian.com/platform/forge/manifest-reference/modules/rovo-action/) | Retain the existing agent and GET action. Reuse summary/assertion projections rather than add tools. No model-provided identifier establishes authority. The evidence service still checks the trusted principal, Browse access, exact snapshot and revision. |
+| Saved-report handoff | [Forge bridge Rovo](https://developer.atlassian.com/platform/forge/apis-reference/ui-api-bridge/rovo/) | Existing `isEnabled` and `open` flow remains; add a question preset only. Fail to a report/handoff explanation if Rovo is unavailable. No tenant activation/subscription call. |
+| Jira follow-up | [Jira issue API](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/) | No endpoint/payload change. Preserve user-scoped permissions, exact-content selection, approval, persistent claims, uncertain outcomes and receipt reconciliation. Existing issue-type requirements still apply. |
+| Candidate release commands | [Forge deploy](https://developer.atlassian.com/platform/forge/cli-reference/deploy/) | Installed CLI 15 help was read for deploy/install syntax. Explicit environments are required. Package semver and Forge's deployed app version are distinct. Help/lint success is not deployment or access consent. |
+
+The isolated judge manifest allows exactly `read:jira-work`, `write:jira-work` and `storage:app`. No third-party external permissions, remote, new write action, MCP module or privacy scheduled function is registered. Jira/Forge/Rovo still process data at Atlassian; synthetic business records do not eliminate real actor identifiers. The separate Marketplace privacy candidate remains unverified on the provider and is not promoted by this work.
+
+Local mocked contracts, deterministic evaluations and browser checks have separate evidence from native tenant permission checks, real Rovo answers and hosted persistence. Those hosted checks remain on the owner release checklist.

@@ -1,0 +1,72 @@
+import { expect, test } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
+import { readFile } from 'node:fs/promises';
+
+test('landing demo preserves historical impact, uncertainty and exact install links', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.goto('/');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('The next recallshould be arehearsal.');
+  await page.screenshot({ path: '../ui-evidence/landing-desktop-hero.png' });
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('link', { name: 'Skip to content', exact: true })).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(page.getByRole('main')).toBeFocused();
+  const install = (await readFile('evidence/judge-installation-url.txt', 'utf8')).trim();
+  const installLinks = page.locator('[data-install]');
+  await expect(installLinks).toHaveCount(3);
+  for (const link of await installLinks.all()) await expect(link).toHaveAttribute('href', install);
+  await page.getByRole('link', { name: 'Try the sample drill', exact: true }).click();
+  await page.locator('button[data-mode="gaps"]').click();
+  await expect(page.locator('#mode-detail')).toContainText('FAIL / Recorded destination');
+  await page.locator('button[data-mode="hold"]').click();
+  await page.getByLabel('Simulate quarantine', { exact: true }).check();
+  await expect(page.locator('#sample-outcome')).toContainText('SHIP-001 remains in historical impact');
+  await expect(page.locator('#sample-outcome')).toContainText('SHIP-002 is potentially preventable');
+  await expect(page.locator('#record-status')).toHaveText('Missing destination');
+  await page.locator('[data-shipment="SHIP-001"]').focus();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('#selected-shipment')).toHaveText('SHIP-001');
+  await expect(page.locator('#mode-detail')).toContainText('cannot remove it');
+  await page.locator('#sample').screenshot({ path: '../ui-evidence/landing-desktop-interactive.png' });
+  await page.getByRole('button', { name: 'Reset sample', exact: true }).click();
+  await expect(page.locator('#selected-shipment')).toHaveText('SHIP-002');
+  await expect(page.locator('button[data-mode="trace"]')).toHaveAttribute('aria-pressed', 'true');
+  await page.locator('summary').filter({ hasText: 'Does a passing drill mean our products are safe?' }).click();
+  await expect(page.locator('details[open]')).toContainText('They do not establish food safety');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  expect(errors).toEqual([]);
+  const a11y = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
+  expect(a11y.violations).toEqual([]);
+  await page.screenshot({ path: '../ui-evidence/landing-desktop-full.png', fullPage: true });
+});
+
+test('mobile navigation, keyboard drill and reduced motion remain usable', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  const menu = page.getByRole('button', { name: 'Menu', exact: true });
+  await menu.click();
+  await expect(menu).toHaveAttribute('aria-expanded', 'true');
+  await expect(page.getByRole('navigation', { name: 'Main navigation' })).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(menu).toBeFocused();
+  await expect(menu).toHaveAttribute('aria-expanded', 'false');
+  await page.screenshot({ path: '../ui-evidence/landing-mobile-hero.png' });
+  await page.getByRole('link', { name: 'Try the sample drill', exact: true }).click();
+  await page.locator('button[data-mode="hold"]').click();
+  await page.getByLabel('Simulate quarantine', { exact: true }).check();
+  await expect(page.locator('#sample-outcome')).toContainText('The destination gap is unresolved');
+  for (const node of await page.locator('[data-shipment]').all()) {
+    const box = await node.boundingBox();
+    expect(box?.height).toBeGreaterThanOrEqual(44);
+    expect(box?.width).toBeGreaterThanOrEqual(44);
+  }
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  expect(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior)).toBe('auto');
+  await page.locator('#sample').screenshot({ path: '../ui-evidence/landing-mobile-interactive.png' });
+  const a11y = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
+  expect(a11y.violations).toEqual([]);
+  await page.setViewportSize({ width: 360, height: 800 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});

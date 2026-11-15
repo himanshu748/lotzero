@@ -1,0 +1,22 @@
+import {cpus, totalmem} from 'node:os';
+import {scaleDataset} from '../fixtures/synthetic/scale';
+import {validateDataset} from '../src/schemas/dataset';
+import {dirname} from 'node:path';
+import { performance } from 'node:perf_hooks';
+import { writeFileSync, mkdirSync } from 'node:fs';
+import { runDrill, traceGraph, importCsv, datasetCsv } from '../src/graph/engine';
+import { stable } from '../src/graph/core';
+import { DEFAULT_ASSERTIONS, type Dataset, type Scenario } from '../src/contracts';
+import { syntheticDataset } from '../fixtures/synthetic/dataset';
+import expected from '../fixtures/ground-truth/expected.json';
+const scenario:Scenario={sourceLotId:'ING-A19',hazard:'contamination',at:'2026-10-28T09:00:00Z',assertions:DEFAULT_ASSERTIONS};
+const r=runDrill(syntheticDataset,scenario);
+const measure=(work:()=>unknown,repeats:number)=>{for(let i=0;i<5;i++)work();const samples=[];for(let i=0;i<repeats;i++){const t=performance.now();work();samples.push(performance.now()-t);}samples.sort((a,b)=>a-b);return {repeats,minMs:samples[0],medianMs:samples[Math.floor(samples.length/2)],p95Ms:samples[Math.floor(samples.length*.95)],maxMs:samples.at(-1)};};
+const chain:Dataset={name:'Synthetic 300-node chain',version:'benchmark-1',synthetic:true,nodes:[{id:'ING-A19',kind:'ingredient',label:'Source',evidence:['E']}],edges:[],evidence:[{id:'E',title:'Synthetic benchmark record',source:'generated fixed chain',recordedAt:scenario.at}]};
+for(let i=1;i<300;i++){const kind=i===1?'batch':'product';chain.nodes.push({id:`N-${i}`,kind,label:`Node ${i}`,evidence:['E']});chain.edges.push({id:`R-${i}`,from:i===1?'ING-A19':`N-${i-1}`,to:`N-${i}`,relation:i===1?'consumes':i===2?'produces':'repackages',certainty:'confirmed',evidence:['E']});}
+const maximum = scaleDataset(1000);
+const oversized = scaleDataset(5001);
+const rejectOversized = () => {try {validateDataset(oversized);} catch {return true;} throw new Error('Oversized input was unexpectedly accepted');};
+const actual=r.affectedShipmentIds,truth=expected.affectedShipments;
+const output={measuredAt:new Date().toISOString(),runtime:process.version,platform:process.platform,architecture:process.arch,machine:{cpu:cpus()[0]?.model,logicalCpus:cpus().length,memoryBytes:totalmem()},syntheticOnly:true,capacity:{limitsUnchanged:true,maxSupported:{nodes:maximum.nodes.length,edges:maximum.edges.length,bytes:Buffer.byteLength(JSON.stringify(maximum)),forwardTraversal:measure(()=>traceGraph(maximum,'I'),10)},oversized:{nodes:oversized.nodes.length,totalRecords:oversized.nodes.length+oversized.edges.length+oversized.evidence.length,bytes:Buffer.byteLength(JSON.stringify(oversized)),rejected:rejectOversized(),rejectionTiming:measure(rejectOversized,10)},interpretation:'5,001 nodes exercise safe rejection, not supported traversal capacity. Local timings are not recall response times.'},fixture:{nodes:syntheticDataset.nodes.length,edges:syntheticDataset.edges.length,correctShipmentIds:actual.filter(id=>truth.includes(id)).length,expectedShipmentIds:truth.length,falsePositiveShipmentIds:actual.filter(id=>!truth.includes(id)),falseNegativeShipmentIds:truth.filter(id=>!actual.includes(id)),detectedEvidenceGaps:r.gaps.length,unsupportedSafeConclusions:0,unsupportedSafeConclusionMethod:'Engine has no unaffected/safe status; missing genealogy explicitly checked in unit tests.',forwardTraversal:measure(()=>traceGraph(syntheticDataset,'ING-A19','forward'),100),fullDrill:measure(()=>runDrill(syntheticDataset,scenario),50)},chain:{nodes:chain.nodes.length,edges:chain.edges.length,forwardTraversal:measure(()=>traceGraph(chain,'ING-A19','forward'),50)},csv:{roundTripMatches:stable(importCsv(datasetCsv(syntheticDataset)))===stable(syntheticDataset)},manualActions:'Measured separately in browser evidence; not inferred by benchmark.'};
+const outputPath=process.env.LOTZERO_BENCHMARK_OUTPUT??'evidence/benchmark.json';mkdirSync(dirname(outputPath),{recursive:true});writeFileSync(outputPath,JSON.stringify(output,null,2));console.log(JSON.stringify(output,null,2));
