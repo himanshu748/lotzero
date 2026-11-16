@@ -6,9 +6,9 @@ LotZero is a Jira app for a food-manufacturing quality manager's mock recall. Tr
 
 The current local design, **The first gap**, opens the Northstar sample directly on **SHIP-002's missing destination**. A FAIL is a failed assertion; UNKNOWN means the records cannot establish an answer. Neither status nor a PASS is a product-safety decision.
 
-## Development verification — 15 November 2026
+## Development verification — 16 November 2026
 
-**Development 2.8.0 is deployed.** [Open LotZero Dev in LZR](https://one-atlas-obka.atlassian.net/jira/software/projects/LZR/apps/f2443992-e1df-4ee4-b6ee-50abce811c9b/d0324e54-93c3-4fc6-8d7f-5febd8e6dfe0). Existing Forge authentication and full lint passed. The native sample/path, UNKNOWN, explicit warehouse simulation, save and guarded queue passed, as did one cited Rovo destination answer. Browser connectivity then failed; native reload/export checks and the remaining two approved Rovo questions are pending. See [the development receipt](docs/FIRST_GAP_DEVELOPMENT_2026-11-15.md). Production and the live page/demo were not changed.
+**Development 2.9.0 is deployed.** [Open LotZero Dev in LZR](https://one-atlas-obka.atlassian.net/jira/software/projects/LZR/apps/f2443992-e1df-4ee4-b6ee-50abce811c9b/d0324e54-93c3-4fc6-8d7f-5febd8e6dfe0). Forge authentication, full lint, 258 tests and 18 browser journeys passed. Native save/reopen, the prioritised queue and text exports/comparison were verified. The three approved Rovo questions returned the expected saved facts. A separately approved fourth replay verified the repair for invented citation links: the development analyst now rendered plain IDs and retained honest simulation handling. See [the current development receipt](docs/FIRST_GAP_DEVELOPMENT_2026-11-16.md) for evidence and export/trace limitations. Production and the live page/demo remain untouched.
 
 ## Run locally
 

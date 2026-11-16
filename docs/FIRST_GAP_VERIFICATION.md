@@ -1,4 +1,4 @@
-> These are the local-phase results. A later approved [development 2.8.0 rollout](FIRST_GAP_DEVELOPMENT_2026-11-15.md) passed authenticated lint and native core checks, with two Rovo questions and reload/export checks pending after browser disconnection. Production remains unchanged.
+> These are local-phase results. The later approved [development rollout and native continuation](FIRST_GAP_DEVELOPMENT_2026-11-16.md) records 2.9.0, authenticated lint, native core/reopening/export checks, actual Rovo observations and remaining download/clipboard/trace gates. Production remains unchanged.
 
 # The first gap — local verification, 15 November 2026
 

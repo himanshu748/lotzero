@@ -17,3 +17,5 @@ Retain existing error/refusal cases from cases.json for approved adversarial tri
 ## Citation-link regression — observed 16 November 2026
 
 The native simulation answer returned the correct facts but formatted IDs as `/records/...`, `/evidence/...` and `/assertions/...` links. Those routes are not provided by LotZero. This fails citation integrity even when the IDs themselves are correct. IDs must render as inline code or plain text, with no fabricated URL. The judge prompt and UI handoff explicitly require that format. A later native replay must inspect rendered link destinations; deterministic retrieval tests do not prove the model obeys the repair.
+
+The separately approved native development 2.9.0 replay on 16 November used inline-code identifiers and no fabricated resource links. It retained correct saved-control facts, evidence/path IDs, pagination and revision. Saved JSON was unchanged after reload. This is one observed regression replay, not a claim of repeated stochastic evaluation; raw tool traces remain unverified.

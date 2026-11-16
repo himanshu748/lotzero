@@ -1,3 +1,5 @@
+> Historical 15 November receipt. The [16 November continuation](FIRST_GAP_DEVELOPMENT_2026-11-16.md) supersedes the interrupted checks and remaining allowance below. Development is now 2.9.0; production remains unchanged.
+
 # The first gap — development rollout, 15 November 2026
 
 **LotZero-Judge 2.8.0 is deployed to development only.** Production deployments/installations and the protected public-site source are unchanged. No sharing, Marketplace, Devpost, YouTube or Vercel action was performed.

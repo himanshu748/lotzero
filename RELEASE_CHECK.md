@@ -1,12 +1,12 @@
 # LotZero — owner promotion checklist
 
-**Development 2.8.0 is deployed; production remains gated.** Existing authentication and full lint passed. No install/tunnel/sharing/public change was performed. See [the development receipt and interrupted native checks](docs/FIRST_GAP_DEVELOPMENT_2026-11-15.md) and [earlier local verification](docs/FIRST_GAP_VERIFICATION.md). The owner performs production promotion and Devpost edits.
+**Development 2.9.0 is deployed; production remains gated.** Existing authentication and full lint passed. No install/tunnel/sharing/public change was performed. See [current native verification and limitations](docs/FIRST_GAP_DEVELOPMENT_2026-11-16.md) and [earlier local verification](docs/FIRST_GAP_VERIFICATION.md). The owner performs production promotion and Devpost edits.
 
 ## Review the isolated candidate
 
 The prepared source directory is:
 
-`/Users/himanshujha/Documents/Codex/2026-10-28/files-pasted-by-the-user-master/outputs/lotzero-first-gap-2026-11-15/lotzero`
+`/Users/himanshujha/Documents/Codex/2026-10-28/files-pasted-by-the-user-master/outputs/lotzero-citation-repair-2026-11-16/lotzero`
 
 Review its sibling `source-export.json` and the candidate manifest before running commands. The working app manifest preserves historical MCP development declarations and **must not be promoted wholesale**. The judge package must contain exactly:
 
@@ -15,11 +15,11 @@ Review its sibling `source-export.json` and the candidate manifest before runnin
 - Scopes `read:jira-work`, `write:jira-work`, `storage:app`; no new external permission, MCP module/action/function or Marketplace privacy registration.
 - The revised `config/judge-agent-prompt.md`, selected by the exporter. Same agent, no second provider or write tool.
 
-Do not run the edition-selection/registration helper or change sharing/distribution. This package is source, not a deployment receipt; no Forge version is assigned locally.
+Do not run the edition-selection/registration helper or change sharing/distribution. The frozen package includes documentation written before its rollout; use the current receipt linked above for deployed state. Its version is established by Forge, not by the exporter.
 
 ## Gates before hosting
 
-- [x] Existing Forge authentication and full Forge lint passed for development on 15 November. Keep tokens out of source/chat and rerun lint before a later rollout; SDK validation remains a separate check.
+- [x] Existing Forge authentication and full Forge lint passed for development on 15 and 16 November. Keep tokens out of source/chat and rerun lint before a later rollout; SDK validation remains a separate check.
 - [ ] Review/remediate the refreshed dependency audit or record an explicit owner risk decision: six moderate production advisories, 43 total including five critical tooling entries. No forced update was performed.
 - [ ] Review hosted privacy reporting/erasure, imported/free-text requests and operational recovery. The separate development privacy worker does not establish hosted compliance.
 - [ ] Read current deployed/install versions and app identity; historical 2.5.0 production / 2.7.0 development records are not current readback. Record a backup and reviewed recovery route preserving receipts and uncertain claims.
@@ -28,7 +28,7 @@ Do not run the edition-selection/registration helper or change sharing/distribut
 ## Local commands in the reviewed package
 
 ```sh
-cd /Users/himanshujha/Documents/Codex/2026-10-28/files-pasted-by-the-user-master/outputs/lotzero-first-gap-2026-11-15/lotzero
+cd /Users/himanshujha/Documents/Codex/2026-10-28/files-pasted-by-the-user-master/outputs/lotzero-citation-repair-2026-11-16/lotzero
 npm ci
 npm run typecheck
 npm test
@@ -41,7 +41,7 @@ Use Node 22.23.4. Dependencies are excluded from the export. Local package verif
 
 ## Development rehearsal — approved rollout completed
 
-The owner approved development-only rollout and native verification. The reviewed package was deployed as 2.8.0; the installed development page updated without an install command. Remaining native checks are listed in the development receipt. For a later explicitly approved development rollout, use the reviewed candidate directory:
+The owner approved development-only rollout and native verification. The original redesign deployed as 2.8.0; the citation repair from `7a03736` deployed as 2.9.0. The installed development page updated without an install command. Saved reopening, complete proposals and the repaired handoff were checked after the update; the separately approved simulation replay then used inline identifiers with no fabricated citation links and retained the correct saved facts. Other remaining native checks are listed in the current development receipt. For a later explicitly approved development rollout, use the reviewed candidate directory:
 
 ```sh
 npm run forge -- whoami
@@ -91,6 +91,6 @@ npm run forge -- install --upgrade -e production --site one-atlas-obka.atlassian
 npm run forge -- install --upgrade -e production --site lotzero-judge-verify.atlassian.net --product jira
 ```
 
-CLI option syntax was checked with installed `--help`; no deployment/install was executed. Record the actual returned Forge version, installed readback and core save/reopen/receipt checks. A code rollback does not reverse Jira writes or erase uncertain outcomes.
+CLI option syntax was checked with installed `--help`; none of these production commands was executed. Record the actual returned Forge version, installed readback and core save/reopen/receipt checks. A code rollback does not reverse Jira writes or erase uncertain outcomes.
 
 Only then review [the Devpost draft](DEVPOST_UPDATE.md), [shot list](VIDEO_SHOTLIST.md) and [submission recheck](SUBMISSION_RECHECK.md). Capture and later Cardboard editing require their own authority; generated narration remains Deepgram only. Keep the existing page/demo unchanged until the owner chooses a public update.

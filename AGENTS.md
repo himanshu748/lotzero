@@ -46,9 +46,10 @@ The user's **The first gap** redesign and `PLAN.md` supersede `LOTZERO_BEST_PROM
 - `--judge-release` must select the updated `config/judge-agent-prompt.md` and exclude the working manifest’s historical MCP declarations. The owner performs any eventual promotion.
 - Reopening Follow-up and refreshing receipts must read the full canonical preview, preserving uncreated proposals alongside receipts. Never resave or replay a Jira write merely to refresh that view.
 
-## Development rollout follow-up — 15 November 2026
+## Development rollout follow-up — 16 November 2026
 
-- The user subsequently approved deployment and verification in development only. Frozen source commit `82b8763` deployed as LotZero-Judge development 2.8.0. Production, sharing and the public page/demo remain protected.
-- Existing credentials and full Forge lint passed; do not create or request another token merely because the older local-phase note says login expired.
-- Native core checks and one Rovo destination answer passed. Browser connectivity then failed and computer-use tools were removed. Read `docs/FIRST_GAP_DEVELOPMENT_2026-11-15.md` before resuming; do not claim native reload/export or all analyst questions passed.
-- Three development Rovo questions were approved in LZR using existing included access. One was used. Two remain for origin UNKNOWN and the saved WH-NORTH simulation, on saved report `163de088-8f31-473a-9f7e-6889dd5b3e23`. Retain its full revision from the receipt. No further prompts beyond that total, Jira writes, paid activation, new terms, new grants or production rollout are authorised.
+- Development-only rollout and Jira verification are approved. The frozen judge export from `7a03736` deployed as **2.9.0**, following 2.8.0's native core checks. Production, sharing and the public page/demo remain protected. No install/upgrade command was needed.
+- Existing credentials and full Forge lint passed again; do not create or request another token merely because an older note says login expired.
+- Read `docs/FIRST_GAP_DEVELOPMENT_2026-11-16.md` and the preceding day's receipt. Native reopening, full proposal queue, text export/comparison parity and unchanged saved-state readback passed. Download-event and exact clipboard transfer, raw Rovo traces, ordinary/denied users and fresh-install acceptance remain unverified.
+- **All four approved development Rovo messages are used** (three original questions plus one separately approved citation replay). Origin UNKNOWN was preserved. The first saved WH-NORTH answer had correct facts but invented relative citation links; source `7a03736` repairs prompt/handoff formatting and extends the existing rubric. The approved 2.9.0 replay used inline IDs, no fabricated resource links, and correct simulation facts/revision. Saved JSON remained identical after the replay. One observed answer is not a general model guarantee; raw traces remain unverified.
+- Any further Rovo message needs a new explicit allowance. No Jira writes, paid activation, new terms/access grants, production rollout or public changes are authorised.
