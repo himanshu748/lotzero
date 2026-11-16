@@ -330,6 +330,26 @@
     font-size: 12px;
   }
 }
+/* Jira's project-page iframe is narrower than the browser. Keep the selected
+   shipment and its inspector together at laptop widths, not two rows below. */
+@media (min-width: 1100px) {
+  .impact-layout.impact-path {
+    grid-template-columns: minmax(0, 1fr) 240px;
+  }
+  .impact-path .path-steps {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .impact-path .path-steps button {
+    min-height: 124px;
+    padding: 8px;
+  }
+  .impact-path .selected-evidence-jump {
+    display: none;
+  }
+  .impact-path .inspector .detail-list {
+    display: block;
+  }
+}
 @media (max-width: 760px) {
   .path-focus {
     padding: 12px;

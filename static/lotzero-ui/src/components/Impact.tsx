@@ -137,7 +137,7 @@ export default function Impact({
     searchRef.current?.focus();
   };
   return (
-    <div className="impact-layout">
+    <div className={`impact-layout impact-${mode}`}>
       <section className="panel graph-panel">
         <div className="trace-search-area">
           <label className="trace-search">

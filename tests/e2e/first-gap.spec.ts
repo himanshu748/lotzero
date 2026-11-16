@@ -92,6 +92,22 @@ test("one activation opens destination FAIL, SHIP-002 inspector and the supporti
     .click();
   await expect(path.getByRole("heading")).toHaveText("From source to SHIP-002");
 });
+test("Jira laptop-width viewport keeps the shipment and inspector in the first view", async ({ page }) => {
+  // 1200x580 models the app space within the observed 1280x720 Jira host.
+  await page.setViewportSize({ width: 1200, height: 580 });
+  await sample(page);
+  const path = page.getByRole("region", { name: "Selected supporting path" });
+  const shipment = path.getByRole("button", { name: "Inspect SHIP-002", exact: true });
+  const inspector = page.getByRole("complementary", { name: "Selected record evidence" });
+  for (const target of [shipment, inspector.getByRole("heading", { name: "SHIP-002", exact: true }), inspector.getByText("Recorded destination", { exact: true })]) {
+    const box = await target.boundingBox();
+    expect(box).not.toBeNull();
+    expect(box!.y).toBeGreaterThanOrEqual(0);
+    expect(box!.y + box!.height).toBeLessThan(580);
+  }
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: `${evidence}/rehearsal-jira-laptop.png` });
+});
 test("narrow first run exposes the first finding and readable path without hover", async ({
   page,
 }) => {

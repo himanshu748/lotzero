@@ -26,7 +26,7 @@ export function suggestActions(
           })
           .join("\n") || "Missing — investigate; do not infer safety"
       }`,
-      `To inspect: Open LotZero in the originating Jira project, select saved drill ${snapshot.id}, then open Impact Explorer and select the referenced record. Synthetic evidence is embedded in the drill; it is not an external certificate.`,
+      `To inspect: Open LotZero in the originating Jira project, select saved drill ${snapshot.id}, then open Rehearsal (Trace) and select the referenced record. Synthetic evidence is embedded in the drill; it is not an external certificate.`,
       `Next steps: Review the referenced records with the quality team, document the correction and supporting evidence, then rerun this scenario.`,
       `This is a rehearsal only. Do not contact customers, hold shipments or execute a real recall on this issue's authority.`,
     ].join("\n\n"),

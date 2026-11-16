@@ -73,6 +73,7 @@ test("complete rehearsal, explicit warehouse control, prioritised follow-up and 
   await expect(
     page.getByRole("heading", { name: "Ask the analyst", exact: true }),
   ).toBeVisible();
+  await expect(page.getByRole("button", {name: "Explain the missing destination", exact: true})).toBeVisible();
   await expect(page.getByLabel("Saved evidence fallback")).toContainText(
     "SHIP-002",
   );

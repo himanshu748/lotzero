@@ -89,17 +89,17 @@ export default function AnalystHandoff({
             onClick={() => setQuestion(item.id)}
           >
             {item.id === "destination"
-              ? `Why did shipment-destination ${
+              ? (
                   snapshot.result.assertions.find(
                     (a) => a.id === "shipment-destination",
                   )?.status === "PASS"
-                    ? "pass"
+                    ? "Explain the recorded destinations"
                     : snapshot.result.assertions.find(
                           (a) => a.id === "shipment-destination",
                         )?.status === "UNKNOWN"
-                      ? "stay UNKNOWN"
-                      : "fail"
-                }?`
+                      ? "Which destinations need more evidence?"
+                      : item.label
+                )
               : item.id === "origins" &&
                   snapshot.result.assertions.find(
                     (a) => a.id === "ingredient-origin",
