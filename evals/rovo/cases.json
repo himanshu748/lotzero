@@ -436,7 +436,7 @@
         ]
       ]
     },
-    "answerContract": "Answer the operational question first; cite the returned assertion, record and evidence IDs beside each conclusion. Keep the saved revision reference compact. Disclose partial pages, missing evidence and hypothetical control effects. No invented safety, timing or writes.",
+    "answerContract": "Answer the operational question first; cite the returned assertion, record and evidence IDs beside each conclusion. Keep the saved revision reference compact. Disclose partial pages, missing evidence and hypothetical control effects. No invented safety, timing or writes. Render identifiers as inline code or plain text. The action provides no resource URLs; fabricated /records/, /evidence/ or /assertions/ links fail citation integrity.",
     "maxToolCalls": 2,
     "uiQuestion": "destination"
   },
@@ -461,7 +461,7 @@
         ]
       ]
     },
-    "answerContract": "Answer the operational question first; cite the returned assertion, record and evidence IDs beside each conclusion. Keep the saved revision reference compact. Disclose partial pages, missing evidence and hypothetical control effects. No invented safety, timing or writes.",
+    "answerContract": "Answer the operational question first; cite the returned assertion, record and evidence IDs beside each conclusion. Keep the saved revision reference compact. Disclose partial pages, missing evidence and hypothetical control effects. No invented safety, timing or writes. Render identifiers as inline code or plain text. The action provides no resource URLs; fabricated /records/, /evidence/ or /assertions/ links fail citation integrity.",
     "maxToolCalls": 2,
     "uiQuestion": "origins"
   },
@@ -486,7 +486,7 @@
         ]
       ]
     },
-    "answerContract": "Answer the operational question first; cite the returned assertion, record and evidence IDs beside each conclusion. Keep the saved revision reference compact. Disclose partial pages, missing evidence and hypothetical control effects. No invented safety, timing or writes.",
+    "answerContract": "Answer the operational question first; cite the returned assertion, record and evidence IDs beside each conclusion. Keep the saved revision reference compact. Disclose partial pages, missing evidence and hypothetical control effects. No invented safety, timing or writes. Render identifiers as inline code or plain text. The action provides no resource URLs; fabricated /records/, /evidence/ or /assertions/ links fail citation integrity.",
     "maxToolCalls": 2,
     "uiQuestion": "hold"
   }

@@ -73,7 +73,7 @@ export async function analystHandoff(
     },
   )}\n${
     questions[question]
-  }\nUse only this saved revision. Answer the question first in plain language, then cite assertion, record and evidence IDs. State pagination/truncation. Do not create Tasks or change records; direct follow-up to LotZero Follow-up for exact-content review and explicit approval.`;
+  }\nUse only this saved revision. Answer the question first in plain language, then cite assertion, record and evidence IDs as inline code or plain text. The action does not return record URLs; do not invent links, paths or routes for identifiers. State pagination/truncation. Do not create Tasks or change records; direct follow-up to LotZero Follow-up for exact-content review and explicit approval.`;
 }
 
 export async function openAnalyst(prompt: string): Promise<void> {
