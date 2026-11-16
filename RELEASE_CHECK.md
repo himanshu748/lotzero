@@ -1,6 +1,6 @@
 # LotZero — owner promotion checklist
 
-**Development 2.9.0 is deployed; production remains gated.** Existing authentication and full lint passed. No install/tunnel/sharing/public change was performed. See [current native verification and limitations](docs/FIRST_GAP_DEVELOPMENT_2026-11-16.md) and [earlier local verification](docs/FIRST_GAP_VERIFICATION.md). The owner performs production promotion and Devpost edits.
+**Development 2.9.0 is deployed; production remains gated.** Existing authentication and full lint passed. No install/tunnel/sharing/public change was performed. See [current native verification and limitations](docs/FIRST_GAP_DEVELOPMENT_2026-11-16.md) and [earlier local verification](docs/FIRST_GAP_VERIFICATION.md). The owner performs production promotion and Devpost edits. The later [export/trace receipt](docs/DEVELOPMENT_IO_TRACE_2026-11-16.md) closes native CSV paste content and the fourth response's action trace; downloaded-file delivery remains pending.
 
 ## Review the isolated candidate
 

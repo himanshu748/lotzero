@@ -1,3 +1,5 @@
+> Later the same day, [export/trace checks](DEVELOPMENT_IO_TRACE_2026-11-16.md) verified native CSV paste content and the existing fourth replay's raw tool trace. The limits below describe the earlier rollout checkpoint; download delivery remains unresolved.
+
 # The first gap — resumed development verification, 16 November 2026
 
 **LotZero-Judge development 2.9.0 is deployed.** Development-only verification resumed after the browser connection recovered. The existing Forge login works; no token, verification code or credential change was required. Production, staging, distribution, the live landing/preview, demo and submitted entry remain outside this rollout.
