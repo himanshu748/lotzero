@@ -25,7 +25,7 @@ export default function NewDrillForm({
       : ingredients[0]?.id ?? "",
   );
   const [hazard, setHazard] = useState<Scenario["hazard"]>("contamination");
-  const [at, setAt] = useState("2026-10-28T09:00");
+  const [at, setAt] = useState("");
   const [assertions, setAssertions] =
     useState<AssertionId[]>(DEFAULT_ASSERTIONS);
   function submit(e: FormEvent) {
@@ -85,7 +85,7 @@ export default function NewDrillForm({
                 required
               />
               <span className="field-help">
-                Separates historical from future movements.
+                Choose the rehearsal clock. It separates historical from future movements.
               </span>
             </label>
           </div>
@@ -113,7 +113,7 @@ export default function NewDrillForm({
           </fieldset>
           <button
             className="primary wide"
-            disabled={disabled || !source || !assertions.length}
+            disabled={disabled || !source || !at || !assertions.length}
           >
             Run rehearsal <Icon name="arrow" size={18} />
           </button>

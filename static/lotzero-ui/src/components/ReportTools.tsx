@@ -95,7 +95,7 @@ export default function ReportTools({
         <summary>Exports and saved inputs</summary>
         <p className="field-help">
           The saved report includes the full source dataset, assertions and
-          simulated controls.
+          simulated controls. Jira reports expire 90 days after saving; export a copy before then.
         </p>
         <div className="button-row">
           <Button

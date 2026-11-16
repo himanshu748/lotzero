@@ -27,7 +27,7 @@ function fixture() {
   writeFileSync(manifestFile, YAML.stringify(manifest));
   symlinkSync(join(originals, 'node_modules'), join(root, 'node_modules'), 'dir');
   mkdirSync(join(directory, 'lotzero-site'));
-  for (const name of ['index.html', 'styles.css', 'landing.css', 'app.js', 'favicon.svg', 'support.html', 'rovo-preview.png']) copyFileSync(resolve('../lotzero-site', name), join(directory, 'lotzero-site', name));
+  for (const name of ['index.html', 'styles.css', 'landing.css', 'app.js', 'favicon.svg', 'support.html', 'rovo-preview.png']) writeFileSync(join(directory, 'lotzero-site', name), name.endsWith('.png') ? Buffer.from([137, 80, 78, 71]) : 'Synthetic export fixture');
   writeFileSync(join(root, '.env'), 'EXAMPLE_NOT_A_CREDENTIAL=must-not-copy');
   writeFileSync(join(root, 'config/editions.local.json'), '{"privateConfiguration":"must-not-copy"}');
   mkdirSync(join(root, 'evidence')); writeFileSync(join(root, 'evidence/private.json'), '{"privateEvidence":"must-not-copy"}');
@@ -38,7 +38,7 @@ function fixture() {
 describe('curated source export boundary', () => {
   it('copies runnable source and records exact hashes without local configuration, evidence or Git metadata', () => {
     const f = fixture(); const dest = join(f.directory, 'candidate');
-    expect(f.run('--output', dest).status).toBe(0);
+    expect(f.run('--output', dest, '--include-site').status).toBe(0);
     const receipt = JSON.parse(readFileSync(join(dest, 'source-export.json'), 'utf8'));
     expect(receipt.gitCreated).toBe(false); expect(receipt.pushed).toBe(false);
     const names = receipt.files.map((row: {path: string}) => row.path);
@@ -108,4 +108,12 @@ it.each(['handler', 'scope', 'egress', 'module'])('rejects an unreviewed judge c
   writeFileSync(file, YAML.stringify(manifest));
   expect(f.run('--output', dest, '--judge-release').status).not.toBe(0);
   expect(existsSync(dest)).toBe(false);
+});
+
+it('exports the judge app from a standalone checkout without a landing sibling', () => {
+  const f = fixture(); const dest = join(f.directory, 'standalone');
+  rmSync(join(f.directory, 'lotzero-site'), {recursive: true});
+  expect(f.run('--output', dest, '--judge-release').status).toBe(0);
+  expect(existsSync(join(dest, 'lotzero-site'))).toBe(false);
+  expect(existsSync(join(dest, 'lotzero/manifest.yml'))).toBe(true);
 });

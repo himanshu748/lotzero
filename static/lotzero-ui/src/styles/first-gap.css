@@ -945,3 +945,8 @@ td {
 .action-group[open] > .action-group-heading::after {
   content: "−";
 }
+
+.finding-counterexamples { padding: 4px 8px 8px; font-size: 12px; }
+.finding-counterexamples summary { cursor: pointer; }
+.finding-counterexamples p { margin: 8px 0 4px; }
+.finding-counterexamples button { margin: 2px; padding: 4px 6px; }

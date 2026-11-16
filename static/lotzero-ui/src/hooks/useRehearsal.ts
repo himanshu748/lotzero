@@ -59,6 +59,7 @@ export function useRehearsal() {
     accept: () => void;
   } | null>(null);
   const working = useRef(false);
+  const saveRequests = useRef(new WeakMap<DrillResult, string>());
   const evidenceView = useRef<EvidenceViewState | undefined>(undefined);
   useEffect(() => {
     let current = true;
@@ -160,14 +161,16 @@ export function useRehearsal() {
       );
     else work();
   }
-  function selectFinding(id: AssertionId) {
+  function selectFinding(id: AssertionId, counterexampleId?: string) {
     if (!active) return;
     const assertion = active.result.assertions.find((item) => item.id === id);
     if (!assertion) return;
-    const recordId =
+    const requested = counterexampleId && assertion.counterexamples.some(g => g.recordIds.includes(counterexampleId))
+      && active.dataset.nodes.some(n => n.id === counterexampleId) ? counterexampleId : null;
+    const recordId = requested ?? (
       assertion.status === "PASS"
         ? active.result.scenario.sourceLotId
-        : findingRecord(assertion, active.result, active.dataset);
+        : findingRecord(assertion, active.result, active.dataset));
     setSelectedFinding(id);
     setSelectionRequest((previous) => ({ recordId, key: previous.key + 1 }));
     go("rehearsal");
@@ -189,10 +192,16 @@ export function useRehearsal() {
   async function save(): Promise<Snapshot> {
     if (!active) throw new Error("Run a rehearsal first.");
     if (active.snapshot) return active.snapshot;
+    let requestId = saveRequests.current.get(active.result);
+    if (!requestId) {
+      requestId = crypto.randomUUID();
+      saveRequests.current.set(active.result, requestId);
+    }
     const saved = await client.saveDrill(
       active.result.scenario,
       active.result.interventions,
       active.result.fingerprint,
+      requestId,
     );
     setActive({ ...active, snapshot: saved, actions: saved.actions });
     setData(await client.bootstrap());

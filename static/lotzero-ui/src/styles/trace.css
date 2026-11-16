@@ -367,8 +367,7 @@
     min-height: 36px;
     font-size: 12px;
   }
-  .segmented button svg,
-  .selected-evidence-jump {
+  .segmented button svg {
     display: none;
   }
 }

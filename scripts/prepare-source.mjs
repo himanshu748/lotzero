@@ -5,13 +5,14 @@ import {createHash} from 'node:crypto';
 import YAML from 'yaml';
 
 const appRoot = fs.realpathSync(path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'));
-const siteRoot = fs.realpathSync(path.resolve(appRoot, '../lotzero-site'));
+const siteRoot = physicalPath(path.resolve(appRoot, '../lotzero-site'));
 const args = process.argv.slice(2);
 const privacy = args.includes('--privacy-development');
 const judged = args.includes('--judge-release');
+const includeSite = args.includes('--include-site');
 const index = args.indexOf('--output');
-if ((privacy && judged) || index < 0 || !args[index + 1] || args.some((arg, i) => !['--output', '--privacy-development', '--judge-release'].includes(arg) && i !== index + 1)) {
-  throw new Error('Usage: node scripts/prepare-source.mjs --output NEW-DIRECTORY [--privacy-development | --judge-release]');
+if ((privacy && judged) || index < 0 || !args[index + 1] || args.some((arg, i) => !['--output', '--privacy-development', '--judge-release', '--include-site'].includes(arg) && i !== index + 1)) {
+  throw new Error('Usage: node scripts/prepare-source.mjs --output NEW-DIRECTORY [--privacy-development | --judge-release] [--include-site]');
 }
 function physicalPath(input) {
   let parent = path.resolve(input);
@@ -46,7 +47,7 @@ for (const directory of ['src', 'tests', 'fixtures', 'static/lotzero-ui/src', 's
 for (const file of ['package.json', 'package-lock.json', 'manifest.yml', 'tsconfig.json', 'vite.config.ts', 'vitest.config.ts', 'playwright.config.ts', 'playwright.design.config.ts', 'playwright.landing.config.ts', 'playwright.rovo.config.ts', 'playwright.trace.config.ts', 'static/lotzero-ui/index.html', 'scripts/edition.mjs', 'scripts/benchmark.ts', 'scripts/prepare-source.mjs', 'config/editions.example.json', 'docs/PRIVACY_REPORTING.md', 'docs/DEPENDENCY_REVIEW_2026-11-06.md']) add(path.join(appRoot, file), 'lotzero/' + file);
 for (const directory of ['evals']) if (fs.existsSync(path.join(appRoot, directory))) tree(directory);
 for (const file of ['playwright.first-gap.config.ts', 'PLAN.md', 'AGENTS.md', 'docs/FIRST_GAP_VERIFICATION.md', 'docs/FIRST_GAP_DEVELOPMENT_2026-11-15.md', 'docs/FIRST_GAP_DEVELOPMENT_2026-11-16.md', 'docs/DEVELOPMENT_IO_TRACE_2026-11-16.md', 'config/judge-agent-prompt.md', 'CHANGELOG.md', 'RELEASE_CHECK.md', 'IMPACT.md', 'DEVPOST_UPDATE.md', 'VIDEO_SHOTLIST.md', 'SUBMISSION_RECHECK.md', 'docs/JUDGED_RELEASE_DIFF.md', 'docs/JUDGED_RELEASE_API_CONTRACTS.md', 'docs/JUDGED_RELEASE_VERIFICATION.md']) if (fs.existsSync(path.join(appRoot, file))) add(path.join(appRoot, file), 'lotzero/' + file);
-for (const file of ['index.html', 'styles.css', 'landing.css', 'app.js', 'favicon.svg', 'support.html', 'rovo-preview.png']) add(path.join(siteRoot, file), 'lotzero-site/' + file);
+if (includeSite) for (const file of ['index.html', 'styles.css', 'landing.css', 'app.js', 'favicon.svg', 'support.html', 'rovo-preview.png']) add(path.join(siteRoot, file), 'lotzero-site/' + file);
 const manifest = YAML.parse(files.get('lotzero/manifest.yml').toString());
 if (judged) {
   const original = manifest.modules;
@@ -112,7 +113,7 @@ This export selects the owner's existing ${privacy ? 'Marketplace development id
 Imports use JSON or record_type,json CSV with existing limits; see fixtures/README.md. Missing evidence remains UNKNOWN. Neither a PASS nor a path establishes product safety; controls are hypothetical and timing is not measured. No customer validation, certification or extra bonus is claimed. Source licensing remains an owner decision. See docs/PRIVACY_REPORTING.md and docs/DEPENDENCY_REVIEW_2026-11-06.md for unresolved release concerns.
 `;
 files.set('lotzero/README.md', Buffer.from(introduction));
-files.set('README.md', Buffer.from('# LotZero source candidate\n\nLocal export of the owner-controlled source. This directory contains no Git history; no push, hosting or public edit was performed by the exporter.\n\n- [App quickstart](lotzero/README.md)\n- [Owner release checks](lotzero/RELEASE_CHECK.md)\n- [Source verification](lotzero/docs/FIRST_GAP_VERIFICATION.md)\n\nsource-export.json lists exact files and hashes. Keep credentials outside source. The sibling landing source is a copy for reference; the original live-site source was not changed.\n'));
+files.set('README.md', Buffer.from('# LotZero source candidate\n\nLocal export of the owner-controlled source. This directory contains no Git history; no push, hosting or public edit was performed by the exporter.\n\n- [App quickstart](lotzero/README.md)\n- [Owner release checks](lotzero/RELEASE_CHECK.md)\n- [Source verification](lotzero/docs/FIRST_GAP_VERIFICATION.md)\n\nsource-export.json lists exact files and hashes. Keep credentials outside source. Reference landing source is included only with --include-site; the original live-site source is never changed.\n'));
 files.set('.gitignore', Buffer.from('**/node_modules/\n**/.env*\n!**/.env.example\n**/.forge/\n**/config/*.local.json\n**/evidence/\n**/demo/\n**/test-results/\n**/playwright-report/\n**/static/lotzero-ui/dist/\nlotzero-site/app/\nui-evidence/\n*.log\n'));
 const patterns = [
   ['Atlassian API token', /ATATT[0-9A-Za-z_+=/\-]{20,}/],
@@ -126,7 +127,7 @@ for (const [name, bytes] of files) {
   for (const [kind, pattern] of patterns) if (pattern.test(bytes.toString('utf8'))) throw new Error(`Export stopped: ${kind} pattern in ${name}; no matched value is printed.`);
 }
 const rows = [...files].sort(([a], [b]) => a.localeCompare(b)).map(([name, bytes]) => ({path: name, bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex')}));
-const receipt = {createdAt: new Date().toISOString(), privacyDevelopment: privacy, judgeRelease: judged, files: rows, scan: 'Explicit file list, known patterns only; no Git-history or unknown-format claim', omitted: ['credentials', 'config/*.local.json', 'private evidence', 'media masters', 'node_modules', 'compiled bundles'], gitCreated: false, pushed: false};
+const receipt = {createdAt: new Date().toISOString(), privacyDevelopment: privacy, judgeRelease: judged, includeSite, files: rows, scan: 'Explicit file list, known patterns only; no Git-history or unknown-format claim', omitted: ['credentials', 'config/*.local.json', 'private evidence', 'media masters', 'node_modules', 'compiled bundles'], gitCreated: false, pushed: false};
 // All selection and scanning completes before the new destination is created.
 fs.mkdirSync(destination, {recursive: true, mode: 0o700});
 for (const [name, content] of files) {

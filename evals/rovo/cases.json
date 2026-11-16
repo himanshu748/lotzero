@@ -389,8 +389,8 @@
           true
         ],
         [
-          "data.snapshot.datasetVersion",
-          "synthetic-v1"
+          "data.snapshot.scenario.sourceLotId",
+          "ING-A19"
         ]
       ]
     },

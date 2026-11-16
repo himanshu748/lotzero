@@ -64,10 +64,20 @@ export const client = {
     scenario: Scenario,
     interventions: Intervention[],
     expectedFingerprint: string,
+    requestId?: string,
   ): Promise<Snapshot> => {
     if (!localMode)
-      return rpc("saveDrill", { scenario, interventions, expectedFingerprint });
+      return rpc("saveDrill", { scenario, interventions, expectedFingerprint, ...(requestId ? { requestId } : {}) });
     const state = read();
+    const snapshotId = `LOCAL-${requestId ?? crypto.randomUUID()}`;
+    const existing = requestId ? state.snapshots.find((snapshot) => snapshot.id === snapshotId) : undefined;
+    if (existing) {
+      if (existing.result.fingerprint !== expectedFingerprint ||
+        JSON.stringify(existing.result.scenario) !== JSON.stringify(scenario) ||
+        JSON.stringify(existing.result.interventions) !== JSON.stringify(interventions))
+        return Promise.reject(new Error("This save request ID was already used for a different rehearsal. Run a fresh rehearsal before saving."));
+      return Promise.resolve(existing);
+    }
     if (!state.dataset)
       return Promise.reject(new Error("Load a dataset first."));
     if (state.snapshots.length >= 25)
@@ -82,7 +92,7 @@ export const client = {
         new Error("The dataset changed after review. Run a fresh drill."),
       );
     const snapshot: Snapshot = {
-      id: `LOCAL-${crypto.randomUUID()}`,
+      id: snapshotId,
       createdAt: new Date().toISOString(),
       initiator: "Local rehearsal user",
       dataset: structuredClone(state.dataset),

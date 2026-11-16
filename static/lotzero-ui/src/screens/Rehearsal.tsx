@@ -11,6 +11,7 @@ export default function Rehearsal({
   if (!active) return null;
   return (
     <>
+
       <div className="rehearsal-layout">
         <FindingsList
           result={active.result}
@@ -35,6 +36,7 @@ export default function Rehearsal({
           />
         </section>
       </div>
+
       <div className="case-actions">
         <Button
           isDisabled={Boolean(desk.busy)}

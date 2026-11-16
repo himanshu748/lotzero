@@ -99,7 +99,8 @@ describe('read-only saved-rehearsal analyst', () => {
     rows.set('p:10001:dataset', repairedDataset);
     const response = await analyst.read(request('summary'), identity);
     expect(response.currentDatasetDiffers).toBe(true);
-    expect(response.snapshot.datasetVersion).toBe(snapshot.dataset.version);
+    expect(response.snapshot).not.toHaveProperty("datasetVersion");
+    expect(response.snapshot.revision).toBe(rehearsalRevision(snapshot));
   });
   it('rejects nonexistent or expired snapshots and in-progress resets', async () => {
     await expect(analyst.read(request('summary', {snapshotId: 'absent'}), identity)).rejects.toThrow('No saved rehearsal');

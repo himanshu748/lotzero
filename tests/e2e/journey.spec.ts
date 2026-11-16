@@ -78,7 +78,7 @@ test("complete rehearsal, explicit warehouse control, prioritised follow-up and 
   );
   await page
     .getByRole("button", {
-      name: "Which lots are UNKNOWN and why?",
+      name: "Which origins need more evidence?",
       exact: true,
     })
     .click();
@@ -227,6 +227,7 @@ test("corrected records preserve baseline and export an exact compatible compari
   await page
     .getByRole("button", { name: "Start a new drill", exact: true })
     .click();
+  await page.getByLabel("Scenario effective time (UTC)").fill("2026-10-28T09:00");
   await page
     .getByRole("button", { name: "Run rehearsal", exact: true })
     .click();
@@ -280,7 +281,7 @@ test("concurrent browser dataset edit rejects stale save and offers no report do
     page.getByRole("button", { name: "JSON", exact: true }),
   ).toHaveCount(0);
 });
-test("all four screens and launched form pass axe and narrow viewport checks", async ({
+for (const screen of ["home", "rehearsal", "rehearse", "follow-up", "new-drill"]) test(`screen ${screen} passes axe and narrow viewport checks`, async ({
   page,
 }) => {
   test.setTimeout(120000);
@@ -311,25 +312,14 @@ test("all four screens and launched form pass axe and narrow viewport checks", a
     }
   }
   await page.goto("/");
-  await check("home");
-  await page
-    .getByRole("button", {
-      name: "Run Northstar sample (synthetic)",
-      exact: true,
-    })
-    .click();
-  await check("rehearsal");
-  await page
-    .getByRole("button", { name: "Rehearse a hold", exact: true })
-    .click();
-  await check("rehearse");
-  await page
-    .getByRole("button", { name: "Save and follow up", exact: true })
-    .click();
-  await check("follow-up");
-  await home(page);
-  await page
-    .getByRole("button", { name: "Start a new drill", exact: true })
-    .click();
-  await check("new-drill");
+  if (screen !== "home") {
+    await page.getByRole("button", {name:"Run Northstar sample (synthetic)",exact:true}).click();
+    if (screen === "rehearse") await page.getByRole("button",{name:"Rehearse a hold",exact:true}).click();
+    if (screen === "follow-up") await page.getByRole("button",{name:"Save and follow up",exact:true}).click();
+    if (screen === "new-drill") {
+      await home(page);
+      await page.getByRole("button",{name:"Start a new drill",exact:true}).click();
+    }
+  }
+  await check(screen);
 });

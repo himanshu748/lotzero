@@ -104,7 +104,7 @@ export class RecallAnalyst {
     const response = {
       kind: 'lotzero-saved-rehearsal-evidence', readOnly: true,
       project: {id: project.id, key: project.key},
-      snapshot: {id: snapshot.id, savedAt: snapshot.createdAt, revision, datasetVersion: snapshot.dataset.version, datasetFingerprint: result.fingerprint, scenario: result.scenario},
+      snapshot: {id: snapshot.id, savedAt: snapshot.createdAt, revision, datasetFingerprint: result.fingerprint, scenario: result.scenario},
       datasetLabelledSynthetic: snapshot.dataset.synthetic,
       analysisScope: 'Explicit saved inputs; no current dataset or scenario is changed',
       currentDatasetDiffers: current ? stable(current) !== stable(snapshot.dataset) : null,

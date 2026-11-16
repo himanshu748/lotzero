@@ -7,12 +7,12 @@ const questions: { id: AnalystQuestion; label: string; assertion?: string }[] =
   [
     {
       id: "destination",
-      label: "Why did shipment-destination fail?",
+      label: "Explain the missing destination",
       assertion: "shipment-destination",
     },
     {
       id: "origins",
-      label: "Which lots are UNKNOWN and why?",
+      label: "Which origins need more evidence?",
       assertion: "ingredient-origin",
     },
     { id: "hold", label: "What did the WH-NORTH hold change?" },
@@ -65,8 +65,7 @@ export default function AnalystHandoff({
         <Badge value="Read-only" />
       </div>
       <p>
-        Ask Recall rehearsal analyst to explain this saved revision, citing the
-        same records and evidence.
+        Ask why a finding needs attention or what the simulated hold changed. The analyst reads this saved rehearsal and cites the records behind its answer.
       </p>
       <div
         className="analyst-questions"

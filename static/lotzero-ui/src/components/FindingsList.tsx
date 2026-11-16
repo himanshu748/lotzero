@@ -5,6 +5,7 @@ import type {
   DrillResult,
 } from "../../../../src/contracts";
 import { orderedAssertions } from "../../../../src/scenarios/first-finding";
+import { findingTitle, findingPopulation } from "../finding-copy";
 import { Badge } from "./Primitives";
 
 export default function FindingsList({
@@ -15,7 +16,7 @@ export default function FindingsList({
 }: {
   result: DrillResult;
   selected: AssertionId | null;
-  onSelect: (id: AssertionId) => void;
+  onSelect: (id: AssertionId, recordId?: string) => void;
   focusKey: number;
 }) {
   const [expanded, setExpanded] = useState(false);
@@ -36,11 +37,9 @@ export default function FindingsList({
           onClick={() => onSelect(assertion.id)}
         >
           <Badge value={assertion.status} />
-          <strong>{assertion.title}</strong>
+          <strong title={assertion.title}>{findingTitle(assertion)}</strong>
           <span>
-            {assertion.checked
-              ? `${assertion.passed} of ${assertion.checked} satisfy`
-              : "Not evaluated"}
+            {findingPopulation(assertion)}
           </span>
           <code>
             {assertion.counterexamples[0]?.recordIds.join(", ") ||
@@ -49,6 +48,24 @@ export default function FindingsList({
                 : "No applicable record")}
           </code>
         </button>
+        {selected === assertion.id && assertion.counterexamples.length > 1 && (
+          <details className="finding-counterexamples">
+            <summary>Records to review ({assertion.counterexamples.length})</summary>
+            <ul>
+              {assertion.counterexamples.map((gap, index) => (
+                <li key={`${gap.id}-${index}`}>
+                  <p>{gap.message}</p>
+                  {gap.recordIds.map(id => (
+                    <button key={id} onClick={() => onSelect(assertion.id, id)}>
+                      Inspect counterexample {id}
+                    </button>
+                  ))}
+                  {!gap.recordIds.length && <p>No applicable record was supplied.</p>}
+                </li>
+              ))}
+            </ul>
+          </details>
+        )}
       </li>
     );
   }

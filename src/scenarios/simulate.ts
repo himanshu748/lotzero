@@ -4,6 +4,7 @@ import { normalizeQuantity } from '../graph/quantities';
 export function simulate(shipments:RecordNode[],scenario:Scenario,interventions:Intervention[],graph:Graph):Simulation{
   const historicalShipmentIds:string[]=[],preventableShipmentIds:string[]=[],remainingShipmentIds:string[]=[],notes:string[]=[];
   const at=Date.parse(scenario.at),stockRemaining=new Map<string,number>();
+  const supportedNode=(node:RecordNode|undefined,kind:RecordNode['kind'])=>Boolean(node&&node.kind===kind&&!graph.ambiguous.has(node.id)&&node.evidence.length>0&&node.evidence.every(id=>graph.evidence.has(id)));
   // Allocate explicit recorded stock in scheduled movement order. Equal times use stable IDs.
   const orderedShipments=[...shipments].sort((a,b)=>(a.occurredAt?Date.parse(a.occurredAt):Infinity)-(b.occurredAt?Date.parse(b.occurredAt):Infinity)||lexical(a.id,b.id));
   for(const shipment of orderedShipments){
@@ -13,7 +14,8 @@ export function simulate(shipments:RecordNode[],scenario:Scenario,interventions:
     const stock=graph.edges.filter(e=>e.relation==='stores'&&e.from===shipment.lotId&&e.to===shipment.warehouseId);
     const origins=graph.edges.filter(e=>e.relation==='ships'&&e.to===shipment.id);
     const stockEntry=stock[0],quantity=shipment.quantity?normalizeQuantity(shipment.quantity):undefined,available=stockEntry?.quantity?normalizeQuantity(stockEntry.quantity):undefined;
-    const validStock=stock.length===1&&stockEntry.certainty==='confirmed'&&stockEntry.evidence.length>0&&stockEntry.evidence.every(x=>graph.evidence.has(x))&&origins.length===1&&origins[0].from===shipment.lotId&&origins[0].certainty==='confirmed'&&origins[0].evidence.length>0&&origins[0].evidence.every(x=>graph.evidence.has(x))&&Boolean(quantity&&available?.unit===quantity.unit);
+    const supportedRecords=supportedNode(shipment,'shipment')&&supportedNode(shipment.lotId?graph.nodes.get(shipment.lotId):undefined,'product')&&supportedNode(shipment.warehouseId?graph.nodes.get(shipment.warehouseId):undefined,'warehouse');
+    const validStock=supportedRecords&&stock.length===1&&stockEntry.certainty==='confirmed'&&stockEntry.evidence.length>0&&stockEntry.evidence.every(x=>graph.evidence.has(x))&&origins.length===1&&origins[0].from===shipment.lotId&&origins[0].certainty==='confirmed'&&origins[0].evidence.length>0&&origins[0].evidence.every(x=>graph.evidence.has(x))&&Boolean(quantity&&available?.unit===quantity.unit);
     const stockKey=`${shipment.lotId}:${shipment.warehouseId}`;
     const remaining=stockRemaining.get(stockKey)??available?.value??NaN;
     const coversWholeShipment=Boolean(validStock&&quantity&&Number.isFinite(remaining)&&remaining>=quantity.value);
@@ -22,7 +24,7 @@ export function simulate(shipments:RecordNode[],scenario:Scenario,interventions:
       if(effective.some(a=>a.type==='hold'&&a.targetId===shipment.id))preventable=true;
       else if(effective.some(a=>a.type==='quarantine'&&a.targetId===shipment.warehouseId)){
         if(coversWholeShipment)preventable=true;
-        else notes.push(`${shipment.id}: unique evidenced stock, usable lot, compatible quantity, or sufficient remaining stock is missing; whole-shipment quarantine prevention is unknown.`);
+        else notes.push(`${shipment.id}: unambiguous evidenced shipment, lot and warehouse records, unique evidenced stock, compatible quantity, or sufficient remaining stock is missing; whole-shipment quarantine prevention is unknown.`);
       }
     }else if(!shipment.quantity||shipment.quantity.value<=0)notes.push(`${shipment.id}: positive shipment quantity is unknown; prevention is not claimed.`);
     // Reserve stock for every scheduled movement, including movements before a proposed control.

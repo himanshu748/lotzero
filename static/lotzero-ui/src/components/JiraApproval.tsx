@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import type { JiraAction, Snapshot, Project } from "../../../../src/contracts";
+import type { JiraAction, Snapshot, Project, AssertionId } from "../../../../src/contracts";
+import { findingTitle } from "../finding-copy";
 import { client, localMode } from "../client";
 import { groupActions } from "../../../../src/services/action-findings";
 import { Badge, Empty, Icon, JiraIssueLink } from "./Primitives";
@@ -102,11 +103,11 @@ export default function JiraApproval({
                 }
                 className="action-group"
                 key={group.id}
-                aria-label={group.title}
+                aria-label={findingTitle({...group, id: group.id as AssertionId})}
               >
                 <summary className="action-group-heading">
                   <Badge value={group.status} />
-                  <h3>{group.title}</h3>
+                  <h3>{findingTitle({...group, id: group.id as AssertionId})}</h3>
                   <span>
                     {group.actions.length} proposed
                     {group.actions.some((a) => a.status === "uncertain")
@@ -255,8 +256,7 @@ export default function JiraApproval({
             </p>
           )}
           <p>
-            Only the selected simulated-drill tasks will be created. No recall
-            action is executed.
+            Select a task above, review its description, then choose the Jira project and issue type. Only your selected and approved tasks are created. No recall action is executed.
           </p>
           <label>
             Jira project

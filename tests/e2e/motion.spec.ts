@@ -98,6 +98,7 @@ test("reduced-motion import has explicit pending and completion, then keyboard e
   await expect(
     page.getByRole("heading", { name: "New drill", exact: true }),
   ).toBeFocused();
+  await page.getByLabel("Scenario effective time (UTC)").fill("2026-10-28T09:00");
   await page
     .getByRole("button", { name: "Run rehearsal", exact: true })
     .click();

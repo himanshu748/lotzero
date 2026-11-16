@@ -5,7 +5,7 @@ import type {
   RecordNode,
   TraceEntry,
 } from "../../../../src/contracts";
-import { traceGraph } from "../../../../src/graph/engine";
+import { buildGraph, traverse } from "../../../../src/graph/core";
 import { Badge, Icon } from "./Primitives";
 import "../styles/trace.css";
 const groups = [
@@ -74,12 +74,16 @@ export default function Impact({
     observer.observe(graph);
     return () => observer.disconnect();
   }, [mode]);
+  const graph = useMemo(() => buildGraph(dataset), [dataset]);
+  const selectedNode = graph.nodes.get(selected);
   const trace = useMemo(
     () =>
       direction === "forward"
         ? result.trace
-        : traceGraph(dataset, selected, "backward"),
-    [dataset, result, direction, selected],
+        : selectedNode
+          ? traverse(graph, selected, "backward")
+          : [],
+    [graph, result, direction, selected, selectedNode],
   );
   const entries = useMemo(
     () => new Map(trace.map((x) => [x.nodeId, x])),
@@ -87,12 +91,10 @@ export default function Impact({
   );
   const nodes = useMemo(
     () =>
-      [
-        ...new Map(
-          dataset.nodes.filter((n) => entries.has(n.id)).map((n) => [n.id, n]),
-        ).values(),
-      ].sort((a, b) => a.id.localeCompare(b.id)),
-    [dataset, entries],
+      [...graph.nodes.values()]
+        .filter((n) => entries.has(n.id))
+        .sort((a, b) => a.id.localeCompare(b.id)),
+    [graph, entries],
   );
   const positions = new Map<string, { x: number; y: number }>();
   groups.forEach((g, col) =>
@@ -106,7 +108,6 @@ export default function Impact({
     430,
     ...[...positions.values()].map((p) => p.y + 105),
   );
-  const selectedNode = dataset.nodes.find((n) => n.id === selected);
   const selectedEntry =
     entries.get(selected) ?? result.trace.find((t) => t.nodeId === selected);
   const forwardEntries = new Map(
@@ -116,11 +117,7 @@ export default function Impact({
     mode === "path" ? pathTarget : selected,
   );
   const pathIds = new Set(supportingEntry?.path ?? []);
-  const pathEdges = new Set(
-    (supportingEntry?.path ?? [])
-      .slice(1)
-      .map((id, i) => JSON.stringify([supportingEntry!.path[i], id])),
-  );
+  const pathEdges = new Set(supportingEntry?.edgeIds ?? []);
   const normalizedQuery = query.trim().toLocaleLowerCase();
   const matches = normalizedQuery
     ? nodes.filter((node) =>
@@ -255,17 +252,20 @@ export default function Impact({
                 }
               >
                 <option value="forward">Downstream from source</option>
-                <option value="backward">Origins of selected record</option>
+                <option value="backward" disabled={!selectedNode}>
+                  Origins of selected record
+                </option>
               </select>
             </label>
           )}
         </div>
         <button
           className="selected-evidence-jump"
+          disabled={!selectedNode}
           onClick={() => inspectorHeadingRef.current?.focus()}
         >
           <span>
-            View <strong>{selected}</strong> evidence
+            View <strong>{selected || "record"}</strong> evidence
           </span>
           <Icon name="arrow" size={16} />
         </button>
@@ -274,9 +274,11 @@ export default function Impact({
             <div className="map-controls">
               <p>
                 {direction === "backward" ? (
-                  <>
-                    Origins traced from <strong>{selected}</strong>
-                  </>
+                  selectedNode ? (
+                    <>Origins traced from <strong>{selected}</strong></>
+                  ) : (
+                    "Select a record to trace its origins"
+                  )
                 ) : supportingEntry && supportingEntry.path.length > 1 ? (
                   <>
                     <span className="path-swatch" /> Path to{" "}
@@ -354,16 +356,17 @@ export default function Impact({
                         />
                       </marker>
                     </defs>
-                    {dataset.edges
+                    {graph.edges
                       .filter(
                         (e) => positions.has(e.from) && positions.has(e.to),
                       )
-                      .map((e, i) => {
+                      .map((e) => {
                         const a = positions.get(e.from)!,
                           b = positions.get(e.to)!;
                         return (
                           <path
-                            key={`${e.id}-${i}`}
+                            key={e.id}
+                            data-edge-id={e.id}
                             d={`M${a.x + 182},${a.y + 35} C${a.x + 210},${
                               a.y + 35
                             } ${b.x - 28},${b.y + 35} ${b.x},${b.y + 35}`}
@@ -371,14 +374,14 @@ export default function Impact({
                             stroke={
                               e.certainty === "confirmed"
                                 ? direction === "forward" &&
-                                  pathEdges.has(JSON.stringify([e.from, e.to]))
+                                  pathEdges.has(e.id)
                                   ? "var(--ds-border-selected, #0c66e4)"
                                   : "var(--ds-border-bold, #8590a2)"
                                 : "var(--ds-border-warning, #b38600)"
                             }
                             strokeWidth={
                               direction === "forward" &&
-                              pathEdges.has(JSON.stringify([e.from, e.to]))
+                              pathEdges.has(e.id)
                                 ? 3
                                 : 1.5
                             }
@@ -424,7 +427,7 @@ export default function Impact({
           </>
         ) : mode === "path" ? (
           <PathFocus
-            dataset={dataset}
+            records={graph.nodes}
             entry={supportingEntry}
             entries={forwardEntries}
             selected={selected}
@@ -492,29 +495,35 @@ export default function Impact({
   );
 }
 function PathFocus({
-  dataset,
+  records,
   entry,
   entries,
   selected,
   onSelect,
 }: {
-  dataset: Dataset;
+  records: Map<string, RecordNode>;
   entry?: TraceEntry;
   entries: Map<string, TraceEntry>;
   selected: string;
   onSelect: (id: string) => void;
 }) {
-  const records = new Map(dataset.nodes.map((node) => [node.id, node]));
   return (
     <section className="path-focus" aria-label="Selected supporting path">
       <header className="path-focus-header">
         <p className="eyebrow">ONE RECORDED PATH</p>
         <h2>
-          From source to <span>{entry?.nodeId ?? selected}</span>
+          {entry ? (
+            <>From source to <span>{entry.nodeId}</span></>
+          ) : selected ? (
+            <>No supporting path to <span>{selected}</span></>
+          ) : (
+            "No supporting path selected"
+          )}
         </h2>
         <p>
-          Read the lineage, one record at a time. Select a step to inspect its
-          evidence.
+          {entry
+            ? "Read the lineage, one record at a time. Select a step to inspect its evidence."
+            : "The flow map and record table show the source’s reachable records."}
         </p>
       </header>
       {entry?.path.length ? (
@@ -531,6 +540,7 @@ function PathFocus({
                   className={selected === id ? "selected" : ""}
                   onClick={() => onSelect(id)}
                   aria-label={`Inspect ${id}`}
+                  aria-describedby={`path-step-${index}-description path-step-${index}-certainty`}
                   aria-pressed={selected === id}
                   aria-controls="record-evidence"
                 >
@@ -538,10 +548,16 @@ function PathFocus({
                     {node?.kind ?? "Unresolved record"}
                   </span>
                   <strong>{id}</strong>
-                  <span className="path-step-label">
+                  <span
+                    className="path-step-label"
+                    id={`path-step-${index}-description`}
+                  >
                     {node?.label ?? "No source record supplied"}
                   </span>
-                  <Badge value={entries.get(id)?.certainty ?? "unknown"} />
+                  <span id={`path-step-${index}-certainty`}>
+                    <span className="sr-only">Association: </span>
+                    <Badge value={entries.get(id)?.certainty ?? "unknown"} />
+                  </span>
                 </button>
               </li>
             );
@@ -555,8 +571,9 @@ function PathFocus({
       <p className="path-context-note">
         <Icon name="graph" size={17} />
         <span>
-          This is one supporting path. The flow map retains the other recorded
-          associations; uncertainty remains visible.
+          {entry
+            ? "This is one supporting path. The flow map retains the other recorded associations; uncertainty remains visible."
+            : "Missing paths remain unknown. A disconnected record is not evidence of safety."}
         </span>
       </p>
     </section>
@@ -575,9 +592,13 @@ function Inspector({
 }) {
   if (!node)
     return (
-      <aside id="record-evidence" className="panel inspector">
+      <aside
+        id="record-evidence"
+        className="panel inspector"
+        aria-label="Selected record evidence"
+      >
         <h2>Record evidence</h2>
-        <p>Select a record.</p>
+        <p>Select a record in the flow map or table to inspect its evidence.</p>
       </aside>
     );
   const refs = [...new Set([...(entry?.evidence ?? []), ...node.evidence])];

@@ -13,6 +13,8 @@ const projectKey=z.string().regex(/^[A-Z][A-Z0-9_]{1,49}$/);
 const requestSchema=z.object({snapshotId:id,projectKey,issueTypeId:z.string().regex(/^\d+$/),actionIds:z.array(id).min(1).max(5).refine(a=>new Set(a).size===a.length),approved:z.literal(true),receiptsOnly:z.literal(true).optional()}).strict();
 export interface ActorContext {accountId?:string;extension?:{project?:{id?:string;key?:string}}}
 export type MutationRunner = <T>(work:()=>Promise<T>)=>Promise<T>;
+interface ActionClaim {actor:string;at:string;project:string;type:string;marker:string;phase?:'preparing'|'dispatching'}
+interface SavedRequestSnapshot extends Snapshot {saveRequest?:{id:string;signature:string}}
 export class Application {
   constructor(private store:Store,private jira:JiraGateway,private now:()=>string=()=>new Date().toISOString(),private uuid:()=>string=randomUUID,private runMutation:MutationRunner=work=>work()){}
   private async scope(context:ActorContext,admin=false){
@@ -66,8 +68,9 @@ export class Application {
     const key=`${prefix}receipt:${data.snapshotId}:${data.actionId}`;
     const action=await this.store.get<JiraAction>(key);
     if(!action||action.status!=='uncertain')throw new Error('No uncertain receipt to reconcile.');
-    const claim=await this.store.get<{marker:string}>(`${prefix}claim:${data.snapshotId}:${data.actionId}`);
+    const claim=await this.store.get<ActionClaim>(`${prefix}claim:${data.snapshotId}:${data.actionId}`);
     if(!claim)throw new Error('Approval marker is missing.');
+    if(claim.phase==='preparing')throw new Error('Jira was not contacted for this action. Review and approve it again to retry.');
     const verified=await this.jira.verifyIssue(data.issueKey,claim.marker);
     const {error:_,...original}=action;
     const receipt:JiraAction={...original,status:'created',issueKey:verified.key,issueUrl:verified.url};
@@ -75,9 +78,21 @@ export class Application {
     return receipt;
   }
   private async audit(prefix:string,actor:string,event:string){await this.store.set(`${prefix}audit:${this.now()}:${this.uuid()}`,{at:this.now(),actor,event},90);}
+  private async saveAudit(prefix:string,snapshot:Snapshot){
+    const key=`${prefix}audit:save:${snapshot.id}`;
+    if(!await this.store.get(key))await this.store.set(key,{at:snapshot.createdAt,actor:snapshot.initiator,event:`Saved drill ${snapshot.id}`},90);
+  }
+  private async visibleReceipt(prefix:string,snapshotId:string,receipt:JiraAction):Promise<JiraAction>{
+    if(receipt.status==='created')return receipt;
+    const claim=await this.store.get<ActionClaim>(`${prefix}claim:${snapshotId}:${receipt.id}`);
+    if(claim?.phase==='preparing'&&receipt.status==='uncertain')return {...receipt,status:'failed',error:'Jira was not contacted. Review and approve this action again to retry.'};
+    if(claim?.phase==='dispatching'&&receipt.status==='failed')return {...receipt,status:'uncertain',error:`Outcome pending or unknown. Search Jira label ${claim.marker}; do not recreate automatically.`};
+    return receipt;
+  }
   private async hydrate(prefix:string,snapshot:Snapshot){
     const receipts=await this.store.list<JiraAction>(`${prefix}receipt:${snapshot.id}:`);
-    return {...snapshot,actions:receipts.map(r=>r.value).sort((a,b)=>a.id.localeCompare(b.id))};
+    const actions=await Promise.all(receipts.map(r=>this.visibleReceipt(prefix,snapshot.id,r.value)));
+    return {...snapshot,actions:actions.sort((a,b)=>a.id.localeCompare(b.id))};
   }
   async bootstrap(context:ActorContext):Promise<Bootstrap>{
     const {prefix,project}=await this.scope(context);
@@ -103,16 +118,27 @@ export class Application {
     await this.store.set(`${prefix}dataset`,dataset); await this.audit(prefix,actor,`Imported dataset ${dataset.version}`); return this.bootstrap(context);
   }
   private async saveDrillLocked(context:ActorContext,payload:unknown):Promise<Snapshot>{
-    const data=z.object({scenario:scenarioSchema,interventions:z.array(interventionSchema).max(30),expectedFingerprint:z.string().min(1).max(100)}).strict().parse(payload);
+    const data=z.object({scenario:scenarioSchema,interventions:z.array(interventionSchema).max(30),expectedFingerprint:z.string().min(1).max(100),requestId:id.optional()}).strict().parse(payload);
     const {prefix,actor}=await this.scope(context);
+    // New clients retain this ID across response loss. Legacy clients remain accepted.
+    const signature=createHash('sha256').update(JSON.stringify({scenario:data.scenario,interventions:data.interventions,expectedFingerprint:data.expectedFingerprint})).digest('hex');
+    const snapshotId=data.requestId?`save-${createHash('sha256').update(JSON.stringify([prefix,actor,data.requestId])).digest('hex')}`:this.uuid();
+    if(data.requestId){
+      const existing=await this.store.get<SavedRequestSnapshot>(`${prefix}snapshot:${snapshotId}`);
+      if(existing){
+        if(existing.saveRequest?.id!==data.requestId||existing.saveRequest.signature!==signature)throw new Error('This save request ID was already used for a different rehearsal. Run a fresh rehearsal before saving.');
+        await this.saveAudit(prefix,existing);
+        return this.hydrate(prefix,existing);
+      }
+    }
     const dataset=await this.store.get<Dataset>(`${prefix}dataset`); if(!dataset)throw new Error('Load a dataset first.');
     const records=await this.store.list<Snapshot>(`${prefix}snapshot:`);if(records.length>=25)throw new Error('25 saved drills reached. Export and delete project data before saving more.');
     const result=runDrill(dataset,data.scenario,data.interventions);
     if(result.fingerprint!==data.expectedFingerprint)throw new Error('The dataset changed after this drill was reviewed. Run a fresh drill before saving.');
-    const snapshot:Snapshot={id:this.uuid(),createdAt:this.now(),initiator:actor,dataset,result,actions:[]};
+    const snapshot:SavedRequestSnapshot={id:snapshotId,createdAt:this.now(),initiator:actor,dataset,result,actions:[],...(data.requestId?{saveRequest:{id:data.requestId,signature}}:{})};
     if(Buffer.byteLength(JSON.stringify(snapshot),'utf8')>230_000)throw new Error('Drill snapshot exceeds storage limit. Reduce the dataset.');
     await this.store.set(`${prefix}snapshot:${snapshot.id}`,snapshot,90);
-    await this.audit(prefix,actor,`Saved drill ${snapshot.id}`);return snapshot;
+    await this.saveAudit(prefix,snapshot);return snapshot;
   }
   async previewActions(context:ActorContext,payload:unknown){
     const {snapshotId}=z.object({snapshotId:id}).strict().parse(payload);
@@ -147,14 +173,26 @@ export class Application {
       // Target project/type cannot be changed to bypass a previously claimed snapshot action.
       const key=`${prefix}receipt:${snapshot.id}:${actionId}`;const claimKey=`${prefix}claim:${snapshot.id}:${actionId}`;
       const existing=await this.store.get<JiraAction>(key);
-      if(existing?.status==='created'||existing?.status==='uncertain'){results.push(existing);continue;}
-      const marker=`lotzero-${createHash('sha256').update(`${prefix}${snapshot.id}:${actionId}`).digest('hex').slice(0,24)}`;
+      const priorClaim=await this.store.get<ActionClaim>(claimKey);
+      if(existing?.status==='created'){results.push(existing);continue;}
+      const marker=priorClaim?.marker??`lotzero-${createHash('sha256').update(`${prefix}${snapshot.id}:${actionId}`).digest('hex').slice(0,24)}`;
       const uncertain:JiraAction={...action,status:'uncertain',error:`Outcome pending or unknown. Search Jira label ${marker}; do not recreate automatically.`};
-      if(!await this.store.claim(claimKey,{actor,at:this.now(),project:data.projectKey,type:data.issueTypeId,marker})){
+      // Only an explicit pre-send state is resumable. Missing phase is a legacy,
+      // potentially attempted request and retains its conservative meaning.
+      if((priorClaim&&priorClaim.phase!=='preparing')||(existing?.status==='uncertain'&&priorClaim?.phase!=='preparing')){
+        results.push(existing?.status==='uncertain'?existing:uncertain);continue;
+      }
+      if(priorClaim&&(priorClaim.project!==data.projectKey||priorClaim.type!==data.issueTypeId))throw new Error('Retry this approved action with its original Jira project and issue type.');
+      const claim:ActionClaim={actor,at:this.now(),project:data.projectKey,type:data.issueTypeId,marker,phase:'preparing'};
+      if(!priorClaim&&!await this.store.claim(claimKey,claim)){
         results.push(await this.store.get<JiraAction>(key)??uncertain);continue;
       }
-      // Persist uncertainty and approval BEFORE crossing the Jira boundary.
+      // The project mutation lock excludes concurrent resumptions. Receipt/audit
+      // failures leave the preparing claim recoverable without deleting it.
       await this.store.set(key,uncertain);await this.audit(prefix,actor,`Approved ${snapshot.id}/${actionId} for ${data.projectKey}; ${marker}`);
+      // Persist the conservative boundary immediately before calling the gateway.
+      // If this write commits but its response is lost, never retry automatically.
+      await this.store.set(claimKey,{...claim,phase:'dispatching'});
       let receipt:JiraAction;
       try{
         const created=await this.jira.create(data.projectKey,data.issueTypeId,action,marker);
@@ -174,7 +212,11 @@ export class Application {
     const {prefix}=await this.scope(context,true);
     // Do not race an active approval. Unknown outcomes require reconciliation before reset.
     const receipts=await this.store.list<JiraAction>(`${prefix}receipt:`);
-    if(receipts.some(r=>r.value.status==='uncertain'))throw new Error('Unresolved Jira outcomes must be reconciled before deleting project data.');
+    const claims=await this.store.list<ActionClaim>(`${prefix}claim:`);
+    const claimByReceipt=new Map(claims.map(c=>[c.key.replace(`${prefix}claim:`,`${prefix}receipt:`),c.value]));
+    const receiptByClaim=new Map(receipts.map(r=>[r.key.replace(`${prefix}receipt:`,`${prefix}claim:`),r.value]));
+    if(receipts.some(r=>(r.value.status==='uncertain'&&claimByReceipt.get(r.key)?.phase!=='preparing')||(r.value.status==='failed'&&claimByReceipt.get(r.key)?.phase==='dispatching'))||
+      claims.some(c=>c.value.phase!=='preparing'&&!receiptByClaim.has(c.key)))throw new Error('Unresolved Jira outcomes must be reconciled before deleting project data.');
     await this.store.set(`${prefix}resetting`,{at:this.now()});
     await this.store.deletePrefix(prefix,[`${prefix}mutation-lock`,`${prefix}resetting`]);
     await this.store.delete(`${prefix}resetting`);

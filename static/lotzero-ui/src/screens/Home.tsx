@@ -24,7 +24,7 @@ export default function Home({ desk }: { desk: ReturnTypeOfUseRehearsal }) {
     <>
       <header className="home-heading">
         <h1 tabIndex={-1}>Recall rehearsal</h1>
-        <p>Load a lot, test what the records can prove, and assign the gaps.</p>
+        <p>Practice tracing an ingredient to its shipments. Find missing records and review the follow-up work.</p>
       </header>
       <div className="home-actions">
         {active ? (
@@ -81,6 +81,7 @@ export default function Home({ desk }: { desk: ReturnTypeOfUseRehearsal }) {
         </p>
       )}
       <section className="ledger" aria-labelledby="ledger-title">
+        <p className="field-help">{data.snapshots.length} of 25 saved rehearsals. Jira reports expire 90 days after saving; export a report from Follow-up to keep a copy.</p>
         <div className="section-heading">
           <h2 id="ledger-title">Saved rehearsals</h2>
           {data.snapshots.length > 0 && (

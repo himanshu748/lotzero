@@ -196,3 +196,34 @@ test("host-style dark tokens remain readable and the actual font fallback is ins
     ).violations,
   ).toEqual([]);
 });
+
+test("all origin counterexamples are inspectable and a manual drill needs its own clock", async ({page}) => {
+  await sample(page);
+  await page.locator('.finding-row').filter({hasText:'Ingredient origins need evidence'}).click();
+  await page.locator('.finding-counterexamples summary').click();
+  for (const id of ['FG-102','FG-201','FG-404']) {
+    await page.getByRole('button', {name:`Inspect counterexample ${id}`,exact:true}).click();
+    await expect(page.getByRole('complementary',{name:'Selected record evidence'}).getByRole('heading',{name:id,exact:true})).toBeVisible();
+  }
+  await expect(page.getByRole('region',{name:'Selected supporting path'})).toContainText('No supporting path to FG-404');
+  await page.getByRole('button',{name:'LotZero Home',exact:true}).click();
+  await expect(page.getByText(/of 25 saved rehearsals/)).toBeVisible();
+  await page.getByRole('button',{name:'Start a new drill',exact:true}).click();
+  await expect(page.getByLabel('Scenario effective time (UTC)')).toHaveValue('');
+  await expect(page.getByRole('button',{name:'Run rehearsal',exact:true})).toBeDisabled();
+  await page.getByLabel('Scenario effective time (UTC)').fill('2026-11-16T09:00');
+  await expect(page.getByRole('button',{name:'Run rehearsal',exact:true})).toBeEnabled();
+});
+
+test('unsaved Follow-up offers explicit saving without silently persisting', async ({page}) => {
+  await page.setViewportSize({width:390,height:844});
+  await sample(page);
+  await page.getByRole('navigation',{name:'Rehearsal navigation'}).getByRole('button',{name:'Follow-up',exact:true}).click();
+  const dialog=page.getByRole('dialog');
+  await expect(dialog.getByRole('heading')).toHaveText('Save this rehearsal for follow-up?');
+  await dialog.getByRole('button',{name:'Keep inspecting'}).click();
+  expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('lotzero.local.v1')!).snapshots.length)).toBe(0);
+  await page.getByRole('navigation',{name:'Rehearsal navigation'}).getByRole('button',{name:'Follow-up',exact:true}).click();
+  await page.getByRole('dialog').getByRole('button',{name:'Save and follow up'}).click();
+  await expect(page.getByRole('heading',{name:'Follow-up',exact:true})).toBeVisible();
+});

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "@atlaskit/button/new";
 import { useRehearsal } from "./hooks/useRehearsal";
 import { useHostTheme } from "./hooks/useHostTheme";
@@ -14,6 +14,7 @@ import { recoveryFor } from "./recovery";
 
 export default function App() {
   const desk = useRehearsal();
+  const [saveChoice, setSaveChoice] = useState(false);
   useHostTheme();
   const heading = useRef<HTMLDivElement>(null);
   const active = desk.active;
@@ -101,12 +102,9 @@ export default function App() {
                 Rehearse
               </button>
               <button
-                disabled={busy || !active.snapshot}
+                disabled={busy}
                 aria-current={desk.screen === "follow-up" ? "step" : undefined}
-                title={
-                  !active.snapshot ? "Save and follow up first" : undefined
-                }
-                onClick={desk.followUp}
+                onClick={() => active.snapshot ? desk.followUp() : setSaveChoice(true)}
               >
                 Follow-up
               </button>
@@ -131,6 +129,16 @@ export default function App() {
           </>
         ) : null}
       </div>
+      {saveChoice && (
+        <ConfirmDialog titleId="save-choice-title" onClose={() => setSaveChoice(false)}>
+          <h2 id="save-choice-title">Save this rehearsal for follow-up?</h2>
+          <p>Save the current inputs and findings before reviewing Jira proposals. This does not create any Jira issues.</p>
+          <div className="button-row">
+            <Button onClick={() => setSaveChoice(false)}>Keep inspecting</Button>
+            <Button appearance="primary" onClick={() => {setSaveChoice(false); desk.followUp();}}>Save and follow up</Button>
+          </div>
+        </ConfirmDialog>
+      )}
       {desk.confirmation && (
         <ConfirmDialog
           alert
