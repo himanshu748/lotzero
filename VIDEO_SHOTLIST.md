@@ -1,33 +1,25 @@
-# LotZero — The first gap, 2:45 demo plan
+# LotZero — Jira and Rovo only, 2:30 edit draft
 
-Planning only: no recording, narration, editing session or publication performed. Capture after the owner promotes and verifies the matching Forge build. Keep the current live demo intact. Use browser/computer capture and edit in Cardboard (`cb` CLI or MCP, after checking its installed contract).
+**Edit files only, per the owner's 16 November choice.** Cardboard remains the required editor and is not installed/connected in this session. No new recording, audio generation, video rendering or publishing is performed by this package. Keep the live video untouched. See [Cardboard handoff](docs/demo-jira-rovo/README.md) and [timed captions](docs/demo-jira-rovo/captions-draft.srt).
 
-| Time | Actual capture | Narration / caption point |
+| Time | Real Jira surface | Story / editing direction |
 |---|---|---|
-| 0:00–0:12 | Jira project → LotZero, empty Home; visible Synthetic label | “Can your records explain every shipment—and show where the evidence stops?” |
-| 0:12–0:28 | One activation of Run Northstar sample (synthetic); destination FAIL is focused | “Start a mock recall. ING-A19 reached these recorded shipments. SHIP-002 has no recorded destination.” No install-speed claim. |
-| 0:28–0:48 | Selected path ING-A19 → BATCH-101 → FG-101 → SHIP-002; inspector destination/evidence IDs | “The first gap is already selected. Follow the material and inspect the evidence behind the finding.” Hold on IDs long enough to read. |
-| 0:48–1:02 | Select origin UNKNOWN, show real counterexample record | “Incomplete origin evidence stays UNKNOWN. A path is association, not proof of contamination. UNKNOWN never means safe.” |
-| 1:02–1:23 | Rehearse; WH-NORTH prefill; explicit Add with EV-DRILL; comparison | “Rehearse a warehouse control. SHIP-002 is potentially preventable in the simulation. Historical SHIP-001 remains in impact.” No operational hold implied. |
-| 1:23–1:43 | Save and follow up; destination proposal first, expand exact description | “Save the case. Review the most direct follow-up first. Nothing is selected or approved for you.” Show a permitted project/type only on the authorised native capture. |
-| 1:43–2:10 | Ask the analyst → destination question → Rovo, genuine response plus record/evidence citations | “The analyst explains this saved revision using the same evidence. Check the assertion, shipment and evidence IDs.” This requires a separate approved model-prompt allowance; if unavailable, capture the labelled deterministic fallback and revise narration. Never stage an answer. |
-| 2:10–2:30 | Explicit Jira approval and genuine receipt, only if authorised; otherwise clearly labelled existing receipt | “Only your approval and Jira permissions create follow-up work. Receipts keep retries attached to the original action.” A new issue needs separate authority. |
-| 2:30–2:40 | Reopen saved rehearsal; exports disclosure; one limits disclosure | “The case stays reproducible. Timing is not measured. These are synthetic records, not a safety certification.” |
-| 2:40–2:45 | Clean close and existing Forge installation instruction | “Rehearse the recall. Find the gaps before they matter.” Browser preview is labelled separately. |
-
-The first 60 seconds must establish the product through the destination gap, path and UNKNOWN counterexample. Do not lead with install footage, a poster, repeated metrics or an audit chronology. If access/setup is shown, label cuts and time compression.
+| 0:00–0:05 | LotZero Home inside Jira; synthetic label | “A mock recall starts with one ingredient lot.” One brief Jira context shot; no logo animation, landing page or browser-preview footage. |
+| 0:05–0:24 | Activate Northstar sample once; selected SHIP-002 destination FAIL | “ING-A19 reaches four recorded shipments. SHIP-002 has no recorded destination.” Arrive at value immediately. Counts must match the captured result. |
+| 0:24–0:43 | Selected path and SHIP-002 inspector | Hold ING-A19 → BATCH-101 → FG-101 → SHIP-002, then EV-MASTER. Use a readable evidence crop while retaining Jira context on entry. |
+| 0:43–0:58 | Ingredient-origin UNKNOWN; counterexample records | “Some origins remain UNKNOWN. Missing evidence is a gap to investigate, never a safety conclusion.” Show the actual no-path state when relevant. |
+| 0:58–1:20 | Rehearse WH-NORTH; explicit Add; actual comparison | “Rehearse a warehouse control. SHIP-002 is potentially preventable. Historical SHIP-001 stays in impact.” Simulation only; no stock is held. |
+| 1:20–1:37 | Save and follow up; destination proposal first | Show saved ID/revision, expand actual issue description. Nothing preselected; choose the permitted project/type. Stop before Create: no new issue approval is included. |
+| 1:37–2:05 | Existing development Rovo WH-NORTH answer from history | Connect the hold to the saved analyst explanation. Use the genuine repaired 2.9.0 replay and show inline record/evidence IDs. Label it “Saved development answer · 2.9.0” if paired with a later UI build. Do not send a new question or portray a fresh response. The retained still is an excerpt, not a full answer capture. |
+| 2:05–2:22 | Reopen saved report; export contents | Explain reproducible inputs. Show actual export contents; do not imply successful downloaded-file delivery until verified. No historical LZR-1 receipt spliced in as this case's result. |
+| 2:22–2:30 | Real Jira selected path or Follow-up | “Rehearse the recall. Find the gaps before they matter.” On-screen: Synthetic rehearsal · no operational recall. No website CTA. |
 
 ## Thirty-second excerpt
 
-- **0–5:** Open empty Home. “A mock recall starts with a lot.”
-- **5–15:** Activate sample once; hold on destination FAIL and SHIP-002 path. “LotZero opens on the first gap: this shipment has no recorded destination.”
-- **15–24:** Inspector evidence IDs; select origin UNKNOWN. “See what the records establish—and what they cannot.”
-- **24–30:** Save and follow up, destination proposal first. “Review the work. Approve only what you choose.” On-screen: Synthetic rehearsal; no safety conclusion.
+0–5: Jira and one sample activation. 5–16: destination FAIL and SHIP-002 path. 16–24: EV-MASTER and UNKNOWN origin. 24–30: saved, unselected follow-up proposal. Caption: “Review the evidence. Choose the work.” No issue-creation claim.
 
-## Capture and edit checklist
+## Edit acceptance
 
-Capture a readable desktop Jira viewport; retain source clips and a build/version receipt. Hide unrelated accounts, tokens, real commercial records and inboxes. Keep interactions genuine and synthetic labels visible. No development-only feature in footage labelled production. Use deliberate holds and cuts to remove waiting, with no fabricated state change.
+Cardboard project, 16:9 1080p master and English SRT/VTT. Use cuts and brief holds, not decorative movement. Watch muted at half-size: SHIP-002, FAIL, UNKNOWN and evidence IDs must be legible. Captions stay under two short lines and clear of controls. Preserve synthetic/environment disclosures and source asset hashes. Cut waiting honestly; never manufacture a click or state change.
 
-Use Cardboard for the later approved edit, retaining the source project, 16:9 master, English SRT/VTT and captioned review export. Caption record IDs, FAIL/UNKNOWN and simulation language precisely. Leave a safe caption area, review every scene boundary and check the opening without sound.
-
-Generated narration uses **Deepgram exclusively**, using approved existing credentials/credits. No macOS `say`, alternative provider, credit purchase or upload is authorised. If access/credits are missing, report that blocker before generating audio. The script is not a claim that the new native flow or model answer has been captured.
+Narration, if later generated, is **Deepgram only**. Existing verified Deepgram audio may be reused only where its words still match the captured scene. Do not reuse the historical macOS voice, old metric claims or old-case receipt conclusion. New speech generation requires available authorised Deepgram access; no paid top-up.

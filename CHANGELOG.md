@@ -1,5 +1,15 @@
 # Changelog
 
+## Development only — clarity and ten-critic repairs, 17 November 2026
+
+- Shorter findings and review populations, explicit unsaved Follow-up choice, inspectable counterexamples and manual scenario time.
+- The selected shipment, four-record path and inspector stay together at the observed Jira laptop width. Analyst questions and task directions use the current user-facing language.
+- Incomplete/ambiguous evidence stays UNKNOWN; rejected graph relationships are excluded. Save retries recover one report; Jira preparation failures remain distinct from uncertain dispatch outcomes.
+- Neutral export wording, retention guidance, safer analyst projection and standalone app-only source export.
+- Development 2.11.0 verified; 308 tests and 29 browser cases passed. Production/public surfaces unchanged. Cardboard handoff files only, with no replacement recording or render.
+
+See [current verification and limits](docs/CRITIC_PASS_DEVELOPMENT_2026-11-16.md).
+
 ## Unreleased — The first gap, 15 November 2026
 
 - Four operational screens replace the marketing hero, duplicate summary/count regions, seven-item sidebar and overlapping journeys. The shell is split into screens, hooks and components.

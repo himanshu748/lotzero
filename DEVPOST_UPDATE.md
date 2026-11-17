@@ -6,7 +6,7 @@ File only. Use after the owner promotes and verifies the matching Forge build. T
 
 An ingredient lot number is a starting point. The harder question is whether your records explain every shipment it reached—and where that explanation stops.
 
-LotZero gives a food-manufacturing quality manager a mock-recall desk inside Jira. With one sample action, the fictional Northstar lot ING-A19 opens on the first gap: **SHIP-002 has no recorded destination**. Its path is already selected, from ingredient to batch to finished lot to shipment. The inspector keeps the supporting record and evidence IDs beside the finding.
+LotZero gives a food-manufacturing quality manager a mock-recall desk inside Jira. With one sample action, the fictional Northstar lot ING-A19 opens on the first gap: **SHIP-002 has no recorded destination**. The finding reads “Shipment destination missing” and makes the next actions explicit: inspect the records, rehearse a hold, or save for follow-up. Its path is already selected, from ingredient to batch to finished lot to shipment. The inspector keeps the supporting record and evidence IDs beside the finding.
 
 The assertions distinguish two different problems. Missing destination data fails a check. Incomplete origin evidence stays UNKNOWN. A path shows a recorded association; it does not establish contamination or safety. The manager can inspect another finding, open the full flow map or use the record table without losing the case.
 
@@ -22,10 +22,10 @@ Forge hosts the Jira project page, resolvers and saved evidence. Jira permission
 
 1. Install through the existing Forge link in the submission, reviewing its scopes as a Jira Cloud site administrator. Use a private test project and synthetic records.
 2. Open **Project → Apps → LotZero**. As project administrator, activate **Run Northstar sample (synthetic)**. Installation time is separate from this first-run journey.
-3. On **Rehearsal**, inspect destination FAIL / SHIP-002 and its four-record Selected path. Choose the origin UNKNOWN finding to inspect its counterexamples. Unknown never means safe.
+3. On **Rehearsal**, inspect destination FAIL / SHIP-002 and its four-record Selected path. Choose **Ingredient origins need evidence** (UNKNOWN) to inspect every counterexample, including records with no usable path. Unknown never means safe.
 4. Choose **Rehearse a hold**. Verify the WH-NORTH suggestion has not been applied; explicitly add it with EV-DRILL. SHIP-001 remains historical. Save and follow up.
 5. Inspect the destination Task proposal. A real Jira write requires your site's permissions and explicit approval; do not approve unless you intend to create it. Receipt/retry and uncertain-outcome checks follow the owner release checklist.
-6. Where Rovo is already enabled, select the destination question and open it in Recall rehearsal analyst. Check its exact saved revision and cited IDs. If Rovo cannot open, inspect the labelled saved-record fallback. No plan change is required to use that evidence.
+6. Where Rovo is already enabled, select **Explain the missing destination** and open it in Recall rehearsal analyst. Check its exact saved revision and cited IDs. If Rovo cannot open, inspect the labelled saved-record fallback. No plan change is required to use that evidence.
 7. Reopen the saved rehearsal. Comparison and exports remain below Follow-up. Check allowed ordinary-member reads and denied-project access using permitted accounts.
 
 ## What we learned and what's next

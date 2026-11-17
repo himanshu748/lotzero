@@ -1,12 +1,12 @@
 # LotZero — owner promotion checklist
 
-**Development 2.9.0 is deployed; production remains gated.** Existing authentication and full lint passed. No install/tunnel/sharing/public change was performed. See [current native verification and limitations](docs/FIRST_GAP_DEVELOPMENT_2026-11-16.md) and [earlier local verification](docs/FIRST_GAP_VERIFICATION.md). The owner performs production promotion and Devpost edits. The later [export/trace receipt](docs/DEVELOPMENT_IO_TRACE_2026-11-16.md) closes native CSV paste content and the fourth response's action trace; downloaded-file delivery remains pending.
+**Development 2.11.0 is deployed; production remains gated.** Source `7993c31` passed the isolated build, full lint and development deployment. See [current native verification and limits](docs/CRITIC_PASS_DEVELOPMENT_2026-11-16.md). Actual native downloads passed on 2.9.0; the 2.11 repeat was interrupted. The owner performs any production promotion and public edits. No install/tunnel/sharing/public change occurred.
 
 ## Review the isolated candidate
 
 The prepared source directory is:
 
-`/Users/himanshujha/Documents/Codex/2026-10-28/files-pasted-by-the-user-master/outputs/lotzero-citation-repair-2026-11-16/lotzero`
+`/Users/himanshujha/Documents/Codex/2026-10-28/files-pasted-by-the-user-master/outputs/lotzero-clarity-2026-11-17/lotzero`
 
 Review its sibling `source-export.json` and the candidate manifest before running commands. The working app manifest preserves historical MCP development declarations and **must not be promoted wholesale**. The judge package must contain exactly:
 
@@ -28,7 +28,7 @@ Do not run the edition-selection/registration helper or change sharing/distribut
 ## Local commands in the reviewed package
 
 ```sh
-cd /Users/himanshujha/Documents/Codex/2026-10-28/files-pasted-by-the-user-master/outputs/lotzero-citation-repair-2026-11-16/lotzero
+cd /Users/himanshujha/Documents/Codex/2026-10-28/files-pasted-by-the-user-master/outputs/lotzero-clarity-2026-11-17/lotzero
 npm ci
 npm run typecheck
 npm test
@@ -41,7 +41,7 @@ Use Node 22.23.4. Dependencies are excluded from the export. Local package verif
 
 ## Development rehearsal — approved rollout completed
 
-The owner approved development-only rollout and native verification. The original redesign deployed as 2.8.0; the citation repair from `7a03736` deployed as 2.9.0. The installed development page updated without an install command. Saved reopening, complete proposals and the repaired handoff were checked after the update; the separately approved simulation replay then used inline identifiers with no fabricated citation links and retained the correct saved facts. Other remaining native checks are listed in the current development receipt. For a later explicitly approved development rollout, use the reviewed candidate directory:
+The owner approved development-only rollout and native verification. The ten-critic repairs deployed as 2.10.0, followed by the native-width and wording correction as **2.11.0**. The existing installation updated without an install command. The latest native check kept the first shipment/path/inspector together and reopened the saved case at the same revision. No new Jira write or Rovo prompt was used. The retained 2.9.0 Rovo replay is historical model evidence; see the current receipt for exact boundaries. For a later explicitly approved development rollout, use the reviewed candidate directory:
 
 ```sh
 npm run forge -- whoami

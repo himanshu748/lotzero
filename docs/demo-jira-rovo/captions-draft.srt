@@ -1,0 +1,72 @@
+1
+00:00:00,000 --> 00:00:05,000
+A mock recall starts with one ingredient lot.
+
+2
+00:00:05,000 --> 00:00:12,000
+ING-A19 reaches four recorded shipments.
+
+3
+00:00:12,000 --> 00:00:24,000
+SHIP-002 has no recorded destination.
+
+4
+00:00:24,000 --> 00:00:32,000
+Follow the recorded path to SHIP-002.
+
+5
+00:00:32,000 --> 00:00:43,000
+Inspect its evidence references.
+
+6
+00:00:43,000 --> 00:00:50,000
+Some origins remain UNKNOWN.
+
+7
+00:00:50,000 --> 00:00:58,000
+Missing evidence is never a safety conclusion.
+
+8
+00:00:58,000 --> 00:01:06,000
+Rehearse a warehouse control.
+
+9
+00:01:06,000 --> 00:01:13,000
+SHIP-002 is potentially preventable.
+
+10
+00:01:13,000 --> 00:01:20,000
+Historical SHIP-001 stays in the impact.
+
+11
+00:01:20,000 --> 00:01:28,000
+Save the case. Review the proposed work.
+
+12
+00:01:28,000 --> 00:01:37,000
+Nothing is selected or approved for you.
+
+13
+00:01:37,000 --> 00:01:44,000
+Saved development answer · 2.9.0
+
+14
+00:01:44,000 --> 00:01:54,000
+The read-only analyst explains the saved simulation.
+
+15
+00:01:54,000 --> 00:02:05,000
+Check the record and evidence IDs.
+
+16
+00:02:05,000 --> 00:02:14,000
+Reopen the same case and inspect its export.
+
+17
+00:02:14,000 --> 00:02:22,000
+Synthetic rehearsal. No safety certification.
+
+18
+00:02:22,000 --> 00:02:30,000
+Rehearse the recall.
+Find the gaps before they matter.

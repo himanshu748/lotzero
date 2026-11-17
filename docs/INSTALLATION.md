@@ -54,24 +54,7 @@ npm run forge -- whoami
 npm run forge -- login
 ```
 
-Do not re-register the existing app identities during ordinary deployment. Select the saved identity, build, lint and deploy:
-
-```sh
-node scripts/edition.mjs select judge
-npm run build
-npm run forge -- lint
-npm run forge -- deploy --environment production --non-interactive
-```
-
-For the separate Marketplace identity, use `node scripts/edition.mjs select marketplace` before lint/deploy and restore judge afterward. `config/editions.local.json` stores the real IDs and is ignored; `config/editions.example.json` intentionally contains nulls. Source and product assets are shared. Record a hash and deployment receipt for each edition. Deploying the Marketplace identity does **not** submit or publish a listing; follow the owner-review gates in [MARKETPLACE.md](MARKETPLACE.md).
-
-For an additional authorized site installation via CLI:
-
-```sh
-npm run forge -- install --environment production --site YOUR-SITE.atlassian.net --product jira
-```
-
-`YOUR-SITE` is a parameter, not an existing URL. Installation requires the site's administrator approval for the displayed scopes.
+Do not re-register, switch editions or deploy the working manifest. It retains historical MCP development declarations. The owner-only production commands live in [RELEASE_CHECK.md](../RELEASE_CHECK.md); they start from a reviewed, isolated `--judge-release` export with only the Jira page and the original read-only Rovo action. Any site installation still needs its administrator's scope consent. No Marketplace release is part of this pass.
 
 ## Storage and reset
 

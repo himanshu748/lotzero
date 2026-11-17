@@ -4,11 +4,11 @@
 
 LotZero is a Jira app for a food-manufacturing quality manager's mock recall. Trace one ingredient lot to its shipments, test what the records establish, rehearse a control and assign the gaps after explicit approval. The read-only Recall rehearsal analyst explains the same saved evidence through Rovo.
 
-The current local design, **The first gap**, opens the Northstar sample directly on **SHIP-002's missing destination**. A FAIL is a failed assertion; UNKNOWN means the records cannot establish an answer. Neither status nor a PASS is a product-safety decision.
+The current development design, **The first gap**, opens the Northstar sample directly on **SHIP-002's missing destination**. A FAIL is a failed assertion; UNKNOWN means the records cannot establish an answer. Neither status nor a PASS is a product-safety decision.
 
-## Development verification — 16 November 2026
+## Development verification — 17 November 2026
 
-**Development 2.9.0 is deployed.** [Open LotZero Dev in LZR](https://one-atlas-obka.atlassian.net/jira/software/projects/LZR/apps/f2443992-e1df-4ee4-b6ee-50abce811c9b/d0324e54-93c3-4fc6-8d7f-5febd8e6dfe0). Forge authentication, full lint, 258 tests and 18 browser journeys passed. Native save/reopen, the prioritised queue and text exports/comparison were verified. The three approved Rovo questions returned the expected saved facts. A separately approved fourth replay verified the repair for invented citation links: the development analyst now rendered plain IDs and retained honest simulation handling. See [the current development receipt](docs/FIRST_GAP_DEVELOPMENT_2026-11-16.md) for evidence. [Follow-up export/trace checks](docs/DEVELOPMENT_IO_TRACE_2026-11-16.md) verified native CSV paste and the replay's single read-only tool call; native file download remains unresolved. Production and the live page/demo remain untouched.
+**Development 2.11.0 is deployed.** [Open LotZero Dev in LZR](https://one-atlas-obka.atlassian.net/jira/software/projects/LZR/apps/f2443992-e1df-4ee4-b6ee-50abce811c9b/d0324e54-93c3-4fc6-8d7f-5febd8e6dfe0). The revised first view, saved reopening, prioritised proposals, approval boundary and analyst handoff were verified in Jira. Local validation passed 308 tests, 29 browser cases, type/build and full Forge lint. Actual Chrome JSON/Markdown/CSV downloads passed on development 2.9.0; the repeat on 2.11.0 was interrupted before completion. The four existing Rovo responses are retained evidence, with no new question in this pass. See [current verification and limits](docs/CRITIC_PASS_DEVELOPMENT_2026-11-16.md) and [ten critique decisions](docs/TEN_CRITIC_REVIEW_2026-11-16.md). Production and the live page/demo remain unchanged.
 
 ## Run locally
 
@@ -27,7 +27,7 @@ Open http://127.0.0.1:4173. The browser transport stores data in localStorage an
 4. **Save and follow up**. Review the destination proposal first, expand other assertion groups and inspect exact issue content. Nothing is preselected. In an authorised Forge installation, choose the permitted project/type and explicitly approve before Jira creation. Uncertain outcomes require reconciliation.
 5. In **Ask the analyst**, select a saved-evidence question. With an enabled Jira/Rovo installation, open it in the existing analyst. The full saved revision is sent internally; the page shows a short reference and exposes the full value. In browser preview, the on-page counterexamples remain usable and are labelled as saved records, not a model answer.
 
-Home also launches the existing scenario form and JSON / `record_type,json` CSV import. Imports retain the 200 KB, 1,000-node and 3,000-edge limits. Replacing records requires confirmation and preserves saved rehearsals. To compare corrections, save the sample, return Home, open Records and workspace controls, load the corrected sample, run the same scenario and save. Comparison and JSON/Markdown/CSV exports are below the work and analyst in Follow-up.
+Home also launches the existing scenario form and JSON / `record_type,json` CSV import. Imports retain the 200 KB, 1,000-node and 3,000-edge limits. Replacing records requires confirmation and preserves saved rehearsals. To compare corrections, save the sample, return Home, open Records and workspace controls, load the corrected sample, choose the same source, hazard, assertion set and scenario clock (Northstar: `2026-10-28 09:00 UTC`), run and save. Comparison and JSON/Markdown/CSV exports are below the work and analyst in Follow-up.
 
 ## Four screens, one case
 
@@ -73,3 +73,5 @@ Specialized Industries remains the category and **Best Agents the sole bonus**. 
 Quantities describe recorded shipment quantities grouped by compatible units, not contamination mass. A path is association, not contamination. Missing records remain unknown. Timing is not measured. Controls are hypothetical, and no operational recall or regulatory assessment is performed. Imported data needs owner validation. Native Rovo availability is a tenant prerequisite; no subscription is activated here.
 
 Provider/support: Himanshu Jha, jhahimanshu653@gmail.com. [Published privacy policy](https://gist.github.com/himanshu748/5fdad6ed1e6daf7f159c39f6ddcfbb58). Source licensing and remaining listing/legal decisions remain unresolved; this local source commit does not grant a licence or publish a Marketplace listing.
+
+Source exports are app-only by default and do not require a sibling landing repository. Add `--include-site` explicitly only when a separate reference-site copy is needed. The export tests use synthetic site fixtures.

@@ -1,0 +1,56 @@
+{
+  "snapshotId": "163de088-8f31-473a-9f7e-6889dd5b3e23",
+  "revision": "080364f63fe29f14d837135039e763f6f5c8067b32cc045db3e6e4e128162b40",
+  "assets": [
+    {
+      "pathFromAppRoot": "evidence/first-gap-development-2026-11-15/jira-first-finding.png",
+      "sha256": "710c3a82af69230a68879aa148b27b71739d28cb5b63889af7dcd917e7e05583",
+      "bytes": 71717,
+      "environment": "DEVELOPMENT 2.8.0",
+      "decision": "Reference only; recapture revised layout"
+    },
+    {
+      "pathFromAppRoot": "evidence/first-gap-development-2026-11-15/jira-simulation.png",
+      "sha256": "57a7720c0f2d5090f592de5f0c5cd0362cdc6d1781d75fb7b474c7a2aa33baf5",
+      "bytes": 100707,
+      "environment": "DEVELOPMENT 2.8.0",
+      "decision": "Reference; verify same case before reuse"
+    },
+    {
+      "pathFromAppRoot": "evidence/first-gap-development-2026-11-16/rovo-hold-repaired.jpg",
+      "sha256": "5862b8bcafa3e6de02257632305d7f98b3bd1c3c41253d6990e43b0f08a648d2",
+      "bytes": 103217,
+      "environment": "DEVELOPMENT 2.9.0",
+      "decision": "Labelled saved-answer excerpt, not full reply capture"
+    },
+    {
+      "pathFromAppRoot": "demo/rovo-update/lotzero-production-rovo-walkthrough.mp4",
+      "sha256": "b014361bd2beb31b00ebdfd54f74b3ceaa4c0d326d8ea07e70a8d35134e806cf",
+      "bytes": 12018872,
+      "environment": "PRODUCTION historical 2.5.0",
+      "decision": "Exclude: superseded UI and different case"
+    },
+    {
+      "pathFromAppRoot": "demo/rovo-update/narration.wav",
+      "sha256": "028d36e3e141ed59af1007ea0e77216ccd2c20fbc0410b971571230990d6faa3",
+      "bytes": 16576396,
+      "environment": "historical narration",
+      "decision": "Reference Deepgram assembly; words must match revised cut"
+    },
+    {
+      "pathFromAppRoot": "evidence/critic-pass-2026-11-16/jira-2-11-first-finding.jpg",
+      "sha256": "abfa7a7e4a745d85084270831bc28a9aec8f3118b2ac4a939881ab8d42ba09e1",
+      "bytes": 91726,
+      "environment": "DEVELOPMENT 2.11.0",
+      "decision": "Current native UI verification still; unsaved Northstar sample, not recorded footage or a new Rovo answer"
+    }
+  ],
+  "excluded": [
+    "browser-preview test screenshots",
+    "landing footage",
+    "old receipt as current-case outcome",
+    "non-Deepgram narration"
+  ],
+  "noAudioGenerated": true,
+  "noVideoRendered": true
+}

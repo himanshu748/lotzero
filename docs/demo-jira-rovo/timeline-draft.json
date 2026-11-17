@@ -1,0 +1,72 @@
+{
+  "status": "edit specification only; not a native Cardboard project",
+  "durationTargetSeconds": 150,
+  "surface": "native Jira and Rovo only",
+  "rendered": false,
+  "published": false,
+  "shots": [
+    {
+      "inSeconds": 0,
+      "outSeconds": 5,
+      "title": "Jira context",
+      "captionDraft": "A mock recall starts with one ingredient lot.",
+      "captureStatus": "requires matching authorised development capture; retained evidence is reference only"
+    },
+    {
+      "inSeconds": 5,
+      "outSeconds": 24,
+      "title": "First gap",
+      "captionDraft": "ING-A19 reaches four recorded shipments.\nSHIP-002 has no recorded destination.",
+      "captureStatus": "requires matching authorised development capture; retained evidence is reference only"
+    },
+    {
+      "inSeconds": 24,
+      "outSeconds": 43,
+      "title": "Supporting path",
+      "captionDraft": "Follow the recorded path to SHIP-002.\nInspect its evidence references.",
+      "captureStatus": "requires matching authorised development capture; retained evidence is reference only"
+    },
+    {
+      "inSeconds": 43,
+      "outSeconds": 58,
+      "title": "Unknown origins",
+      "captionDraft": "Some origins remain UNKNOWN.\nMissing evidence is never a safety conclusion.",
+      "captureStatus": "requires matching authorised development capture; retained evidence is reference only"
+    },
+    {
+      "inSeconds": 58,
+      "outSeconds": 80,
+      "title": "WH-NORTH simulation",
+      "captionDraft": "Rehearse a warehouse control.\nSHIP-002 is potentially preventable; SHIP-001 stays historical.",
+      "captureStatus": "requires matching authorised development capture; retained evidence is reference only"
+    },
+    {
+      "inSeconds": 80,
+      "outSeconds": 97,
+      "title": "Saved follow-up",
+      "captionDraft": "Save the case. Review the proposed work.\nNothing is selected or approved for you.",
+      "captureStatus": "requires matching authorised development capture; retained evidence is reference only"
+    },
+    {
+      "inSeconds": 97,
+      "outSeconds": 125,
+      "title": "Saved Rovo explanation",
+      "captionDraft": "The read-only analyst explains the saved simulation.\nCheck the record and evidence IDs.",
+      "captureStatus": "Existing verified development 2.9.0 WH-NORTH answer, report 163de088-8f31-473a-9f7e-6889dd5b3e23. Label this as a saved-answer excerpt; no new model response on the revised build is claimed."
+    },
+    {
+      "inSeconds": 125,
+      "outSeconds": 142,
+      "title": "Saved inputs",
+      "captionDraft": "Reopen the same case and inspect its export.\nThese are synthetic records, not a safety certification.",
+      "captureStatus": "requires matching authorised development capture; retained evidence is reference only"
+    },
+    {
+      "inSeconds": 142,
+      "outSeconds": 150,
+      "title": "Close in Jira",
+      "captionDraft": "Rehearse the recall.\nFind the gaps before they matter.",
+      "captureStatus": "requires matching authorised development capture; retained evidence is reference only"
+    }
+  ]
+}

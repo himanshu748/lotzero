@@ -1,5 +1,7 @@
 # LotZero — The first gap
 
+> Status, 17 November: the plan and subsequent development-only rollout were approved. Development **2.11.0** is deployed; see [current native receipt](docs/CRITIC_PASS_DEVELOPMENT_2026-11-16.md). Ten critiques informed the repairs, and native Jira inspection added a laptop-width layout check. The original approval text below is historical. Production and all public surfaces remain protected.
+
 **15 November 2026 · Approved for local implementation and local commits. Development deployment/tunnel remains unapproved.**
 
 This plan supersedes `LOTZERO_BEST_PROMPT.md`, `WIN_PLAN.md` and the product shape of the earlier 15 November judged-release pass. Those files and their evidence remain history. The direction is already chosen: **a weekly mock-recall desk for a food-manufacturing quality manager**, inside Jira. No new concept selection is needed.
