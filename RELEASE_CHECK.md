@@ -1,6 +1,6 @@
 # LotZero — owner promotion checklist
 
-**Development 2.11.0 is deployed; production remains gated.** Source `7993c31` passed the isolated build, full lint and development deployment. See [current native verification and limits](docs/CRITIC_PASS_DEVELOPMENT_2026-11-16.md). Actual native downloads passed on 2.9.0; the 2.11 repeat was interrupted. The owner performs any production promotion and public edits. No install/tunnel/sharing/public change occurred.
+**Development 2.11.0 is deployed; production remains gated.** Source `7993c31` passed the isolated build, full lint and development deployment. See [current native verification and limits](docs/DEVELOPMENT_2_11_VERIFICATION_2026-11-17.md). The core Jira flow, actual JSON/Markdown/CSV downloads and byte-identical JSON clipboard delivery now pass on 2.11. No new Jira issue or Rovo prompt was used. The owner performs any production promotion and public edits. No install/tunnel/sharing/public change occurred.
 
 ## Review the isolated candidate
 
@@ -61,6 +61,8 @@ No production command, bypass, new scope, paid plan or access grant is implied. 
 ## Native re-check on the matching build
 
 Leave unchecked until observed. Record site/project, role, build, result and receipt.
+
+The [17 November development receipt](docs/DEVELOPMENT_2_11_VERIFICATION_2026-11-17.md) establishes the normal synthetic workflow, save/reopen, approval-disabled controls, analyst fallback/handoff and report delivery. The broader ordinary/denied-user, issue-write, new model-response and cross-tenant checks below remain separate gates; they are not implied by that pass.
 
 - [ ] Empty Home has one **Run Northstar sample (synthetic)** action. One activation lands on Rehearsal with destination FAIL, SHIP-002 selected, the four-record path and inspector visible. Check ordinary and denied users as permitted; seeding/import/deletion still require project administration.
 - [ ] Finding selection changes evidence; inspecting BATCH-101 keeps the SHIP-002 path anchored. Map, table, search, keyboard, mobile/iframe widths, light/dark host themes and reduced motion remain usable.

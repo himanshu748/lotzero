@@ -1,5 +1,7 @@
 # Ten-critic repair and development verification
 
+**17 November continuation:** the interrupted 2.11 download check is now complete. The native Jira flow, all three actual report downloads, JSON clipboard byte equality, save/reopen and analyst fallback/handoff passed. See the [current receipt](DEVELOPMENT_2_11_VERIFICATION_2026-11-17.md). The chronology below records the earlier pass and its then-outstanding limits.
+
 Status: **development 2.11.0 is deployed and the revised first view and saved-case reopening are verified in Jira**. Source `7993c31` follows the main ten-critic repair commit `fa68bbe`. Production, staging and public surfaces remain unchanged. See [review decisions](TEN_CRITIC_REVIEW_2026-11-16.md).
 
 - 308 unit/integration checks passed with one worker and a 30-second test timeout under host CPU contention.

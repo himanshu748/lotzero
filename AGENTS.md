@@ -63,3 +63,10 @@ The user's **The first gap** redesign and `PLAN.md` supersede `LOTZERO_BEST_PROM
 
 - Final continuation source `7993c31` deployed to **development 2.11.0** after 308 tests, 29 browser cases, final copy journey, build and full lint. Read `docs/CRITIC_PASS_DEVELOPMENT_2026-11-16.md`. The native first view and saved reopening passed; the repeat 2.11 Chrome download was interrupted, so only the earlier 2.9 actual file deliveries are a download pass.
 - Production/staging deployment rows, installations, protected landing files, working manifest and media references were unchanged. No additional Rovo message or Jira issue was created. The browser became unavailable after the interruption; do not infer remaining native checks from local tests.
+
+## Completed development continuation — 17 November 2026
+
+- Read `docs/DEVELOPMENT_2_11_VERIFICATION_2026-11-17.md` for the current result. Actual JSON/Markdown/CSV downloads and JSON clipboard byte equality now pass on **2.11.0**, superseding the interrupted repeat and historical in-app delivery limitation above.
+- The successful path used the existing signed-in in-app Jira session through native macOS UI controls. The isolated Chrome for Testing session remained unauthenticated; do not claim it completed these checks. Validate actual UI changes and downloaded bytes, not an accessibility action's success code alone.
+- One additional synthetic rehearsal was saved and reopened at the same full revision. Destination-first proposals, disabled creation without approval, and the three local analyst fallbacks/handoff passed. No Jira issue or new Rovo model message was created; the four-prompt allowance is still exhausted.
+- This continuation made no application-source change or deployment. Deployment history and all 14 protected landing files matched their baseline. Keep production, staging, public surfaces and the live demo untouched; Cardboard edit files remain the only approved demo deliverable.
