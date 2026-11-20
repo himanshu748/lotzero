@@ -12,7 +12,7 @@ The current development design, **The first gap**, opens the Northstar sample di
 
 ## Run locally
 
-Use Node 22.23.4 and npm. With access to the [private source repository](https://github.com/himanshu748/lotzero), clone it first:
+Use Node 22.23.4 and npm. Clone the [source repository](https://github.com/himanshu748/lotzero):
 
 ```sh
 git clone https://github.com/himanshu748/lotzero.git
