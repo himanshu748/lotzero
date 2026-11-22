@@ -6,6 +6,7 @@ import { repairedDataset } from "../../../../fixtures/synthetic/dataset";
 import { localMode } from "../client";
 import { Badge } from "../components/Primitives";
 import ConfirmDialog from "../components/ConfirmDialog";
+import { hazardLabel, utcLabel } from "../finding-copy";
 
 export default function Home({ desk }: { desk: ReturnTypeOfUseRehearsal }) {
   const input = useRef<HTMLInputElement>(null);
@@ -122,8 +123,8 @@ export default function Home({ desk }: { desk: ReturnTypeOfUseRehearsal }) {
                     <td>
                       <code>{saved.result.scenario.sourceLotId}</code>
                     </td>
-                    <td>{saved.result.scenario.hazard}</td>
-                    <td>{new Date(saved.createdAt).toLocaleString()}</td>
+                    <td>{hazardLabel(saved.result.scenario.hazard)}</td>
+                    <td>{utcLabel(saved.createdAt)}</td>
                     <td>
                       {
                         saved.result.assertions.filter(

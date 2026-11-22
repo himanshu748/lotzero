@@ -7,6 +7,7 @@ import type {
 } from "../../../../src/contracts";
 import { buildGraph, traverse } from "../../../../src/graph/core";
 import { Badge, Icon } from "./Primitives";
+import { quantityLabel, utcLabel } from "../finding-copy";
 import "../styles/trace.css";
 const groups = [
   ["ingredient", "supplier"],
@@ -641,7 +642,7 @@ function Inspector({
           <div>
             <dt>Recorded quantity</dt>
             <dd>
-              {node.quantity.value} {node.quantity.unit}
+              {quantityLabel(node.quantity)}
             </dd>
           </div>
         )}
@@ -655,10 +656,7 @@ function Inspector({
           <div>
             <dt>Recorded time</dt>
             <dd>
-              {new Date(node.occurredAt).toLocaleString("en-GB", {
-                timeZone: "UTC",
-              })}{" "}
-              UTC
+              {utcLabel(node.occurredAt)}
             </dd>
           </div>
         )}

@@ -16,3 +16,15 @@ export function findingPopulation(a: Pick<AssertionResult,'checked'|'passed'|'st
   if (a.status === 'PASS') return `${a.passed} of ${a.checked} records meet this check`;
   return `${a.checked-a.passed} of ${a.checked} records need review`;
 }
+const HAZARD_LABELS: Record<string, string> = {contamination:'Contamination', mislabeling:'Mislabeling', allergen:'Allergen'};
+export function hazardLabel(hazard: string): string {
+  return HAZARD_LABELS[hazard] ?? hazard;
+}
+export function utcLabel(iso: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  return `${d.toLocaleString('en-GB', {timeZone:'UTC', day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit', ...(d.getUTCSeconds() || d.getUTCMilliseconds() ? {second:'2-digit'} : {}), hourCycle:'h23'})} UTC`;
+}
+export function quantityLabel(q: {value: number; unit: string}): string {
+  return `${q.value.toLocaleString('en-GB', {maximumFractionDigits:20})} ${q.unit}`;
+}
