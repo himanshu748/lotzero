@@ -16,4 +16,5 @@ it('formats case values for reading without changing stored data',()=>{
  expect(utcLabel('2026-10-28T09:00:00.000Z')).toBe('28 Oct 2026, 09:00 UTC');
  expect(utcLabel('not-a-date')).toBe('not-a-date');
  expect(quantityLabel({value:80000,unit:'g'})).toBe('80,000 g');
+ expect(quantityLabel({value:0.0004,unit:'kg'})).toBe('0.0004 kg');
 });

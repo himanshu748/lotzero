@@ -26,5 +26,5 @@ export function utcLabel(iso: string): string {
   return `${d.toLocaleString('en-GB', {timeZone:'UTC', day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit', hourCycle:'h23'})} UTC`;
 }
 export function quantityLabel(q: {value: number; unit: string}): string {
-  return `${q.value.toLocaleString('en-GB')} ${q.unit}`;
+  return `${q.value.toLocaleString('en-GB', {maximumFractionDigits:20})} ${q.unit}`;
 }
