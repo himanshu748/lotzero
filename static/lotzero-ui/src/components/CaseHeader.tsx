@@ -1,5 +1,6 @@
 import type { DrillResult, Snapshot } from "../../../../src/contracts";
 import { Badge } from "./Primitives";
+import { hazardLabel, utcLabel } from "../finding-copy";
 export default function CaseHeader({
   result,
   snapshot,
@@ -14,8 +15,7 @@ export default function CaseHeader({
           Rehearsal <code>{result.scenario.sourceLotId}</code>
         </h1>
         <p>
-          {result.scenario.hazard} ·{" "}
-          {result.scenario.at.replace("T", " ").replace("Z", " UTC")}{" "}
+          {hazardLabel(result.scenario.hazard)} · {utcLabel(result.scenario.at)}{" "}
           <Badge value={snapshot ? "Saved" : "Unsaved"} />
         </p>
       </div>
