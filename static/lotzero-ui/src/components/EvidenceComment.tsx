@@ -3,18 +3,26 @@ import Button from "@atlaskit/button/new";
 
 export default function EvidenceComment({
   issueKey,
+  recorded,
   paragraphs,
   disabled,
   onPost,
 }: {
   issueKey: string;
+  recorded?: "posted" | "uncertain";
   paragraphs: string[];
   disabled: boolean;
   onPost: () => Promise<{ status: "posted" | "uncertain"; error?: string }>;
 }) {
   const [approved, setApproved] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [result, setResult] = useState("");
+  const [result, setResult] = useState(
+    recorded === "posted"
+      ? `Evidence comment posted on ${issueKey}.`
+      : recorded === "uncertain"
+        ? `Outcome unknown. Check ${issueKey} comments; LotZero will not post again automatically.`
+        : "",
+  );
   const [error, setError] = useState("");
   return (
     <details className="evidence-comment">

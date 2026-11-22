@@ -117,7 +117,8 @@ export class Application {
   }
   private async hydrate(prefix:string,snapshot:Snapshot){
     const receipts=await this.store.list<JiraAction>(`${prefix}receipt:${snapshot.id}:`);
-    const actions=await Promise.all(receipts.map(r=>this.visibleReceipt(prefix,snapshot.id,r.value)));
+    const comments=new Map((await this.store.list<EvidenceCommentReceipt>(`${prefix}comment:${snapshot.id}:`)).map(c=>[c.key.slice(`${prefix}comment:${snapshot.id}:`.length),c.value.status]));
+    const actions=await Promise.all(receipts.map(async r=>{const a=await this.visibleReceipt(prefix,snapshot.id,r.value);const c=comments.get(a.id);return c?{...a,evidenceComment:c}:a;}));
     return {...snapshot,actions:actions.sort((a,b)=>a.id.localeCompare(b.id))};
   }
   async bootstrap(context:ActorContext):Promise<Bootstrap>{

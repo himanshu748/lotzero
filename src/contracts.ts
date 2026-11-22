@@ -29,7 +29,7 @@ export interface DrillResult {
   quantities: {unit: string; value: number; recordIds: string[]}[];
   interventions: Intervention[]; simulation: Simulation;
 }
-export interface JiraAction { id: string; summary: string; description: string; recordIds: string[]; evidence: string[]; issueKey?: string; issueUrl?: string; status?: 'created' | 'uncertain' | 'failed'; error?: string }
+export interface JiraAction { id: string; summary: string; description: string; recordIds: string[]; evidence: string[]; issueKey?: string; issueUrl?: string; status?: 'created' | 'uncertain' | 'failed'; error?: string; evidenceComment?: 'posted' | 'uncertain' }
 export interface Snapshot { id: string; createdAt: string; initiator: string; dataset: Dataset; result: DrillResult; actions: JiraAction[] }
 export interface Comparison { improved: string[]; regressed: string[]; unchanged: string[]; addedShipments: string[]; removedShipments: string[] }
 export interface Project { id: string; key: string; name: string }

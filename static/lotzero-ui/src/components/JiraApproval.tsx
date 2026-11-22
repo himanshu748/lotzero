@@ -190,6 +190,7 @@ export default function JiraApproval({
                       {snapshot && a.issueKey && a.status === "created" && (
                         <EvidenceComment
                           issueKey={a.issueKey}
+                          recorded={a.evidenceComment}
                           paragraphs={evidenceComment(snapshot, a.id)}
                           disabled={disabled || localMode}
                           onPost={() =>
