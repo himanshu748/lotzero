@@ -19,6 +19,7 @@ import {
   firstFinding,
   findingRecord,
 } from "../../../../src/scenarios/first-finding";
+import { repairedDataset } from "../../../../fixtures/synthetic/dataset";
 import { client, localMode } from "../client";
 import type { EvidenceViewState } from "../components/Impact";
 
@@ -151,6 +152,20 @@ export function useRehearsal() {
       setData(next);
       installCase(next.dataset, runDrill(next.dataset, sampleScenario));
     });
+  }
+  function rerunCorrected(snapshot: Snapshot) {
+    replace(
+      "Load the corrected Northstar records (synthetic) and rerun this scenario? Saved reports are kept.",
+      () => {
+        void perform("Rerunning with corrected records", async () => {
+          const next = await client.importDataset(structuredClone(repairedDataset));
+          if (!next.dataset) throw new Error("The corrected records could not be loaded.");
+          setData(next);
+          installCase(next.dataset, runDrill(next.dataset, snapshot.result.scenario));
+          setNotice("Corrected sample records loaded. Save this rerun, then compare it with the original rehearsal in Follow-up.");
+        });
+      },
+    );
   }
   function open(snapshot: Snapshot) {
     const work = () => installCase(snapshot.dataset, snapshot.result, snapshot);
@@ -308,6 +323,7 @@ export function useRehearsal() {
     sample,
     run,
     open,
+    rerunCorrected,
     selectFinding,
     selectedFinding,
     selectionRequest,

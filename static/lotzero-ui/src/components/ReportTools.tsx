@@ -11,9 +11,11 @@ import { download } from "./Primitives";
 export default function ReportTools({
   snapshot,
   snapshots,
+  onRerunCorrected,
 }: {
   snapshot: Snapshot;
   snapshots: Snapshot[];
+  onRerunCorrected?: () => void;
 }) {
   const [previous, setPrevious] = useState("");
   const [format, setFormat] = useState<"json" | "md" | "csv">("json");
@@ -84,11 +86,18 @@ export default function ReportTools({
             ))}
           </div>
         ) : (
-          <p className="field-help">
-            Save a baseline, load corrected records, rerun the same scenario,
-            then compare. A removed association alone does not establish reduced
-            risk.
-          </p>
+          <>
+            <p className="field-help">
+              Save a baseline, load corrected records, rerun the same scenario,
+              then compare. A removed association alone does not establish reduced
+              risk.
+            </p>
+            {onRerunCorrected && (
+              <Button onClick={onRerunCorrected}>
+                Rerun with corrected sample records
+              </Button>
+            )}
+          </>
         )}
       </details>
       <details className="panel report-disclosure">

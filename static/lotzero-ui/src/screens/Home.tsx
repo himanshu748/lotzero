@@ -26,6 +26,11 @@ export default function Home({ desk }: { desk: ReturnTypeOfUseRehearsal }) {
       <header className="home-heading">
         <h1 tabIndex={-1}>Recall rehearsal</h1>
         <p>Practice tracing an ingredient to its shipments. Find missing records and review the follow-up work.</p>
+        <p className="field-help">
+          Under the FDA Food Traceability Rule, covered firms must provide
+          traceability records within 24 hours of a request. FDA will not
+          enforce the rule before 20 July 2028.
+        </p>
       </header>
       <div className="home-actions">
         {active ? (
@@ -101,6 +106,11 @@ export default function Home({ desk }: { desk: ReturnTypeOfUseRehearsal }) {
         {!data.snapshots.length ? (
           <div className="empty-state">
             <h3>No saved rehearsals yet</h3>
+            <p>
+              The synthetic Northstar sample traces ingredient lot{" "}
+              <code>ING-A19</code> to its shipments and opens on the first gap:
+              a shipment with no recorded destination.
+            </p>
             <p>
               Run a rehearsal, inspect the findings, then save it for follow-up.
             </p>
