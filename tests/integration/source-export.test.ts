@@ -12,7 +12,7 @@ function fixture() {
   const directory = mkdtempSync(join(tmpdir(), 'lotzero-source-export-test-')); temporary.push(directory);
   const root = join(directory, 'lotzero'); mkdirSync(root);
   const originals = resolve('.');
-  for (const name of ['src', 'fixtures', 'static/lotzero-ui/src', 'static/lotzero-ui/public', 'tests']) cpSync(join(originals, name), join(root, name), {recursive: true});
+  for (const name of ['src', 'fixtures', 'static/lotzero-ui/src', 'static/lotzero-ui/public', 'tests', 'skills']) cpSync(join(originals, name), join(root, name), {recursive: true});
   for (const name of ['package.json', 'package-lock.json', 'manifest.yml', 'tsconfig.json', 'vite.config.ts', 'vitest.config.ts', 'playwright.config.ts', 'playwright.first-gap.config.ts', 'playwright.design.config.ts', 'playwright.landing.config.ts', 'playwright.rovo.config.ts', 'playwright.trace.config.ts', 'static/lotzero-ui/index.html', 'scripts/edition.mjs', 'scripts/benchmark.ts', 'scripts/prepare-source.mjs', 'config/editions.example.json', 'docs/PRIVACY_REPORTING.md', 'docs/DEPENDENCY_REVIEW_2026-11-06.md']) {
     const dest = join(root, name); mkdirSync(resolve(dest, '..'), {recursive: true}); copyFileSync(join(originals, name), dest);
   }
@@ -88,7 +88,9 @@ it('exports an isolated judge release without optional MCP or Marketplace module
   const original = readFileSync(join(f.root, 'manifest.yml'), 'utf8');
   expect(f.run('--output', dest, '--judge-release').status).toBe(0);
   const manifest = YAML.parse(readFileSync(join(dest, 'lotzero/manifest.yml'), 'utf8'));
-  expect(Object.keys(manifest.modules).sort()).toEqual(['action', 'function', 'jira:projectPage', 'rovo:agent']);
+  expect(Object.keys(manifest.modules).sort()).toEqual(['action', 'function', 'jira:projectPage', 'rovo:agent', 'rovo:skill']);
+  expect(manifest.modules['rovo:skill'][0].dependencies.tools).toEqual(['lotzero-read-saved-rehearsal']);
+  expect(existsSync(join(dest, 'lotzero/skills/lotzero-recall-evidence/SKILL.md'))).toBe(true);
   expect(manifest.modules.action.map((a: {key: string}) => a.key)).toEqual(['lotzero-read-saved-rehearsal']);
   expect(manifest.modules.action[0].actionVerb).toBe('GET');
   expect(manifest.modules.function.map((f: {handler: string}) => f.handler)).toEqual(['index.handler', 'rovo.handler']);
@@ -98,13 +100,14 @@ it('exports an isolated judge release without optional MCP or Marketplace module
   expect(f.run('--output', join(f.directory, 'both'), '--judge-release', '--privacy-development').status).not.toBe(0);
 });
 
-it.each(['handler', 'scope', 'egress', 'module'])('rejects an unreviewed judge contract change: %s', change => {
+it.each(['handler', 'scope', 'egress', 'module', 'skill'])('rejects an unreviewed judge contract change: %s', change => {
   const f = fixture(); const dest = join(f.directory, 'judge');
   const file = join(f.root, 'manifest.yml'); const manifest = YAML.parse(readFileSync(file, 'utf8'));
   if (change === 'handler') manifest.modules.function.find((f: {key: string}) => f.key === 'recall-analyst').handler = 'index.handler';
   if (change === 'scope') manifest.permissions.scopes.push('manage:jira-configuration');
   if (change === 'egress') manifest.permissions.external = {fetch: {backend: ['https://example.invalid']}};
   if (change === 'module') manifest.modules.webtrigger = [{key: 'unexpected'}];
+  if (change === 'skill') manifest.modules['rovo:skill'][0].dependencies.tools.push('lotzero-mcp-read-rehearsal');
   writeFileSync(file, YAML.stringify(manifest));
   expect(f.run('--output', dest, '--judge-release').status).not.toBe(0);
   expect(existsSync(dest)).toBe(false);

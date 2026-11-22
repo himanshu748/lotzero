@@ -45,25 +45,27 @@ function tree(relative) {
 }
 for (const directory of ['src', 'tests', 'fixtures', 'static/lotzero-ui/src', 'static/lotzero-ui/public']) tree(directory);
 for (const file of ['package.json', 'package-lock.json', 'manifest.yml', 'tsconfig.json', 'vite.config.ts', 'vitest.config.ts', 'playwright.config.ts', 'playwright.design.config.ts', 'playwright.landing.config.ts', 'playwright.rovo.config.ts', 'playwright.trace.config.ts', 'static/lotzero-ui/index.html', 'scripts/edition.mjs', 'scripts/benchmark.ts', 'scripts/prepare-source.mjs', 'config/editions.example.json', 'docs/PRIVACY_REPORTING.md', 'docs/DEPENDENCY_REVIEW_2026-11-06.md']) add(path.join(appRoot, file), 'lotzero/' + file);
-for (const directory of ['evals']) if (fs.existsSync(path.join(appRoot, directory))) tree(directory);
+for (const directory of ['evals', 'skills']) if (fs.existsSync(path.join(appRoot, directory))) tree(directory);
 for (const file of ['playwright.first-gap.config.ts', 'PLAN.md', 'AGENTS.md', 'docs/FIRST_GAP_VERIFICATION.md', 'docs/FIRST_GAP_DEVELOPMENT_2026-11-15.md', 'docs/FIRST_GAP_DEVELOPMENT_2026-11-16.md', 'docs/DEVELOPMENT_IO_TRACE_2026-11-16.md', 'config/judge-agent-prompt.md', 'CHANGELOG.md', 'RELEASE_CHECK.md', 'IMPACT.md', 'DEVPOST_UPDATE.md', 'VIDEO_SHOTLIST.md', 'SUBMISSION_RECHECK.md', 'docs/JUDGED_RELEASE_DIFF.md', 'docs/JUDGED_RELEASE_API_CONTRACTS.md', 'docs/JUDGED_RELEASE_VERIFICATION.md']) if (fs.existsSync(path.join(appRoot, file))) add(path.join(appRoot, file), 'lotzero/' + file);
 if (includeSite) for (const file of ['index.html', 'styles.css', 'landing.css', 'app.js', 'favicon.svg', 'support.html', 'rovo-preview.png']) add(path.join(siteRoot, file), 'lotzero-site/' + file);
 const manifest = YAML.parse(files.get('lotzero/manifest.yml').toString());
 if (judged) {
   const original = manifest.modules;
-  const knownModules = new Set(['jira:projectPage', 'rovo:agent', 'action', 'function', 'rovo:mcp', 'scheduledTrigger']);
+  const knownModules = new Set(['jira:projectPage', 'rovo:agent', 'rovo:skill', 'action', 'function', 'rovo:mcp', 'scheduledTrigger']);
   if (Object.keys(original).some(key => !knownModules.has(key))) throw new Error('Unknown module requires review before judge export.');
   const agent = original['rovo:agent'];
   const action = original.action?.find(item => item.key === 'lotzero-read-saved-rehearsal');
   const resolver = original.function?.find(item => item.key === 'resolver');
   const analyst = original.function?.find(item => item.key === 'recall-analyst');
   const pages = original['jira:projectPage'];
+  const skills = original['rovo:skill'];
+  if (JSON.stringify(agent?.[0]?.skills) !== JSON.stringify(['lotzero-recall-evidence']) || skills?.length !== 1 || skills[0].key !== 'lotzero-recall-evidence' || skills[0].source?.dir !== 'skills/lotzero-recall-evidence' || JSON.stringify(skills[0].dependencies?.tools) !== JSON.stringify(['lotzero-read-saved-rehearsal'])) throw new Error('Judge skill contract changed; review before exporting.');
   if (agent?.length !== 1 || agent[0].key !== 'lotzero-recall-analyst' || JSON.stringify(agent[0].actions) !== JSON.stringify(['lotzero-read-saved-rehearsal']) || !pages?.length || !resolver || !analyst || !action || action.actionVerb !== 'GET' || action.function !== 'recall-analyst') throw new Error('Judge module contract changed; review before exporting.');
   if (resolver.handler !== 'index.handler' || analyst.handler !== 'rovo.handler') throw new Error('Judge handler contract changed; review before exporting.');
   const allowedScopes = new Set(['read:jira-work', 'write:jira-work', 'storage:app', 'report:personal-data']);
   if (manifest.remotes || manifest.providers || manifest.permissions.external || manifest.permissions.scopes.some(scope => !allowedScopes.has(scope))) throw new Error('Unexpected external integration or scope; review before judge export.');
   manifest.app.id = 'ari:cloud:ecosystem::app/f2443992-e1df-4ee4-b6ee-50abce811c9b';
-  manifest.modules = {'jira:projectPage': pages, 'rovo:agent': agent, action: [action], function: [resolver, analyst]};
+  manifest.modules = {'jira:projectPage': pages, 'rovo:agent': agent, 'rovo:skill': skills, action: [action], function: [resolver, analyst]};
   manifest.modules['rovo:agent'][0].prompt = fs.readFileSync(path.join(appRoot, 'config/judge-agent-prompt.md'), 'utf8');
   manifest.permissions.scopes = ['read:jira-work', 'write:jira-work', 'storage:app'];
   files.set('lotzero/manifest.yml', Buffer.from(YAML.stringify(manifest)));

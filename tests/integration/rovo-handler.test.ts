@@ -95,6 +95,8 @@ describe('hosted Rovo entry point boundary (mocked platform)', () => {
     const manifest = parse(readFileSync('manifest.yml', 'utf8'));
     const agent = manifest.modules['rovo:agent'];
     expect(agent).toHaveLength(1); expect(agent[0].actions).toEqual(['lotzero-read-saved-rehearsal']);
+    expect(agent[0].skills).toEqual(['lotzero-recall-evidence']);
+    expect(manifest.modules['rovo:skill']).toEqual([{key: 'lotzero-recall-evidence', source: {dir: 'skills/lotzero-recall-evidence'}, dependencies: {tools: ['lotzero-read-saved-rehearsal']}}]);
     const hasMcp = Boolean(manifest.modules['rovo:mcp']);
     expect(manifest.modules.action).toHaveLength(hasMcp ? 2 : 1);
     const original = manifest.modules.action.find((x: any) => x.key === 'lotzero-read-saved-rehearsal');
@@ -117,7 +119,7 @@ describe('hosted Rovo entry point boundary (mocked platform)', () => {
     expect(Object.keys(mcp.inputs)).toEqual(Object.keys(original.inputs));
     expect(manifest.modules.function.find((x: any) => x.key === 'mcp-rehearsal').handler).toBe('mcp.handler');
     } else {
-      expect(Object.keys(manifest.modules).sort()).toEqual(['action', 'function', 'jira:projectPage', 'rovo:agent']);
+      expect(Object.keys(manifest.modules).sort()).toEqual(['action', 'function', 'jira:projectPage', 'rovo:agent', 'rovo:skill']);
       expect(manifest.modules.function.map((item: any) => item.key).sort()).toEqual(['recall-analyst', 'resolver']);
       expect(manifest.permissions.scopes).toEqual(['read:jira-work', 'write:jira-work', 'storage:app']);
       expect(agent[0].prompt).toContain('Timing not measured');
