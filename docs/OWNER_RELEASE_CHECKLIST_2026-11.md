@@ -18,7 +18,7 @@ Record the production version and the sites it is installed on. The last recorde
 npm ci && npm run typecheck && npm test && npm run build
 npx playwright test --config playwright.first-gap.config.ts
 node scripts/prepare-source.mjs --output ../lotzero-judge --judge-release
-cd ../lotzero-judge/lotzero && npm ci && npm run forge -- lint
+cd ../lotzero-judge && npm ci && npm run forge -- lint
 ```
 
 Confirm that the exported `manifest.yml` has only `jira:projectPage`, `rovo:agent`, `rovo:skill`, the GET `action` and two functions, with no `rovo:mcp`. Its scopes must be exactly `read:jira-work`, `write:jira-work` and `storage:app`, so the evidence comment adds no scope.
@@ -27,7 +27,7 @@ Confirm that the exported `manifest.yml` has only `jira:projectPage`, `rovo:agen
 
 ```sh
 npm run forge -- deploy -e production
-npm run forge -- install --upgrade -e production   # only if forge prompts for it
+npm run forge -- install --upgrade --site <judge-site>.atlassian.net --product jira -e production   # only if deploy reports a required upgrade
 ```
 
 ## 4. Fresh-site recheck (judge path)
