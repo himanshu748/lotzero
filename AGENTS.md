@@ -17,7 +17,7 @@ The user's **The first gap** redesign and `PLAN.md` supersede `LOTZERO_BEST_PROM
 - Findings are FAIL first, then UNKNOWN, with PASS details collapsed. Selected-path target and inspected ancestor are separate states; preserve that interaction and graph keyboard access.
 - Keep the Rehearse comparison, prefill only supported controls, and require explicit Add. A WH-NORTH warehouse control uses the existing quarantine semantics; it does not become a new operational hold API. Historical shipments remain in the impact.
 - Follow-up groups existing suggestions by assertion with FAIL first. Never renumber action IDs or alter legacy claim/receipt meaning to reorder the display. No prechecked selections; exact project/type/content and explicit approval remain required. Unknown write outcomes require reconciliation.
-- The existing Recall rehearsal analyst stays read-only, saved-revision specific and citation-first. Integrate useful questions into Follow-up; the deterministic findings stay usable when Rovo is off. Do not create another agent or a write tool.
+- The existing Recall rehearsal analyst stays read-only, saved-revision specific and citation-first. Integrate useful questions into Follow-up; the deterministic findings stay usable when Rovo is off. Do not create another agent or a write tool. The one approved exception (owner, 23 November 2026) is the resolver's `postEvidenceComment`: one deterministic, saved-evidence comment per LotZero-created task, posted only after the user ticks approval of the exact text, gated on the task's approval marker and never resent automatically. It is not a Rovo action and adds no scope.
 
 ## Design and engineering
 
