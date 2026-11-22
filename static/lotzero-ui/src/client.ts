@@ -129,6 +129,14 @@ export const client = {
           ),
         )
       : rpc("createActions", payload),
+  postEvidenceComment: (payload: {
+    snapshotId: string;
+    actionId: string;
+    approved: true;
+  }): Promise<{ status: "posted" | "uncertain"; issueKey: string; error?: string }> =>
+    localMode
+      ? Promise.reject(new Error("Posting a Jira comment requires Forge."))
+      : rpc("postEvidenceComment", payload),
   reconcileAction: (payload: {
     snapshotId: string;
     actionId: string;
