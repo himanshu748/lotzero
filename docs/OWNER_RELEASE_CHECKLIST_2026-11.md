@@ -18,12 +18,14 @@ Record the production version and the sites it is installed on. The last recorde
 npm ci && npm run typecheck && npm test && npm run build
 npx playwright test --config playwright.first-gap.config.ts
 node scripts/prepare-source.mjs --output ../lotzero-judge --judge-release
-cd ../lotzero-judge && npm ci && npm run forge -- lint
+cd ../lotzero-judge/lotzero && npm ci && npm run build && npm run forge -- lint
 ```
 
 Confirm that the exported `manifest.yml` has only `jira:projectPage`, `rovo:agent`, `rovo:skill`, the GET `action` and two functions, with no `rovo:mcp`. Its scopes must be exactly `read:jira-work`, `write:jira-work` and `storage:app`, so the evidence comment adds no scope.
 
 ## 3. Promote (owner only)
+
+Run from `../lotzero-judge/lotzero`, where step 2 built the UI.
 
 ```sh
 npm run forge -- deploy -e production
