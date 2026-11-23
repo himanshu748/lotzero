@@ -161,8 +161,11 @@ export function useRehearsal() {
           const next = await client.importDataset(structuredClone(repairedDataset));
           if (!next.dataset) throw new Error("The corrected records could not be loaded.");
           setData(next);
-          installCase(next.dataset, runDrill(next.dataset, snapshot.result.scenario));
-          setNotice("Corrected sample records loaded. Save this rerun, then compare it with the original rehearsal in Follow-up.");
+          installCase(
+            next.dataset,
+            runDrill(next.dataset, snapshot.result.scenario, snapshot.result.interventions),
+          );
+          setNotice("Corrected sample records loaded with the same simulated controls. Save this rerun, then compare it with the original rehearsal in Follow-up.");
         });
       },
     );
