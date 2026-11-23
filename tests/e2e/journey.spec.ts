@@ -292,6 +292,38 @@ test("follow-up reruns the saved sample on corrected records in one step", async
   await home(page);
   await expect(page.getByText("Records loaded:")).toContainText("synthetic-v2");
 });
+test("corrected rerun keeps the baseline's simulated controls", async ({
+  page,
+}) => {
+  await sample(page);
+  await page.getByRole("button", { name: "Rehearse", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Add simulated intervention", exact: false })
+    .click();
+  await page
+    .getByRole("button", { name: "Save and follow up", exact: true })
+    .click();
+  await page
+    .getByText("Compare with a previous rehearsal", { exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Rerun with corrected sample records", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Replace current work", exact: true })
+    .click();
+  await expect(page.getByText(/with the same simulated controls/)).toBeVisible();
+  await page
+    .getByRole("button", { name: "Save and follow up", exact: true })
+    .click();
+  await page
+    .getByText("Compare with a previous rehearsal", { exact: true })
+    .click();
+  await page.getByLabel("Baseline snapshot").selectOption({ index: 1 });
+  const summary = page.locator(".comparison-summary");
+  await expect(summary).toContainText("shipment-destination");
+  await expect(summary).toContainText(/Regressed assertions\s*None/);
+});
 test("concurrent browser dataset edit rejects stale save and offers no report download", async ({
   page,
 }) => {
