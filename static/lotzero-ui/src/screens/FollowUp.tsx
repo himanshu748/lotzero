@@ -4,6 +4,7 @@ import JiraApproval from "../components/JiraApproval";
 import AnalystHandoff from "../components/AnalystHandoff";
 import ReportTools from "../components/ReportTools";
 import { savedRevision } from "../analyst";
+import { isNorthstarSample } from "../../../../src/scenarios/sample";
 
 export default function FollowUp({ desk }: { desk: ReturnTypeOfUseRehearsal }) {
   const snapshot = desk.active?.snapshot;
@@ -66,6 +67,11 @@ export default function FollowUp({ desk }: { desk: ReturnTypeOfUseRehearsal }) {
         key={snapshot.id}
         snapshot={snapshot}
         snapshots={desk.data.snapshots}
+        onRerunCorrected={
+          isNorthstarSample(snapshot.dataset) && !desk.busy
+            ? () => desk.rerunCorrected(snapshot)
+            : undefined
+        }
       />
     </>
   );

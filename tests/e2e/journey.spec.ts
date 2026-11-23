@@ -261,6 +261,37 @@ test("corrected records preserve baseline and export an exact compatible compari
     "## Before and after",
   );
 });
+test("follow-up reruns the saved sample on corrected records in one step", async ({
+  page,
+}) => {
+  await sample(page);
+  await page
+    .getByRole("button", { name: "Save and follow up", exact: true })
+    .click();
+  await page
+    .getByText("Compare with a previous rehearsal", { exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Rerun with corrected sample records", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Replace current work", exact: true })
+    .click();
+  await expect(page.getByText(/Corrected sample records loaded/)).toBeVisible();
+  await page
+    .getByRole("button", { name: "Save and follow up", exact: true })
+    .click();
+  await page
+    .getByText("Compare with a previous rehearsal", { exact: true })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "Rerun with corrected sample records", exact: true }),
+  ).toHaveCount(0);
+  await page.getByLabel("Baseline snapshot").selectOption({ index: 1 });
+  await expect(page.locator(".comparison-summary")).toContainText("shipment-destination");
+  await home(page);
+  await expect(page.getByText("Records loaded:")).toContainText("synthetic-v2");
+});
 test("concurrent browser dataset edit rejects stale save and offers no report download", async ({
   page,
 }) => {
