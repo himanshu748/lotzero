@@ -40,6 +40,15 @@ modules:
         - Explain what the saved warehouse quarantine changes
       actions:
         - lotzero-read-saved-rehearsal
+      skills:
+        - lotzero-recall-evidence
+  rovo:skill:
+    - key: lotzero-recall-evidence
+      source:
+        dir: skills/lotzero-recall-evidence
+      dependencies:
+        tools:
+          - lotzero-read-saved-rehearsal
   action:
     - key: lotzero-read-saved-rehearsal
       name: Read saved rehearsal evidence

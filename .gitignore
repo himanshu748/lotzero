@@ -15,6 +15,7 @@
 !/scripts/
 !/docs/
 !/evals/
+!/skills/
 !/config/
 /config/*
 !/config/editions.example.json
