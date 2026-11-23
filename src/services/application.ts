@@ -6,13 +6,14 @@ import {JiraError,type JiraGateway} from '../integrations/port';
 import {validateDataset,scenarioSchema,interventionSchema} from '../schemas/dataset';
 import {runDrill} from '../graph/engine';
 import {syntheticDataset} from '../../fixtures/synthetic/dataset';
-import {suggestActions} from './actions';
+import {evidenceComment,suggestActions} from './actions';
 import {isNorthstarSample} from '../scenarios/sample';
 const id=z.string().regex(/^[A-Za-z0-9_-]{1,100}$/);
 const projectKey=z.string().regex(/^[A-Z][A-Z0-9_]{1,49}$/);
 const requestSchema=z.object({snapshotId:id,projectKey,issueTypeId:z.string().regex(/^\d+$/),actionIds:z.array(id).min(1).max(5).refine(a=>new Set(a).size===a.length),approved:z.literal(true),receiptsOnly:z.literal(true).optional()}).strict();
 export interface ActorContext {accountId?:string;extension?:{project?:{id?:string;key?:string}}}
 export type MutationRunner = <T>(work:()=>Promise<T>)=>Promise<T>;
+export interface EvidenceCommentReceipt {status:'posted'|'uncertain';issueKey:string;at:string;commentId?:string;error?:string}
 interface ActionClaim {actor:string;at:string;project:string;type:string;marker:string;phase?:'preparing'|'dispatching'}
 interface SavedRequestSnapshot extends Snapshot {saveRequest?:{id:string;signature:string}}
 export class Application {
@@ -62,6 +63,31 @@ export class Application {
     }finally{await this.store.delete(recoveryKey);}
     return this.bootstrap(context);
   }
+  postEvidenceComment(context:ActorContext,payload:unknown){return this.mutate(context,()=>this.commentLocked(context,payload));}
+  private async commentLocked(context:ActorContext,payload:unknown):Promise<EvidenceCommentReceipt>{
+    const data=z.object({snapshotId:id,actionId:id,approved:z.literal(true)}).strict().parse(payload);
+    const {prefix,actor}=await this.scope(context);
+    const snapshot=await this.store.get<Snapshot>(`${prefix}snapshot:${data.snapshotId}`);if(!snapshot)throw new Error('Drill not found in this project.');
+    const receipt=await this.store.get<JiraAction>(`${prefix}receipt:${snapshot.id}:${data.actionId}`);
+    if(receipt?.status!=='created'||!receipt.issueKey)throw new Error('Create this Jira task first. No comment was sent.');
+    const claim=await this.store.get<ActionClaim>(`${prefix}claim:${snapshot.id}:${data.actionId}`);
+    if(!claim)throw new Error('Approval marker is missing. No comment was sent.');
+    const paragraphs=evidenceComment(snapshot,data.actionId);
+    const key=`${prefix}comment:${snapshot.id}:${data.actionId}`;
+    const pending:EvidenceCommentReceipt={status:'uncertain',issueKey:receipt.issueKey,at:this.now(),error:`Outcome unknown. Check ${receipt.issueKey} comments; LotZero will not post again automatically.`};
+    // One comment per task: a posted or uncertain receipt is returned, never resent.
+    if(!await this.store.claim(key,pending))return await this.store.get<EvidenceCommentReceipt>(key)??pending;
+    let result:EvidenceCommentReceipt;
+    try{
+      const posted=await this.jira.comment(receipt.issueKey,claim.marker,paragraphs);
+      result={status:'posted',issueKey:receipt.issueKey,at:this.now(),commentId:posted.id};
+    }catch(error){
+      if(error instanceof JiraError&&error.definiteRejection){await this.store.delete(key);throw error;}
+      result=pending;
+    }
+    await this.store.set(key,result);await this.audit(prefix,actor,`${snapshot.id}/${data.actionId}: evidence comment ${result.status} on ${receipt.issueKey}`);
+    return result;
+  }
   private async reconcileLocked(context:ActorContext,payload:unknown){
     const data=z.object({snapshotId:id,actionId:id,issueKey:z.string().regex(/^[A-Z][A-Z0-9_]*-\d+$/)}).strict().parse(payload);
     const {prefix,actor}=await this.scope(context,true);
@@ -91,7 +117,8 @@ export class Application {
   }
   private async hydrate(prefix:string,snapshot:Snapshot){
     const receipts=await this.store.list<JiraAction>(`${prefix}receipt:${snapshot.id}:`);
-    const actions=await Promise.all(receipts.map(r=>this.visibleReceipt(prefix,snapshot.id,r.value)));
+    const comments=new Map((await this.store.list<EvidenceCommentReceipt>(`${prefix}comment:${snapshot.id}:`)).map(c=>[c.key.slice(`${prefix}comment:${snapshot.id}:`.length),c.value.status]));
+    const actions=await Promise.all(receipts.map(async r=>{const a=await this.visibleReceipt(prefix,snapshot.id,r.value);const c=comments.get(a.id);return c?{...a,evidenceComment:c}:a;}));
     return {...snapshot,actions:actions.sort((a,b)=>a.id.localeCompare(b.id))};
   }
   async bootstrap(context:ActorContext):Promise<Bootstrap>{

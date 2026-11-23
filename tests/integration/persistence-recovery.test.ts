@@ -26,6 +26,7 @@ beforeEach(async () => {
     project: vi.fn(async id => ({id, key: 'LZ', name: 'Test project'})), permission: vi.fn(async () => true),
     projects: vi.fn(async () => []), issueTypes: vi.fn(async () => []), validateIssueType: vi.fn(async () => {}),
     create: vi.fn(async () => ({key: 'LZ-1', url: 'https://test.atlassian.net/browse/LZ-1'})),
+    comment: vi.fn(async () => ({ id: "c-1" })),
     verifyIssue: vi.fn(async key => ({key, url: `https://test.atlassian.net/browse/${key}`})),
   };
   app = new Application(store, jira, () => '2026-10-28T10:00:00Z', () => `generated-${++nextId}`);

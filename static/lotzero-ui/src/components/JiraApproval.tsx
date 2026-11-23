@@ -3,6 +3,8 @@ import type { JiraAction, Snapshot, Project, AssertionId } from "../../../../src
 import { findingTitle } from "../finding-copy";
 import { client, localMode } from "../client";
 import { groupActions } from "../../../../src/services/action-findings";
+import { evidenceComment } from "../../../../src/services/actions";
+import EvidenceComment from "./EvidenceComment";
 import { Badge, Empty, Icon, JiraIssueLink } from "./Primitives";
 const message = (error: unknown) =>
   error instanceof Error ? error.message : "Jira could not be read. Try again.";
@@ -184,6 +186,21 @@ export default function JiraApproval({
                             </button>
                           )}
                         </p>
+                      )}
+                      {snapshot && a.issueKey && a.status === "created" && (
+                        <EvidenceComment
+                          issueKey={a.issueKey}
+                          recorded={a.evidenceComment}
+                          paragraphs={evidenceComment(snapshot, a.id)}
+                          disabled={disabled || localMode}
+                          onPost={() =>
+                            client.postEvidenceComment({
+                              snapshotId: snapshot.id,
+                              actionId: a.id,
+                              approved: true,
+                            })
+                          }
+                        />
                       )}
                       {a.error && <div className="inline-error">{a.error}</div>}
                       {a.status === "uncertain" && (

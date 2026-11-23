@@ -8,4 +8,5 @@ export interface JiraGateway {
   validateIssueType(project:string,type:string):Promise<void>;
   create(project:string,type:string,action:JiraAction,marker:string):Promise<{key:string;url:string}>;
   verifyIssue(key:string,marker:string):Promise<{key:string;url:string}>;
+  comment(key:string,marker:string,paragraphs:string[]):Promise<{id:string}>;
 }

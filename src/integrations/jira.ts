@@ -63,6 +63,16 @@ export const jiraGateway:JiraGateway={
     const created=z.object({key:z.string().regex(/^[A-Z][A-Z0-9_]*-\d+$/)}).parse(await bounded(response.json()));
     return {key:created.key,url:`${origin.origin}/browse/${created.key}`};
   },
+  async comment(key,marker,paragraphs){
+    // Only an issue carrying this approved action's marker can receive the evidence comment.
+    try{await jiraGateway.verifyIssue(key,marker);}catch{throw new JiraError('Could not verify the LotZero task before commenting. No comment was sent.',true);}
+    let response;
+    try{
+      response=await bounded(api.asUser().requestJira(route`/rest/api/3/issue/${key}/comment`,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({body:{type:'doc',version:1,content:paragraphs.map(text=>({type:'paragraph',content:[{type:'text',text}]}))}})}));
+    }catch{throw new JiraError('Jira response was interrupted. Outcome unknown; check the task comments before posting again.');}
+    if(!response.ok)throw new JiraError(response.status===403?'Jira denied adding a comment.':`Jira comment returned ${response.status}.`,[400,401,403,404,413,422,429].includes(response.status));
+    return z.object({id:z.string()}).parse(await bounded(response.json()));
+  },
   async verifyIssue(key,marker){
     const issue=await read(()=>api.asUser().requestJira(route`/rest/api/3/issue/${key}?fields=labels`),z.object({key:z.string(),fields:z.object({labels:z.array(z.string())})}));
     if(!issue.fields.labels.includes(marker))throw new Error('Issue does not contain this approved action marker.');

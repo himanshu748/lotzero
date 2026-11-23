@@ -14,6 +14,7 @@ resolver.define('issueTypes',({context,payload})=>app.issueTypes(context as Acto
 resolver.define('previewActions',({context,payload})=>app.previewActions(context as ActorContext,payload));
 resolver.define('createActions',({context,payload})=>app.createActions(context as ActorContext,payload));
 resolver.define('deleteData',({context,payload})=>app.deleteData(context as ActorContext,payload));
+resolver.define('postEvidenceComment',({context,payload})=>app.postEvidenceComment(context as ActorContext,payload));
 resolver.define('reconcileAction',({context,payload})=>app.reconcileAction(context as ActorContext,payload));
 resolver.define('recoverProjectLock',({context,payload})=>app.recoverProjectLock(context as ActorContext,payload));
 export const handler=resolver.getDefinitions();

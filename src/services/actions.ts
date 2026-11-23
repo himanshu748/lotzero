@@ -32,3 +32,19 @@ export function suggestActions(
     ].join("\n\n"),
   }));
 }
+
+/** Deterministic evidence comment for an approved, created LotZero task. No model text. */
+export function evidenceComment(
+  snapshot: Pick<Snapshot, "id" | "dataset" | "result">,
+  actionId: string,
+): string[] {
+  const action = suggestActions(snapshot).find((a) => a.id === actionId);
+  if (!action) throw new Error("Unknown suggested action. Refresh the saved drill.");
+  return [
+    `LotZero rehearsal evidence (simulation only): ${action.summary.replace("[SIMULATED DRILL] ", "")}`,
+    `Saved drill ${snapshot.id}; dataset ${snapshot.dataset.version}; source lot ${snapshot.result.scenario.sourceLotId}.`,
+    `Records: ${action.recordIds.join(", ") || "No record identified"}`,
+    `Evidence: ${action.evidence.join(", ") || "Not recorded. Investigate; do not infer safety."}`,
+    "Posted from LotZero's saved evidence after explicit approval by the signed-in user. Rehearsal only: do not contact customers, hold shipments or execute a recall on this comment's authority.",
+  ];
+}
