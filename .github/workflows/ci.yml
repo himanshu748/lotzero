@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - name: Judge release export builds
+        run: |
+          node scripts/prepare-source.mjs --output "$RUNNER_TEMP/judge" --judge-release
+          cd "$RUNNER_TEMP/judge/lotzero"
+          npm ci --no-audit --no-fund
+          npm run build
+
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test --config playwright.first-gap.config.ts
+        env:
+          LOTZERO_EVIDENCE_DIR: ${{ runner.temp }}/evidence
+          LOTZERO_BROWSER_RESULTS_FILE: ${{ runner.temp }}/browser-results.json
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces
+          path: test-results/first-gap
+          retention-days: 7
