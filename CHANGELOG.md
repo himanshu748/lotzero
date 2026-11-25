@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased — repository presentation
+
+- The README opens on the recall, the Jira Cloud with Rovo prerequisite, and the signed install link.
+- Source is MIT licensed. See `LICENSE`.
+- Planning and critique files leave the default branch. Architecture, security, privacy, installation, analyst and verification docs stay.
+- The working manifest still declares the read-only MCP tool. The README says so, and the judge-release export still omits it. The submitted bonus remains Best Agents.
+- The empty rehearsal home states FAIL, UNKNOWN and PASS in plain language. The rehearsal status line uses body text.
+
 ## Development only — clarity and ten-critic repairs, 17 November 2026
 
 - Shorter findings and review populations, explicit unsaved Follow-up choice, inspectable counterexamples and manual scenario time.
@@ -8,7 +16,7 @@
 - Neutral export wording, retention guidance, safer analyst projection and standalone app-only source export.
 - Development 2.11.0 verified; 308 tests and 29 browser cases passed. Production/public surfaces unchanged. Cardboard handoff files only, with no replacement recording or render.
 
-See [current verification and limits](docs/CRITIC_PASS_DEVELOPMENT_2026-11-16.md).
+See [current verification and limits](docs/DEVELOPMENT_2_11_VERIFICATION_2026-11-17.md).
 
 ## Unreleased — The first gap, 15 November 2026
 

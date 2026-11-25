@@ -2,7 +2,7 @@
 
 Status: **prepared edit files; no rendered replacement**. Owner chose Cardboard and edit files only on 16 November. No Cardboard application, `cb` executable or connected MCP tool was available. Installing/signing in and any terms/credit use remain a later step. Official workflow: https://docs.cardboard.ai/mcp . Do not assume an invented CLI command or project format.
 
-Use `../../VIDEO_SHOTLIST.md`, `timeline-draft.json`, `captions-draft.srt` and `asset-manifest.json`. Times are editorial targets; retime captions to the actual approved audio/captures in Cardboard. JSON is a portable edit specification, **not a claimed native Cardboard project**.
+Use `timeline-draft.json`, `captions-draft.srt` and `asset-manifest.json` in this folder. The shot list is not on this branch. Times are editorial targets; retime captions to the actual approved audio and captures in Cardboard. JSON is a portable edit specification, and it is not a claimed native Cardboard project.
 
 ## Direction
 

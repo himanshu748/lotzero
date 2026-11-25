@@ -25,7 +25,7 @@ The prompt requests at most two tool calls per answer; Rovo did make three in on
 
 ## Product copy prepared for the submission owner
 
-**The actual current public story is in [devpost-final-writeup.md](../devpost-final-writeup.md). The shorter paragraph below is supporting product copy; the user-authorized existing-entry update is now complete.**
+**The public product story is the Devpost entry. The local write-up is not on this branch. The shorter paragraph below is supporting product copy; the user-authorized existing-entry update is now complete.**
 
 > A recall rehearsal should leave a quality manager with clear next steps. LotZero follows an ingredient lot through recorded production and shipment paths, exposes gaps, and tests hypothetical controls. Its read-only Rovo analyst explains the exact saved rehearsal: why SHIP-002 fails the destination check, which branches remain UNKNOWN, and why historical shipments stay in the report. Every answer points back to record and evidence IDs. Follow-up Jira Tasks still require a person to review the exact content and approve them.
 

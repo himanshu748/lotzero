@@ -1,6 +1,6 @@
 # LotZero: current product and execution rules
 
-The user's **The first gap** redesign and `PLAN.md` supersede `LOTZERO_BEST_PROMPT.md`, `WIN_PLAN.md` and the UI/product shape of the earlier 15 November judged-release pass. Preserve those as history and evidence. Follow higher-priority instructions and the user's current authorization.
+The user's **The first gap** redesign is the product on `main`. Planning and critique files, including `PLAN.md`, `WIN_PLAN.md` and the ten-critic review, were removed from the public branch on 25 November 2026. Their history remains in git. Follow higher-priority instructions and the user's current authorization.
 
 ## Plan and approval
 
@@ -61,7 +61,7 @@ The user's **The first gap** redesign and `PLAN.md` supersede `LOTZERO_BEST_PROM
 - Owner clarified the demo: **Jira and Rovo only**. Keep Cardboard and prepare edit files only; do not render with FFmpeg. See `docs/demo-jira-rovo/README.md`. No new recording, narration, upload or publication in this continuation.
 - Native Chrome downloaded JSON, Markdown and CSV from development 2.9.0. JSON dataset/result matched saved evidence, Markdown byte-matched the prior text export and CSV matched after line-ending normalisation. IAB delivery remains an observed browser limitation, not a proven app bug. See the current critic-pass receipt for final rollout/check status.
 
-- Final continuation source `7993c31` deployed to **development 2.11.0** after 308 tests, 29 browser cases, final copy journey, build and full lint. Read `docs/CRITIC_PASS_DEVELOPMENT_2026-11-16.md`. The native first view and saved reopening passed; the repeat 2.11 Chrome download was interrupted, so only the earlier 2.9 actual file deliveries are a download pass.
+- Final continuation source `7993c31` deployed to **development 2.11.0** after 308 tests, 29 browser cases, final copy journey, build and full lint. Read `docs/DEVELOPMENT_2_11_VERIFICATION_2026-11-17.md`. The native first view and saved reopening passed; the repeat 2.11 Chrome download was interrupted, so only the earlier 2.9 actual file deliveries are a download pass. The critic-pass note itself is no longer on this branch.
 - Production/staging deployment rows, installations, protected landing files, working manifest and media references were unchanged. No additional Rovo message or Jira issue was created. The browser became unavailable after the interruption; do not infer remaining native checks from local tests.
 
 ## Completed development continuation — 17 November 2026
