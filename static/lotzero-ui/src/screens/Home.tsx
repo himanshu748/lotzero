@@ -25,11 +25,16 @@ export default function Home({ desk }: { desk: ReturnTypeOfUseRehearsal }) {
     <>
       <header className="home-heading">
         <h1 tabIndex={-1}>Recall rehearsal</h1>
-        <p>Practice tracing an ingredient to its shipments. Find missing records and review the follow-up work.</p>
+        <p className="lead">
+          A recall asks where one ingredient lot went, and which of those
+          shipments the records can prove. Trace the lot, find the missing
+          records, and review the follow-up before anyone moves product.
+        </p>
         <p className="field-help">
           Under the FDA Food Traceability Rule, covered firms must provide
           traceability records within 24 hours of a request. FDA will not
-          enforce the rule before 20 July 2028.
+          enforce the rule before 20 July 2028. This rehearsal does not decide
+          who is covered, and it does not make a safety decision.
         </p>
       </header>
       <div className="home-actions">
@@ -108,9 +113,23 @@ export default function Home({ desk }: { desk: ReturnTypeOfUseRehearsal }) {
             <h3>No saved rehearsals yet</h3>
             <p>
               The synthetic Northstar sample traces ingredient lot{" "}
-              <code>ING-A19</code> to its shipments and opens on the first gap:
-              a shipment with no recorded destination.
+              <code>ING-A19</code> and opens on the first gap: shipment{" "}
+              <code>SHIP-002</code> has no recorded destination.
             </p>
+            <ul className="gap-facts">
+              <li>
+                <strong>FAIL</strong>
+                The records can answer the check, and the answer fails.
+              </li>
+              <li>
+                <strong>UNKNOWN</strong>
+                The records cannot establish an answer.
+              </li>
+              <li>
+                <strong>PASS</strong>
+                The check succeeded. It is not a safety decision.
+              </li>
+            </ul>
             <p>
               Run a rehearsal, inspect the findings, then save it for follow-up.
             </p>
