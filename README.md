@@ -15,13 +15,14 @@ Rovo is how the recall analyst reads a saved rehearsal. The trace, the findings 
 1. Open the link, choose **Get app**, and install it on a Jira Cloud site you administer.
 2. Review the Jira read, Jira write and app-storage permissions, and the [privacy policy](https://gist.github.com/himanshu748/5fdad6ed1e6daf7f159c39f6ddcfbb58).
 3. Open a test project and the **LotZero** page. Use a project with an ordinary Task type, and keep automations from treating a drill task as a live operational action.
-4. Run the Northstar sample. It is fictional. It traces ingredient lot `ING-A19` and opens on shipment `SHIP-002`, which has no recorded destination.
+4. Run the fictional Northstar sample for ingredient lot `ING-A19`. Look for shipment `SHIP-002`, whose destination is missing.
 
-The link installs the shared LotZero judge app, production **2.5.0**, including the recall rehearsal and the read-only Rovo analyst. The four-screen desk in this repository has been exercised on a development site. It is a later build than the one that link installs. Treat a screenshot of this source and the installed app as the same product after the publisher promotes a new judge build.
+The [recorded judge release](docs/INSTALLATION.md) is production **2.5.0**, with the recall rehearsal and read-only Rovo analyst. The newer four-screen desk described below was verified on a development site. Use the local preview to see that interface. The [release checklist](RELEASE_CHECK.md) tracks verification and promotion of the newer build.
 
-The public walkthrough is [LotZero on Jira and Rovo](https://youtu.be/KNKdnH8N6kw) (2 minutes 53 seconds, synthetic records, Deepgram narration). The submitted entry is [on Devpost](https://devpost.com/software/lotzero). Both show the released judge app.
+- [Submitted demo on YouTube](https://www.youtube.com/watch?v=Z7zlvTNkD2A) · [Codegeist entry on Devpost](https://devpost.com/software/lotzero)
+- [Earlier Jira and Rovo walkthrough](https://youtu.be/KNKdnH8N6kw) (synthetic records, Deepgram narration)
 
-## What you do
+## What you do in the current source preview
 
 One case, four screens.
 

@@ -4,14 +4,21 @@
 
 ## Review the isolated candidate
 
-The prepared source directory is:
+From the repository root, prepare a new export for the commit you want to review:
 
-`/Users/himanshujha/Documents/Codex/2026-10-28/files-pasted-by-the-user-master/outputs/lotzero-clarity-2026-11-17/lotzero`
+```sh
+git status --short
+git rev-parse HEAD
+npm ci
+lotzero_review_dir="$(mktemp -d)"
+node scripts/prepare-source.mjs --judge-release --output "$lotzero_review_dir/candidate"
+```
 
-Review its sibling `source-export.json` and the candidate manifest before running commands. The working app manifest preserves historical MCP development declarations and **must not be promoted wholesale**. The judge package must contain exactly:
+Use a clean checkout so the recorded commit identifies the exported source. Review `candidate/source-export.json` and `candidate/lotzero/manifest.yml` before running commands. The working app manifest preserves historical MCP development declarations. The judge package must contain exactly:
 
 - Existing app identity `f2443992-e1df-4ee4-b6ee-50abce811c9b`.
 - `jira:projectPage` / `index.handler`, existing read-only `rovo:agent`, one `lotzero-read-saved-rehearsal` **GET** action / `rovo.handler`.
+- The `lotzero-recall-evidence` Rovo skill, wired to that GET action.
 - Scopes `read:jira-work`, `write:jira-work`, `storage:app`; no new external permission, MCP module/action/function or Marketplace privacy registration.
 - The revised `config/judge-agent-prompt.md`, selected by the exporter. Same agent, no second provider or write tool.
 
@@ -28,7 +35,7 @@ Do not run the edition-selection/registration helper or change sharing/distribut
 ## Local commands in the reviewed package
 
 ```sh
-cd /Users/himanshujha/Documents/Codex/2026-10-28/files-pasted-by-the-user-master/outputs/lotzero-clarity-2026-11-17/lotzero
+cd "$lotzero_review_dir/candidate/lotzero"
 npm ci
 npm run typecheck
 npm test
