@@ -95,4 +95,4 @@ npm run forge -- install --upgrade -e production --site lotzero-judge-verify.atl
 
 CLI option syntax was checked with installed `--help`; none of these production commands was executed. Record the actual returned Forge version, installed readback and core save/reopen/receipt checks. A code rollback does not reverse Jira writes or erase uncertain outcomes.
 
-Only then review [the Devpost draft](DEVPOST_UPDATE.md), [shot list](VIDEO_SHOTLIST.md) and [submission recheck](SUBMISSION_RECHECK.md). Capture and later Cardboard editing require their own authority; generated narration remains Deepgram only. Keep the existing page/demo unchanged until the owner chooses a public update.
+Only then the owner updates Devpost, the video and the submission checklist. Those drafts are not on this branch. Capture and later Cardboard editing require their own authority; generated narration remains Deepgram only. Keep the existing page and demo unchanged until the owner chooses a public update.
