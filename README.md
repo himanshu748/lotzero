@@ -67,9 +67,9 @@ A labelled sample of the earlier public release is at [lotzero-recall.vercel.app
 
 ## License and limits
 
-Source is [MIT licensed](LICENSE). Copyright 2026 Himanshu Jha.
+Source is [MIT licensed](LICENSE). Copyright 2026 Himanshu Kumar.
 
-Provider and support: Himanshu Jha, jhahimanshu653@gmail.com.
+Provider and support: Himanshu Kumar, jhahimanshu653@gmail.com.
 
 LotZero rehearses a recall. An operational recall, customer notification and product certification stay with the manufacturer. Unknown records stay unknown. Quantities are recorded shipment quantities. A real response time is not measured here. Imported records need your own review. This repository reports no customers, pilots or hours saved.
 
