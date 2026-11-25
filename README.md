@@ -1,84 +1,100 @@
 # LotZero
 
-**Rehearse the recall. Find the gaps before they matter.**
+A product recall starts with a clock. A quality manager has to say where an ingredient lot went, which shipments are tied to it, and which of those ties the records can actually prove. A missing destination, owner or document is the gap that turns a trace into a guess.
 
-LotZero is a Jira app for a food-manufacturing quality manager's mock recall. Trace one ingredient lot to its shipments, test what the records establish, rehearse a control and assign the gaps after explicit approval. The read-only Recall rehearsal analyst explains the same saved evidence through Rovo.
+LotZero is a Jira app for rehearsing that question before a real recall. You trace one ingredient lot to the shipments on record, see which checks fail or cannot be answered, try a hold while the stock stays where it is, and approve any follow-up task yourself. The rehearsal leaves the safety decision with you.
 
-The current development design, **The first gap**, opens the Northstar sample directly on **SHIP-002's missing destination**. A FAIL is a failed assertion; UNKNOWN means the records cannot establish an answer. Neither status nor a PASS is a product-safety decision.
+## Install
 
-## Development verification — 17 November 2026
+**Prerequisites: Jira Cloud with Rovo.**
 
-**Development 2.11.0 is deployed and its core Jira flow is verified.** [Open LotZero Dev in LZR](https://one-atlas-obka.atlassian.net/jira/software/projects/LZR/apps/f2443992-e1df-4ee4-b6ee-50abce811c9b/d0324e54-93c3-4fc6-8d7f-5febd8e6dfe0). Sample → SHIP-002 → hold simulation → save/reopen → follow-up passed, including the approval boundary and analyst fallback/handoff. Actual JSON, Markdown and CSV downloads passed on 2.11; JSON clipboard content matched the downloaded file byte-for-byte. Local validation previously passed 308 tests, 29 browser cases, type/build and full Forge lint. No new Jira issue or Rovo question was used. See [current verification and limits](docs/DEVELOPMENT_2_11_VERIFICATION_2026-11-17.md) and [ten critique decisions](docs/TEN_CRITIC_REVIEW_2026-11-16.md). Production and the live page/demo remain unchanged.
+Rovo is how the recall analyst reads a saved rehearsal. The trace, the findings and the saved report still work when Rovo cannot be opened. Install as a Jira Cloud site administrator. LotZero does not ask for its own account or API key.
 
-## Run locally
+**[Install LotZero on Jira Cloud](https://developer.atlassian.com/console/install/f2443992-e1df-4ee4-b6ee-50abce811c9b?signature=AYABeCHj1xyDGh4AfiSaxSskT%2FUAAAADAAdhd3Mta21zAEthcm46YXdzOmttczp1cy13ZXN0LTI6NzA5NTg3ODM1MjQzOmtleS83MDVlZDY3MC1mNTdjLTQxYjUtOWY5Yi1lM2YyZGNjMTQ2ZTcAuAECAQB4CxqLTo9l4lqXuFjNim1xJM%2Bp%2F3TVP9xHS2BrU5DRRucBXV32g4gUJV52G1pXsnZE3QAAAH4wfAYJKoZIhvcNAQcGoG8wbQIBADBoBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDKV6sAADMKdtSrzWiQIBEIA74axB1UJGh1OPgRBtBpzU2As6xxCAITs2rxAICvyZf3xOT46J5O%2B%2BuqEHtGXyS6mUIIvBu5YaGJAuVucAB2F3cy1rbXMAS2Fybjphd3M6a21zOmV1LXdlc3QtMTo3MDk1ODc4MzUyNDM6a2V5LzQ2MzBjZTZiLTAwYzMtNGRlMi04NzdiLTYyN2UyMDYwZTVjYwC4AQICAHi9bVMAkme4qVQX1fQHo6ePw3H40A7cGfz7yrmSfBWMXgEDdp0xItlstkI4SFopCqdvAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMtplsX64S7IKbfCKIAgEQgDt%2FSDizjG4YpEMiweej9w3NO5T2Oc7UvB7cw0LBUHFbIXuMZ%2BL3qo0U50BKUBIy82DSnFhDQHpsFBCa1AAHYXdzLWttcwBLYXJuOmF3czprbXM6dXMtZWFzdC0xOjcwOTU4NzgzNTI0MzprZXkvNmMxMjBiYTAtNGNkNS00OTg1LWI4MmUtNDBhMDQ5NTJjYzU3ALgBAgIAeDYASx0XCjkny4iLV6vz%2BKtEGSGT6kdt0QRpkn6D%2FlVEAWA%2Fd5iR%2F8ZpgLRrmYynqnMAAAB%2BMHwGCSqGSIb3DQEHBqBvMG0CAQAwaAYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAwQ8YAc3i%2F6Bph5lK0CARCAO7%2FPff%2B813Q30KDsJMkp1N4fitq2Qrh8Ti2jtT7eq0gYG9ssy0BjUeh4m4tzwkyP2wNi%2FWS%2FVmRmqvNkAgAAAAAMAAAQAAAAAAAAAAAAAAAAANZV5P5h3c%2B9wSNcCo2oQGr%2F%2F%2F%2F%2FAAAAAQAAAAAAAAAAAAAAAQAAADIaJlqkiEl%2FKLsNHSB0DRT%2BQ4UVQ9EOAAzXOVwGIpgNqXQoQajSlcCKLK5r6R70FFfgAq2V2ELXMtpU7XTFl6jBjNg%3D&product=jira)**
 
-Use Node 22.23.4 and npm. Clone the [source repository](https://github.com/himanshu748/lotzero):
+1. Open the link, choose **Get app**, and install it on a Jira Cloud site you administer.
+2. Review the Jira read, Jira write and app-storage permissions, and the [privacy policy](https://gist.github.com/himanshu748/5fdad6ed1e6daf7f159c39f6ddcfbb58).
+3. Open a test project and the **LotZero** page. Use a project with an ordinary Task type, and keep automations from treating a drill task as a live operational action.
+4. Run the Northstar sample. It is fictional. It traces ingredient lot `ING-A19` and opens on shipment `SHIP-002`, which has no recorded destination.
+
+The link installs the shared LotZero judge app, production **2.5.0**, including the recall rehearsal and the read-only Rovo analyst. The four-screen desk in this repository has been exercised on a development site. It is a later build than the one that link installs. Treat a screenshot of this source and the installed app as the same product after the publisher promotes a new judge build.
+
+The public walkthrough is [LotZero on Jira and Rovo](https://youtu.be/KNKdnH8N6kw) (2 minutes 53 seconds, synthetic records, Deepgram narration). The submitted entry is [on Devpost](https://devpost.com/software/lotzero). Both show the released judge app.
+
+## What you do
+
+One case, four screens.
+
+- **Home.** Load the Northstar sample, or start a drill from your own JSON or CSV records. Saved rehearsals stay searchable.
+- **Rehearsal.** Failures come first, then unknowns. The sample selects shipment-destination **FAIL** for `SHIP-002`, and shows the path `ING-A19 → BATCH-101 → FG-101 → SHIP-002`. You can inspect an earlier record while that shipment stays selected.
+- **Rehearse.** Compare the original movements with a hypothetical warehouse hold. For this finding the suggested warehouse is `WH-NORTH`. You add the hold yourself. Earlier shipments, including `SHIP-001`, stay in the impact. Stock stays where it is.
+- **Follow-up.** Suggested Jira tasks are grouped by the check that failed. Nothing is pre-selected. You read the exact project, type and text, then approve creation. When Jira does not confirm the write, you reconcile it. The app does not send a second attempt on its own.
+
+A path is an association between records. It is not proof that a product is contaminated. A passing check is a passed check. The safety decision stays outside the app.
+
+Under the [FDA Food Traceability Rule](https://www.fda.gov/food/food-safety-modernization-act-fsma/fsma-final-rule-requirements-additional-traceability-records-certain-foods), covered firms must provide traceability records within 24 hours of a request. FDA will not enforce the rule before 20 July 2028. That is why complete records matter. LotZero does not decide who is covered, and it does not issue a compliance certificate.
+
+## Ask the analyst
+
+On a saved rehearsal you can ask the **Recall rehearsal analyst**. It is a read-only Rovo agent. It explains the saved revision you name, and it cites record and evidence IDs from that revision. It has no tool that creates tasks, changes records, holds stock or runs a recall.
+
+The entry is in **Apps for Specialized Industries**. The submitted bonus is **Best Agents**, for this analyst.
+
+The on-screen checks are deterministic. They remain usable when Rovo is off.
+
+## The MCP tool, stated as it is
+
+The working manifest in this repository declares `rovo:mcp`: a read-only tool named **LotZero rehearsal evidence** (`lotzero-mcp-read-rehearsal`). It reads one saved rehearsal when you supply the project, the saved id and the exact revision. The MCP contract tests pass.
+
+Codegeist allows one bonus. This entry is submitted for Best Agents. The judge package is built with `scripts/prepare-source.mjs --judge-release`. That package keeps the Jira page and the read-only analyst, and leaves the MCP module in this repository. Best MCP is not the submitted bonus. The module is real in this source, and the shared judge install is prepared without it.
+
+What a live MCP client did and did not confirm is in [the MCP notes](docs/MCP_BONUS.md).
+
+## Try the sample without Jira
+
+You need Node 22.23.4 and npm.
 
 ```sh
 git clone https://github.com/himanshu748/lotzero.git
 cd lotzero
-```
-
-From the app directory:
-
-```sh
 npm ci
 npm run dev
 ```
 
-Open http://127.0.0.1:4173. The browser transport stores data in localStorage and disables Jira writes and Rovo execution. It uses fictional Northstar records, not customer or ERP data.
+Open http://127.0.0.1:4173 and choose **Run Northstar sample (synthetic)** once. The browser preview stores data in this browser. It does not create Jira issues or call Rovo. The records are fictional Northstar data.
 
-1. On **Home**, activate **Run Northstar sample (synthetic)** once. It loads the unchanged sample idempotently and runs ING-A19 without saving or creating work.
-2. **Rehearsal** opens on destination FAIL / SHIP-002, with the selected path **ING-A19 → BATCH-101 → FG-101 → SHIP-002** and its inspector. Select other findings or switch to Flow map / Record table. Inspecting an ancestor keeps the path anchored to the shipment.
-3. Choose **Rehearse a hold**. WH-NORTH is suggested for this finding; select/add the warehouse quarantine explicitly. With EV-DRILL, SHIP-002 is hypothetically potentially preventable. Historical SHIP-001 remains in impact. No shipment changes.
-4. **Save and follow up**. Review the destination proposal first, expand other assertion groups and inspect exact issue content. Nothing is preselected. In an authorised Forge installation, choose the permitted project/type and explicitly approve before Jira creation. Uncertain outcomes require reconciliation.
-5. In **Ask the analyst**, select a saved-evidence question. With an enabled Jira/Rovo installation, open it in the existing analyst. The full saved revision is sent internally; the page shows a short reference and exposes the full value. In browser preview, the on-page counterexamples remain usable and are labelled as saved records, not a model answer.
+A labelled sample of the earlier public release is at [lotzero-recall.vercel.app](https://lotzero-recall.vercel.app/).
 
-Home also launches the existing scenario form and JSON / `record_type,json` CSV import. Imports retain the 200 KB, 1,000-node and 3,000-edge limits. Replacing records requires confirmation and preserves saved rehearsals. To compare corrections, save the sample, return Home, open Records and workspace controls, load the corrected sample, choose the same source, hazard, assertion set and scenario clock (Northstar: `2026-10-28 09:00 UTC`), run and save. Comparison and JSON/Markdown/CSV exports are below the work and analyst in Follow-up.
+## License and limits
 
-## Four screens, one case
+Source is [MIT licensed](LICENSE). Copyright 2026 Himanshu Jha.
 
-- **Home:** records, sample/new-drill actions and searchable saved rehearsals.
-- **Rehearsal:** FAIL-first findings, selected evidence path, inspector, map and table.
-- **Rehearse:** proposed controls beside original versus simulated movement.
-- **Follow-up:** prioritised proposals/receipts, the saved-revision analyst, exports/comparison and one limitations disclosure.
+Provider and support: Himanshu Jha, jhahimanshu653@gmail.com.
 
-The React Custom UI uses ADS buttons, lozenges and design tokens. Forge enables host theming with `view.theme.enable()`; the standalone preview uses the documented token theme loader. There is no external font dependency: Atlassian typography tokens use their system sans/mono fallbacks when the Atlassian fonts are unavailable. Keyboard, focus, narrow layouts and reduced motion are covered by browser checks.
+LotZero rehearses a recall. An operational recall, customer notification and product certification stay with the manufacturer. Unknown records stay unknown. Quantities are recorded shipment quantities. A real response time is not measured here. Imported records need your own review. This repository reports no customers, pilots or hours saved.
 
-## Check this source
+## For people working on the code
 
 ```sh
 npm run typecheck
 npm test
 npm run build
 npx playwright test --config playwright.first-gap.config.ts
-npm run forge -- lint
 ```
 
-The first-gap config uses port 4352 and preserves older screenshot folders. It tests the browser transport, not native Forge access or model answers. `npm run build` creates the Forge resource locally; it does not deploy. **Do not use `build:web` for this pass**: that older script writes into the protected sibling public-site source.
+`npm run build` prepares the Forge resource on this machine. Deployment is a separate owner step. `build:web` writes the protected public site; leave that script unused.
 
-See [first-gap verification](docs/FIRST_GAP_VERIFICATION.md) for actual outcomes and remaining gates. Full Forge CLI lint passed during the development rollout. Local manifest SDK validation is a separate result. Dependency advisories, hosted/privacy obligations and native acceptance remain open; UI polish does not resolve them.
+- [Installation and recovery](docs/INSTALLATION.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [Security](docs/SECURITY.md)
+- [Privacy](docs/PRIVACY.md)
+- [Privacy reporting gaps](docs/PRIVACY_REPORTING.md)
+- [Recall rehearsal analyst](docs/ROVO_ANALYST.md)
+- [MCP tool notes](docs/MCP_BONUS.md)
+- [Fixture schema](fixtures/README.md)
+- [Owner release checks](RELEASE_CHECK.md)
+- [Dependency review](docs/DEPENDENCY_REVIEW_2026-11-06.md)
+- [Rovo evaluations](evals/rovo/README.md)
+- [What the development site showed](docs/DEVELOPMENT_2_11_VERIFICATION_2026-11-17.md)
 
-## Forge architecture and release boundary
-
-The Jira project-page Custom UI calls the existing resolvers. Jira user/project permissions authorise reads and approved writes. A deterministic TypeScript engine owns trace, assertion and simulation results; Forge storage keeps saved inputs, revisions, claims and receipts. Rovo's existing GET action reads a specifically identified saved rehearsal. It cannot create issues or change records. Its bounded evidence service checks identity, Browse permission, expiry and the exact revision. Imported text remains untrusted data.
-
-The UI redesign introduces no storage migration or additional scope. Display priority never renumbers Jira proposals: Northstar's destination task remains `action-4`, even though it is shown first. Historical result compatibility and retry/reconciliation coverage remain in the suite.
-
-The working manifest retains separate historical MCP development declarations. **Do not deploy it wholesale.** `scripts/prepare-source.mjs --judge-release` prepares a separate judge-only manifest containing the Jira page and existing read-only analyst/GET action, excluding MCP and Marketplace-only modules. Read [owner release commands and native checks](RELEASE_CHECK.md) before any hosting action. No deployment, install, tunnel, sharing change, public edit or recording is authorised by these instructions.
-
-## Existing public release
-
-The [public landing](https://lotzero-recall.vercel.app/), [browser preview](https://lotzero-recall.vercel.app/app/), [2:53 Jira + Rovo demo](https://youtu.be/KNKdnH8N6kw) and [submitted entry](https://devpost.com/software/lotzero) are earlier released artifacts. **This local redesign has not changed them.** The existing demo uses synthetic records and Deepgram narration. Follow [Forge installation instructions](docs/INSTALLATION.md) for the existing approved sharing link; it does not install this unpromoted candidate.
-
-Specialized Industries remains the category and **Best Agents the sole bonus**. No MCP, Teamwork Graph, Marketplace approval, customer validation, certification or measured time saving is claimed by this candidate. The [Devpost update](DEVPOST_UPDATE.md) and [video shot list](VIDEO_SHOTLIST.md) are files for owner review after promotion, not public edits.
-
-## Further reading and limits
-
-[Fixture schema](fixtures/README.md) · [Architecture](docs/ARCHITECTURE.md) · [Security](docs/SECURITY.md) · [Privacy](docs/PRIVACY.md) · [Privacy reporting gaps](docs/PRIVACY_REPORTING.md) · [Dependency review](docs/DEPENDENCY_REVIEW_2026-11-06.md) · [Rovo evaluations](evals/rovo/README.md) · [Approved redesign](PLAN.md).
-
-Quantities describe recorded shipment quantities grouped by compatible units, not contamination mass. A path is association, not contamination. Missing records remain unknown. Timing is not measured. Controls are hypothetical, and no operational recall or regulatory assessment is performed. Imported data needs owner validation. Native Rovo availability is a tenant prerequisite; no subscription is activated here.
-
-Provider/support: Himanshu Jha, jhahimanshu653@gmail.com. [Published privacy policy](https://gist.github.com/himanshu748/5fdad6ed1e6daf7f159c39f6ddcfbb58). Source licensing and remaining listing/legal decisions remain unresolved; this local source commit does not grant a licence or publish a Marketplace listing.
-
-Source exports are app-only by default and do not require a sibling landing repository. Add `--include-site` explicitly only when a separate reference-site copy is needed. The export tests use synthetic site fixtures.
+Promote the judge build from the export in [RELEASE_CHECK.md](RELEASE_CHECK.md). The working manifest, which still contains the MCP module, is the wrong package for that promotion. The public page, the video and the Devpost form change only when the owner updates them.
