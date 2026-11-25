@@ -2,6 +2,7 @@
 /*
 !/.gitignore
 !/*.md
+!/LICENSE
 !/package.json
 !/package-lock.json
 !/manifest.yml
