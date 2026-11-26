@@ -32,6 +32,20 @@ jobs:
           cd "$RUNNER_TEMP/judge/lotzero"
           npm ci --no-audit --no-fund
           npm run build
+      - name: Browser-test the judge release export
+        run: |
+          cd "$RUNNER_TEMP/judge/lotzero"
+          npx playwright install --with-deps chromium
+          npx playwright test --config playwright.first-gap.config.ts
+        env:
+          LOTZERO_EVIDENCE_DIR: ${{ runner.temp }}/judge-evidence
+          LOTZERO_BROWSER_RESULTS_FILE: ${{ runner.temp }}/judge-browser-results.json
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: judge-playwright-traces
+          path: ${{ runner.temp }}/judge/lotzero/test-results/first-gap
+          retention-days: 7
 
   browser:
     runs-on: ubuntu-latest
