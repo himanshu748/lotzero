@@ -6,6 +6,7 @@ import {createHash} from 'node:crypto';
 import {spawnSync} from 'node:child_process';
 import YAML from 'yaml';
 
+const developmentReceipt = 'docs/DEVELOPMENT_2_11_VERIFICATION_2026-11-17.md';
 const temporary: string[] = [];
 afterEach(() => {for (const dir of temporary.splice(0)) rmSync(dir, {recursive: true, force: true});});
 function fixture() {
@@ -17,6 +18,8 @@ function fixture() {
     const dest = join(root, name); mkdirSync(resolve(dest, '..'), {recursive: true}); copyFileSync(join(originals, name), dest);
   }
   copyFileSync(join(originals, 'config/judge-agent-prompt.md'), join(root, 'config/judge-agent-prompt.md'));
+  copyFileSync(join(originals, 'RELEASE_CHECK.md'), join(root, 'RELEASE_CHECK.md'));
+  copyFileSync(join(originals, developmentReceipt), join(root, developmentReceipt));
   // This fixture always starts as the base judge edition, even when the suite runs in a privacy export.
   const manifestFile = join(root, 'manifest.yml');
   const manifest = YAML.parse(readFileSync(manifestFile, 'utf8'));
@@ -120,6 +123,18 @@ it('exports an isolated judge release without optional MCP or Marketplace module
   expect(manifest.modules['rovo:agent'][0].prompt).toContain('Timing not measured');
   expect(readFileSync(join(f.root, 'manifest.yml'), 'utf8')).toBe(original);
   expect(f.run('--output', join(f.directory, 'both'), '--judge-release', '--privacy-development').status).not.toBe(0);
+});
+
+it('keeps the release checklist link to the published development receipt usable in the judge export', () => {
+  const f = fixture(); const dest = join(f.directory, 'judge');
+  expect(f.run('--output', dest, '--judge-release').status).toBe(0);
+  const checklist = readFileSync(join(dest, 'lotzero/RELEASE_CHECK.md'), 'utf8');
+  expect(checklist).toContain(`](${developmentReceipt})`);
+  const exportedReceipt = join('lotzero', developmentReceipt);
+  const bytes = readFileSync(join(dest, exportedReceipt));
+  expect(bytes.equals(readFileSync(join(f.root, developmentReceipt)))).toBe(true);
+  const manifest = JSON.parse(readFileSync(join(dest, 'source-export.json'), 'utf8'));
+  expect(manifest.files).toContainEqual({path: `lotzero/${developmentReceipt}`, bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex')});
 });
 
 it.each(['handler', 'scope', 'egress', 'module', 'skill'])('rejects an unreviewed judge contract change: %s', change => {
