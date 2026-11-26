@@ -14,7 +14,7 @@ lotzero_review_dir="$(mktemp -d)"
 node scripts/prepare-source.mjs --judge-release --output "$lotzero_review_dir/candidate"
 ```
 
-Use a clean checkout so the recorded commit identifies the exported source. Review `candidate/source-export.json` and `candidate/lotzero/manifest.yml` before running commands. The working app manifest preserves historical MCP development declarations. The judge package must contain exactly:
+Use a clean checkout. In `candidate/source-export.json`, check that `sourceGit.commit` matches the reviewed commit and `sourceGit.worktreeClean` is true. The file hashes identify the exported bytes, including generated manifest and README content. Review `candidate/lotzero/manifest.yml` before running commands. The working app manifest preserves historical MCP development declarations. The judge package must contain exactly:
 
 - Existing app identity `f2443992-e1df-4ee4-b6ee-50abce811c9b`.
 - `jira:projectPage` / `index.handler`, existing read-only `rovo:agent`, one `lotzero-read-saved-rehearsal` **GET** action / `rovo.handler`.

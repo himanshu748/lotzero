@@ -41,6 +41,7 @@ describe('curated source export boundary', () => {
     expect(f.run('--output', dest, '--include-site').status).toBe(0);
     const receipt = JSON.parse(readFileSync(join(dest, 'source-export.json'), 'utf8'));
     expect(receipt.gitCreated).toBe(false); expect(receipt.pushed).toBe(false);
+    expect(receipt.sourceGit).toBeNull();
     const names = receipt.files.map((row: {path: string}) => row.path);
     expect(names).toContain('lotzero/src/privacy.ts'); expect(names).toContain('lotzero/playwright.first-gap.config.ts');
     expect(readFileSync(join(dest,'lotzero/README.md'),'utf8')).toContain('Run Northstar sample (synthetic)'); expect(names).toContain('lotzero-site/index.html');
@@ -48,6 +49,27 @@ describe('curated source export boundary', () => {
     for (const row of receipt.files) expect(createHash('sha256').update(readFileSync(join(dest, row.path))).digest('hex')).toBe(row.sha256);
     expect(existsSync(join(dest, '.git'))).toBe(false);
     expect(YAML.parse(readFileSync(join(dest, 'lotzero/manifest.yml'), 'utf8')).modules.scheduledTrigger).toBeUndefined();
+  });
+  it('records the source commit and makes a modified checkout visible in the receipt', () => {
+    const f = fixture();
+    const git = (...args: string[]) => {
+      const result = spawnSync('git', ['-C', f.root, ...args], {encoding: 'utf8'});
+      expect(result.status, result.stderr).toBe(0);
+      return result.stdout.trim();
+    };
+    git('init', '-q');
+    git('add', '.');
+    git('-c', 'user.name=Export Fixture', '-c', 'user.email=export@example.invalid', '-c', 'commit.gpgsign=false',
+      '-c', 'core.hooksPath=/dev/null', 'commit', '-qm', 'Fixture source');
+    const commit = git('rev-parse', 'HEAD');
+    const exportGit = (name: string) => {
+      const destination = join(f.directory, name);
+      expect(f.run('--output', destination, '--judge-release').status).toBe(0);
+      return JSON.parse(readFileSync(join(destination, 'source-export.json'), 'utf8')).sourceGit;
+    };
+    expect(exportGit('clean')).toEqual({commit, worktreeClean: true});
+    writeFileSync(join(f.root, 'src/local-edit.ts'), 'export const localEdit = true;');
+    expect(exportGit('dirty')).toEqual({commit, worktreeClean: false});
   });
   it('adds reporting access only to an explicitly requested isolated Marketplace development candidate', () => {
     const f = fixture(); const dest = join(f.directory, 'privacy'); const before = readFileSync(join(f.root, 'manifest.yml'), 'utf8');
