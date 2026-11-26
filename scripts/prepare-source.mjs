@@ -60,6 +60,8 @@ if (judged) {
   const pages = original['jira:projectPage'];
   const skills = original['rovo:skill'];
   if (JSON.stringify(agent?.[0]?.skills) !== JSON.stringify(['lotzero-recall-evidence']) || skills?.length !== 1 || skills[0].key !== 'lotzero-recall-evidence' || skills[0].source?.dir !== 'skills/lotzero-recall-evidence' || JSON.stringify(skills[0].dependencies?.tools) !== JSON.stringify(['lotzero-read-saved-rehearsal'])) throw new Error('Judge skill contract changed; review before exporting.');
+  const skillFile = `lotzero/${skills[0].source.dir}/SKILL.md`;
+  if (!files.get(skillFile)?.toString('utf8').trim()) throw new Error('Judge export requires a non-empty LotZero Rovo SKILL.md.');
   if (agent?.length !== 1 || agent[0].key !== 'lotzero-recall-analyst' || JSON.stringify(agent[0].actions) !== JSON.stringify(['lotzero-read-saved-rehearsal']) || !pages?.length || !resolver || !analyst || !action || action.actionVerb !== 'GET' || action.function !== 'recall-analyst') throw new Error('Judge module contract changed; review before exporting.');
   if (resolver.handler !== 'index.handler' || analyst.handler !== 'rovo.handler') throw new Error('Judge handler contract changed; review before exporting.');
   const allowedScopes = new Set(['read:jira-work', 'write:jira-work', 'storage:app', 'report:personal-data']);
