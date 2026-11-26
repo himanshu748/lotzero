@@ -113,6 +113,17 @@ it.each(['handler', 'scope', 'egress', 'module', 'skill'])('rejects an unreviewe
   expect(existsSync(dest)).toBe(false);
 });
 
+it.each(['missing', 'blank'])('rejects a judge release with a %s skill file', state => {
+  const f = fixture(); const dest = join(f.directory, 'judge');
+  const skill = join(f.root, 'skills/lotzero-recall-evidence/SKILL.md');
+  if (state === 'missing') rmSync(skill);
+  else writeFileSync(skill, '   \n');
+  const result = f.run('--output', dest, '--judge-release');
+  expect(result.status).not.toBe(0);
+  expect(result.stderr).toContain('Judge export requires a non-empty LotZero Rovo SKILL.md.');
+  expect(existsSync(dest)).toBe(false);
+});
+
 it('exports the judge app from a standalone checkout without a landing sibling', () => {
   const f = fixture(); const dest = join(f.directory, 'standalone');
   rmSync(join(f.directory, 'lotzero-site'), {recursive: true});
