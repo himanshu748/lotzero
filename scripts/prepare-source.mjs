@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
+import {spawnSync} from 'node:child_process';
 import YAML from 'yaml';
 
 const appRoot = fs.realpathSync(path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'));
@@ -20,10 +21,23 @@ function physicalPath(input) {
   while (!fs.existsSync(parent)) {tail.unshift(path.basename(parent)); parent = path.dirname(parent);}
   return path.join(fs.realpathSync(parent), ...tail);
 }
+function sourceGit() {
+  const git = (...args) => spawnSync('git', ['-C', appRoot, ...args], {encoding: 'utf8'});
+  const root = git('rev-parse', '--show-toplevel');
+  if (root.status !== 0 || physicalPath(root.stdout.trim()) !== appRoot) return null;
+  const head = git('rev-parse', '--verify', 'HEAD');
+  if (head.status !== 0 || !/^(?:[0-9a-f]{40}|[0-9a-f]{64})$/.test(head.stdout.trim())) return null;
+  const status = git('status', '--porcelain=v1', '--untracked-files=normal');
+  return {
+    commit: head.stdout.trim(),
+    worktreeClean: status.status === 0 ? status.stdout.trim() === '' : null,
+  };
+}
 const destination = physicalPath(args[index + 1]);
 if (fs.existsSync(destination) || destination === appRoot || destination.startsWith(appRoot + path.sep) || destination === siteRoot || destination.startsWith(siteRoot + path.sep)) {
   throw new Error('Choose a new directory outside the application and live-site source; nothing was overwritten.');
 }
+const sourceBefore = sourceGit();
 const files = new Map();
 const extensions = new Set(['.ts', '.tsx', '.json', '.css', '.html', '.svg', '.csv', '.md']);
 function add(source, target) {
@@ -131,7 +145,14 @@ for (const [name, bytes] of files) {
   for (const [kind, pattern] of patterns) if (pattern.test(bytes.toString('utf8'))) throw new Error(`Export stopped: ${kind} pattern in ${name}; no matched value is printed.`);
 }
 const rows = [...files].sort(([a], [b]) => a.localeCompare(b)).map(([name, bytes]) => ({path: name, bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex')}));
-const receipt = {createdAt: new Date().toISOString(), privacyDevelopment: privacy, judgeRelease: judged, includeSite, files: rows, scan: 'Explicit file list, known patterns only; no Git-history or unknown-format claim', omitted: ['credentials', 'config/*.local.json', 'private evidence', 'media masters', 'node_modules', 'compiled bundles'], gitCreated: false, pushed: false};
+const sourceAfter = sourceGit();
+const source = sourceBefore && sourceAfter?.commit === sourceBefore.commit ? {
+  commit: sourceBefore.commit,
+  worktreeClean: sourceBefore.worktreeClean === null || sourceAfter.worktreeClean === null
+    ? null
+    : sourceBefore.worktreeClean && sourceAfter.worktreeClean,
+} : null;
+const receipt = {createdAt: new Date().toISOString(), privacyDevelopment: privacy, judgeRelease: judged, includeSite, sourceGit: source, files: rows, scan: 'Explicit file list, known patterns only; no Git-history or unknown-format claim', omitted: ['credentials', 'config/*.local.json', 'private evidence', 'media masters', 'node_modules', 'compiled bundles'], gitCreated: false, pushed: false};
 // All selection and scanning completes before the new destination is created.
 fs.mkdirSync(destination, {recursive: true, mode: 0o700});
 for (const [name, content] of files) {
