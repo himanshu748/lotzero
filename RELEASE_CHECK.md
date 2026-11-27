@@ -12,9 +12,12 @@ git rev-parse HEAD
 npm ci
 lotzero_review_dir="$(mktemp -d)"
 node scripts/prepare-source.mjs --judge-release --output "$lotzero_review_dir/candidate"
+node scripts/prepare-source.mjs --verify-judge-release "$lotzero_review_dir/candidate"
 ```
 
-Use a clean checkout. In `candidate/source-export.json`, check that `sourceGit.commit` matches the reviewed commit and `sourceGit.worktreeClean` is true. The file hashes identify the exported bytes, including generated manifest and README content. Review `candidate/lotzero/manifest.yml` before running commands. The working app manifest preserves historical MCP development declarations. The judge package must contain exactly:
+Run the verifier from the same clean checkout against the untouched export, before installing dependencies or building inside it. It recreates the expected judge files in memory and checks the receipt, generated manifest and all exported bytes against that source commit. Record its `sourceCommit` and `manifestSha256` with the review. Record the installed version and native Jira outcome separately after testing.
+
+Review `candidate/lotzero/manifest.yml` before running commands. The working app manifest preserves historical MCP development declarations. The judge package must contain exactly:
 
 - Existing app identity `f2443992-e1df-4ee4-b6ee-50abce811c9b`.
 - `jira:projectPage` / `index.handler`, existing read-only `rovo:agent`, one `lotzero-read-saved-rehearsal` **GET** action / `rovo.handler`.
