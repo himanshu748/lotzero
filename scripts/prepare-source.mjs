@@ -8,12 +8,15 @@ import YAML from 'yaml';
 const appRoot = fs.realpathSync(path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'));
 const siteRoot = physicalPath(path.resolve(appRoot, '../lotzero-site'));
 const args = process.argv.slice(2);
+const verify = args[0] === '--verify-judge-release';
 const privacy = args.includes('--privacy-development');
-const judged = args.includes('--judge-release');
+const judged = verify || args.includes('--judge-release');
 const includeSite = args.includes('--include-site');
 const index = args.indexOf('--output');
-if ((privacy && judged) || index < 0 || !args[index + 1] || args.some((arg, i) => !['--output', '--privacy-development', '--judge-release', '--include-site'].includes(arg) && i !== index + 1)) {
-  throw new Error('Usage: node scripts/prepare-source.mjs --output NEW-DIRECTORY [--privacy-development | --judge-release] [--include-site]');
+if (verify
+  ? args.length !== 2 || !args[1] || args[1].startsWith('--')
+  : (privacy && judged) || index < 0 || !args[index + 1] || args.some((arg, i) => !['--output', '--privacy-development', '--judge-release', '--include-site'].includes(arg) && i !== index + 1)) {
+  throw new Error('Usage: node scripts/prepare-source.mjs --output NEW-DIRECTORY [--privacy-development | --judge-release] [--include-site]\n       node scripts/prepare-source.mjs --verify-judge-release EXISTING-DIRECTORY');
 }
 function physicalPath(input) {
   let parent = path.resolve(input);
@@ -33,8 +36,12 @@ function sourceGit() {
     worktreeClean: status.status === 0 ? status.stdout.trim() === '' : null,
   };
 }
-const destination = physicalPath(args[index + 1]);
-if (fs.existsSync(destination) || destination === appRoot || destination.startsWith(appRoot + path.sep) || destination === siteRoot || destination.startsWith(siteRoot + path.sep)) {
+const destination = physicalPath(args[verify ? 1 : index + 1]);
+const protectedDestination = destination === appRoot || destination.startsWith(appRoot + path.sep) || destination === siteRoot || destination.startsWith(siteRoot + path.sep);
+if (verify && (protectedDestination || !fs.existsSync(destination) || !fs.statSync(destination).isDirectory())) {
+  throw new Error('Choose an existing isolated judge candidate directory.');
+}
+if (!verify && (fs.existsSync(destination) || protectedDestination)) {
   throw new Error('Choose a new directory outside the application and live-site source; nothing was overwritten.');
 }
 const sourceBefore = sourceGit();
@@ -153,12 +160,74 @@ const source = sourceBefore && sourceAfter?.commit === sourceBefore.commit ? {
     : sourceBefore.worktreeClean && sourceAfter.worktreeClean,
 } : null;
 const receipt = {createdAt: new Date().toISOString(), privacyDevelopment: privacy, judgeRelease: judged, includeSite, sourceGit: source, files: rows, scan: 'Explicit file list, known patterns only; no Git-history or unknown-format claim', omitted: ['credentials', 'config/*.local.json', 'private evidence', 'media masters', 'node_modules', 'compiled bundles'], gitCreated: false, pushed: false};
-// All selection and scanning completes before the new destination is created.
-fs.mkdirSync(destination, {recursive: true, mode: 0o700});
-for (const [name, content] of files) {
-  const target = path.join(destination, name);
-  fs.mkdirSync(path.dirname(target), {recursive: true});
-  fs.writeFileSync(target, content, {flag: 'wx', mode: 0o600});
+
+function verifyJudgeCandidate() {
+  if (source?.worktreeClean !== true) throw new Error('Verify from the clean source checkout used to prepare the candidate.');
+  const receiptPath = path.join(destination, 'source-export.json');
+  if (!fs.existsSync(receiptPath) || !fs.lstatSync(receiptPath).isFile()) throw new Error('Judge candidate requires a regular source-export.json receipt.');
+  let saved;
+  try {
+    saved = JSON.parse(fs.readFileSync(receiptPath, 'utf8'));
+  } catch {
+    throw new Error('Judge candidate receipt could not be read as JSON.');
+  }
+  if (saved?.judgeRelease !== true || saved.privacyDevelopment !== false || saved.includeSite !== false || saved.gitCreated !== false || saved.pushed !== false || saved.sourceGit?.worktreeClean !== true || saved.sourceGit.commit !== source.commit) {
+    throw new Error('Receipt must identify a judge-only export from this exact clean source commit.');
+  }
+  const expectedRows = new Map(rows.map(row => [row.path, row]));
+  if (!Array.isArray(saved.files) || saved.files.length !== expectedRows.size) throw new Error('Receipt file list differs from the reviewed source.');
+  for (const row of saved.files) {
+    const expected = expectedRows.get(row?.path);
+    if (!expected || row.bytes !== expected.bytes || row.sha256 !== expected.sha256) {
+      throw new Error('Receipt file hashes differ from the reviewed source.');
+    }
+    expectedRows.delete(row.path);
+  }
+
+  const directories = new Set();
+  for (const name of files.keys()) {
+    for (let dir = path.posix.dirname(name); dir !== '.'; dir = path.posix.dirname(dir)) directories.add(dir);
+  }
+  const seen = new Set();
+  function checkFiles(prefix = '') {
+    const directory = path.join(destination, prefix);
+    for (const entry of fs.readdirSync(directory, {withFileTypes: true})) {
+      const name = prefix ? `${prefix}/${entry.name}` : entry.name;
+      if (entry.isDirectory() && directories.has(name)) {
+        checkFiles(name);
+      } else {
+        if (name === 'source-export.json' && entry.isFile()) continue;
+        const expected = files.get(name);
+        if (!entry.isFile() || !expected) throw new Error('Judge candidate contains an unexpected file, directory or link. Verify before installing or building.');
+        const target = path.join(directory, entry.name);
+        if (fs.lstatSync(target).size !== expected.length || !fs.readFileSync(target).equals(expected)) {
+          throw new Error(`Judge candidate bytes differ for ${name}.`);
+        }
+        seen.add(name);
+      }
+    }
+  }
+  checkFiles();
+  const missing = [...files.keys()].find(name => !seen.has(name));
+  if (missing) throw new Error(`Judge candidate is missing ${missing}.`);
+  console.log(JSON.stringify({
+    verified: true,
+    sourceCommit: source.commit,
+    files: rows.length,
+    manifestSha256: rows.find(row => row.path === 'lotzero/manifest.yml').sha256,
+  }));
 }
-fs.writeFileSync(path.join(destination, 'source-export.json'), JSON.stringify(receipt, null, 2) + '\n', {flag: 'wx', mode: 0o600});
-console.log(JSON.stringify({destination, files: rows.length, privacyDevelopment: privacy, judgeRelease: judged, gitCreated: false, pushed: false}));
+
+if (verify) {
+  verifyJudgeCandidate();
+} else {
+  // All selection and scanning completes before the new destination is created.
+  fs.mkdirSync(destination, {recursive: true, mode: 0o700});
+  for (const [name, content] of files) {
+    const target = path.join(destination, name);
+    fs.mkdirSync(path.dirname(target), {recursive: true});
+    fs.writeFileSync(target, content, {flag: 'wx', mode: 0o600});
+  }
+  fs.writeFileSync(path.join(destination, 'source-export.json'), JSON.stringify(receipt, null, 2) + '\n', {flag: 'wx', mode: 0o600});
+  console.log(JSON.stringify({destination, files: rows.length, privacyDevelopment: privacy, judgeRelease: judged, gitCreated: false, pushed: false}));
+}

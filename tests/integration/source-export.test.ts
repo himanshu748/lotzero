@@ -38,6 +38,28 @@ function fixture() {
   return {directory, root, run};
 }
 
+function gitFixture(root: string, ...args: string[]) {
+  const result = spawnSync('git', ['-C', root, ...args], {encoding: 'utf8'});
+  expect(result.status, result.stderr).toBe(0);
+  return result.stdout.trim();
+}
+
+function commitFixture(root: string, ...args: string[]) {
+  return gitFixture(root, '-c', 'user.name=Export Fixture', '-c', 'user.email=export@example.invalid',
+    '-c', 'commit.gpgsign=false', '-c', 'core.hooksPath=/dev/null', 'commit', ...args);
+}
+
+function cleanJudgeCandidate() {
+  const f = fixture();
+  gitFixture(f.root, 'init', '-q');
+  gitFixture(f.root, 'add', '.');
+  commitFixture(f.root, '-qm', 'Fixture source');
+  const commit = gitFixture(f.root, 'rev-parse', 'HEAD');
+  const destination = join(f.directory, 'judge');
+  expect(f.run('--output', destination, '--judge-release').status).toBe(0);
+  return {...f, commit, destination};
+}
+
 describe('curated source export boundary', () => {
   it('copies runnable source and records exact hashes without local configuration, evidence or Git metadata', () => {
     const f = fixture(); const dest = join(f.directory, 'candidate');
@@ -105,6 +127,67 @@ describe('curated source export boundary', () => {
     writeFileSync(join(f.directory, 'private.ts'), 'export const privateValue = true;');
     symlinkSync(join(f.directory, 'private.ts'), join(f.root, 'src/unsafe.ts'));
     expect(f.run('--output', dest).status).not.toBe(0); expect(existsSync(dest)).toBe(false);
+  });
+});
+
+describe('judge candidate verification', () => {
+  it('verifies an unchanged export against the clean source without rewriting the receipt', () => {
+    const f = cleanJudgeCandidate();
+    const receipt = join(f.destination, 'source-export.json');
+    const original = readFileSync(receipt, 'utf8');
+    const before = JSON.parse(original);
+    const checked = f.run('--verify-judge-release', f.destination);
+    expect(checked.status, checked.stderr).toBe(0);
+    expect(JSON.parse(checked.stdout)).toEqual({
+      verified: true,
+      sourceCommit: f.commit,
+      files: before.files.length,
+      manifestSha256: before.files.find((row: {path: string}) => row.path === 'lotzero/manifest.yml').sha256,
+    });
+    expect(readFileSync(receipt, 'utf8')).toBe(original);
+  });
+
+  it('rejects a changed manifest even if the receipt is regenerated to match it', () => {
+    const f = cleanJudgeCandidate();
+    const name = 'lotzero/manifest.yml';
+    const file = join(f.destination, name);
+    const manifest = YAML.parse(readFileSync(file, 'utf8'));
+    manifest.modules.action[0].actionVerb = 'POST';
+    const bytes = Buffer.from(YAML.stringify(manifest));
+    writeFileSync(file, bytes);
+
+    const verify = () => f.run('--verify-judge-release', f.destination);
+    const changed = verify();
+    expect(changed.status).not.toBe(0);
+    expect(changed.stderr).toContain('Judge candidate bytes differ for lotzero/manifest.yml.');
+
+    const receipt = join(f.destination, 'source-export.json');
+    const updated = JSON.parse(readFileSync(receipt, 'utf8'));
+    const row = updated.files.find((item: {path: string}) => item.path === name);
+    row.bytes = bytes.length;
+    row.sha256 = createHash('sha256').update(bytes).digest('hex');
+    writeFileSync(receipt, JSON.stringify(updated));
+    const rewritten = verify();
+    expect(rewritten.status).not.toBe(0);
+    expect(rewritten.stderr).toContain('Receipt file hashes differ from the reviewed source.');
+  });
+
+  it.each(['extra file', 'missing file', 'symlink', 'wrong commit', 'dirty source'])('rejects an invalid candidate: %s', (change) => {
+    const f = cleanJudgeCandidate();
+    if (change === 'extra file') writeFileSync(join(f.destination, 'unreviewed.txt'), 'Extra bytes.');
+    if (change === 'missing file') rmSync(join(f.destination, 'lotzero/package.json'));
+    if (change === 'symlink') {
+      const manifest = join(f.destination, 'lotzero/manifest.yml');
+      const outside = join(f.directory, 'manifest.yml');
+      copyFileSync(manifest, outside);
+      rmSync(manifest);
+      symlinkSync(outside, manifest);
+    }
+    if (change === 'wrong commit') commitFixture(f.root, '--allow-empty', '-qm', 'A different source commit');
+    if (change === 'dirty source') writeFileSync(join(f.root, 'src/unreviewed.ts'), 'export const unreviewed = true;');
+    const invalid = f.run('--verify-judge-release', f.destination);
+    expect(invalid.status).not.toBe(0);
+    expect(invalid.stdout).not.toContain('"verified":true');
   });
 });
 
