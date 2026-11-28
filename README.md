@@ -64,7 +64,7 @@ npm run dev
 
 Open http://127.0.0.1:4173 and choose **Run Northstar sample (synthetic)** once. The browser preview stores data in this browser. It does not create Jira issues or call Rovo. The records are fictional Northstar data.
 
-A labelled sample of the earlier public release is at [lotzero-recall.vercel.app](https://lotzero-recall.vercel.app/).
+Try the [hosted four-screen preview](https://lotzero-recall.vercel.app/app/) with the same fictional Northstar records.
 
 ## License and limits
 
