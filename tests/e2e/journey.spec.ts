@@ -378,7 +378,11 @@ for (const screen of ["home", "rehearsal", "rehearse", "follow-up", "new-drill"]
   await page.goto("/");
   if (screen !== "home") {
     await page.getByRole("button", {name:"Run Northstar sample (synthetic)",exact:true}).click();
-    if (screen === "rehearse") await page.getByRole("button",{name:"Rehearse a hold",exact:true}).click();
+    if (screen === "rehearse") {
+      await page.getByRole("button", { name: "Rehearse a hold", exact: true }).click();
+      await page.getByRole("button", { name: "Add simulated intervention" }).click();
+      await expect(page.getByRole("heading", { name: "1 proposed intervention", exact: true })).toBeVisible();
+    }
     if (screen === "follow-up") await page.getByRole("button",{name:"Save and follow up",exact:true}).click();
     if (screen === "new-drill") {
       await home(page);
