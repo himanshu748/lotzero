@@ -15,7 +15,7 @@ node scripts/prepare-source.mjs --judge-release --output "$lotzero_review_dir/ca
 node scripts/prepare-source.mjs --verify-judge-release "$lotzero_review_dir/candidate"
 ```
 
-Run the verifier from the same clean checkout against the untouched export, before installing dependencies or building inside it. It recreates the expected judge files in memory and checks the receipt, generated manifest and all exported bytes against that source commit. Record its `sourceCommit` and `manifestSha256` with the review. Record the installed version and native Jira outcome separately after testing.
+Run the verifier from the same clean checkout against the untouched export, before installing dependencies or building inside it. The export requires a non-empty MIT license file and includes its bytes in the receipt. It recreates the expected judge files in memory and checks the receipt, generated manifest and all exported bytes against that source commit. Record its `sourceCommit` and `manifestSha256` with the review. Record the installed version and native Jira outcome separately after testing.
 
 Review `candidate/lotzero/manifest.yml` before running commands. The working app manifest preserves historical MCP development declarations. The judge package must contain exactly:
 

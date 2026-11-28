@@ -19,6 +19,7 @@ function fixture() {
   }
   copyFileSync(join(originals, 'config/judge-agent-prompt.md'), join(root, 'config/judge-agent-prompt.md'));
   copyFileSync(join(originals, 'RELEASE_CHECK.md'), join(root, 'RELEASE_CHECK.md'));
+  copyFileSync(join(originals, 'LICENSE'), join(root, 'LICENSE'));
   copyFileSync(join(originals, developmentReceipt), join(root, developmentReceipt));
   // This fixture always starts as the base judge edition, even when the suite runs in a privacy export.
   const manifestFile = join(root, 'manifest.yml');
@@ -131,11 +132,22 @@ describe('curated source export boundary', () => {
 });
 
 describe('judge candidate verification', () => {
+  it('refuses to prepare a judge package with a missing or empty license', () => {
+    const f = fixture();
+    const license = join(f.root, 'LICENSE');
+    const destination = join(f.directory, 'judge');
+    rmSync(license);
+    expect(f.run('--output', destination, '--judge-release').stderr).toContain('Judge export requires a non-empty LICENSE file.');
+    writeFileSync(license, '\n');
+    expect(f.run('--output', destination, '--judge-release').stderr).toContain('Judge export requires a non-empty LICENSE file.');
+    expect(existsSync(destination)).toBe(false);
+  });
   it('verifies an unchanged export against the clean source without rewriting the receipt', () => {
     const f = cleanJudgeCandidate();
     const receipt = join(f.destination, 'source-export.json');
     const original = readFileSync(receipt, 'utf8');
     const before = JSON.parse(original);
+    expect(readFileSync(join(f.destination, 'lotzero/LICENSE'), 'utf8')).toBe(readFileSync(join(f.root, 'LICENSE'), 'utf8'));
     const checked = f.run('--verify-judge-release', f.destination);
     expect(checked.status, checked.stderr).toBe(0);
     expect(JSON.parse(checked.stdout)).toEqual({
