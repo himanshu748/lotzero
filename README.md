@@ -17,7 +17,7 @@ Rovo is how the recall analyst reads a saved rehearsal. The trace, the findings 
 3. Open a test project and the **LotZero** page. Use a project with an ordinary Task type, and keep automations from treating a drill task as a live operational action.
 4. Run the fictional Northstar sample for ingredient lot `ING-A19`. Look for shipment `SHIP-002`, whose destination is missing.
 
-The [recorded judge release](docs/INSTALLATION.md) is production **2.5.0**, with the recall rehearsal and read-only Rovo analyst. The newer four-screen desk described below was verified on a development site. Use the local preview to see that interface. The [release checklist](RELEASE_CHECK.md) tracks verification and promotion of the newer build.
+The [native installation and verification record](docs/INSTALLATION.md) describes the shared judge build tested in October, with the recall rehearsal and read-only Rovo analyst. The [hosted four-screen preview](https://lotzero-recall.vercel.app/app/) shows the newer interface with fictional data and browser storage. For an exact-source native check or production refresh, follow the [owner release checklist](RELEASE_CHECK.md) and record the version the installer actually serves.
 
 - [Submitted demo on YouTube](https://www.youtube.com/watch?v=Z7zlvTNkD2A) · [Codegeist entry on Devpost](https://devpost.com/software/lotzero)
 - [Earlier Jira and Rovo walkthrough](https://youtu.be/KNKdnH8N6kw) (synthetic records, Deepgram narration)
